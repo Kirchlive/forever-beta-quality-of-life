@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Settings menu:** Type `/qol` in chat to enable or disable features.
+**Version 0.4.0** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
 
 ## Features
 
@@ -13,7 +13,7 @@
 - **Actionbar Range Coloring:** Colors the whole spell icon red when it is out of
   range, then restores the normal icon color when it is back in range.
 
-**Version 0.4.0** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
+**Settings menu:** Type `/qol` in chat to enable or disable features.
 
 ## Installation and updates
 
