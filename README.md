@@ -14,7 +14,7 @@
   Required confirmation text must still be entered; Escape cancels.
 - **Spellicon Range Color:** Colors the whole spell icon red when it is out of
   range, then restores the normal icon color when it is back in range.
-- **Whisper Tab Double-Click Close:** Close a regular or Battle.net whisper tab
+- **Whisper Tab Doubleclick Close:** Close a regular or Battle.net whisper tab
   with a left double-click, using the same close action as its context menu.
 
 **Settings menu:** Type `/qol` in chat to enable or disable features.

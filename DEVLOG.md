@@ -10,7 +10,7 @@ README was added.
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
 Version 0.6.0, updated September 19, 2026. Technical addon name: BetaQoL.
 
-New in 0.6.0: Whisper Tab Double-Click Close. Left-double-click a regular or
+New in 0.6.0: Whisper Tab Doubleclick Close. Left-double-click a regular or
 Battle.net whisper tab to close it using Blizzard's context-menu close path.
 The new sixth setting defaults to enabled; existing preferences are preserved.
 
@@ -59,7 +59,7 @@ For future updates to existing Lua files, `/reload` is sufficient.
 
 - `/qol` opens a small window with six checkboxes: Quest Auto Accept, Quest Auto
   Turn-in, Fast Autoloot, Enter Confirm Dialog-Box, Spellicon Range Color, and
-  Whisper Tab Double-Click Close. All six are
+  Whisper Tab Doubleclick Close. All six are
   enabled by default. Changes apply immediately and are saved across reloads
   and restarts for all characters on the account.
 - Interact with a quest NPC yourself. The addon selects offered quests and accepts
@@ -165,7 +165,7 @@ The checkbox in `/qol` immediately enables or removes the added coloring.
 Standard Blizzard action bars are supported. Pet bars and custom replacement
 action bars are outside the supported scope.
 
-### Whisper Tab Double-Click Close
+### Whisper Tab Doubleclick Close
 
 Left-double-click a temporary whisper tab to close it. Regular character
 whispers and Battle.net whispers are supported, whether docked or undocked.

@@ -85,7 +85,7 @@ SlashCmdList.QOL = function()
         { "fastLoot", "Fast Autoloot" },
         { "enterConfirm", "Enter Confirm Dialog-Box" },
         { "rangeColor", "Spellicon Range Color" },
-        { "whisperDoubleClick", "Whisper Tab Double-Click Close" },
+        { "whisperDoubleClick", "Whisper Tab Doubleclick Close" },
     }
     for index, feature in ipairs(features) do
         local key = feature[1]
