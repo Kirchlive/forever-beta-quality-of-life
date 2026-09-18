@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 COMMIT = '70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e'
 BASE_URL = f'https://raw.githubusercontent.com/Gethe/wow-ui-source/{COMMIT}/Interface/AddOns/'
 FILES = (
+    'Blizzard_ActionBar/Shared/ActionButton.lua',
     'Blizzard_UIPanels_Game/Mainline/LootFrame.lua',
     'Blizzard_UIPanels_Game/Mainline/MerchantFrame.lua',
     'Blizzard_StaticPopup/StaticPopup.lua',

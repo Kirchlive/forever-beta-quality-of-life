@@ -8,7 +8,11 @@ running game. The detailed README was then moved into this devlog, and a concise
 README was added.
 
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
-Version 0.3.0, updated September 18, 2026. Technical addon name: BetaQoL.
+Version 0.4.0, updated September 18, 2026. Technical addon name: BetaQoL.
+
+New in 0.4.0: Whole-icon range coloring on standard action bars and a compact
+`/qol` settings window. Each of the four features can be enabled or disabled
+independently, with immediate effect. Settings are saved for the account.
 
 New in 0.3.0: Enter confirmation for all standard Blizzard confirmation dialogs,
 including deleting items, selling gray items, accepting group invitations, and
@@ -37,8 +41,17 @@ New in 0.2.0: Faster native autoloot.
    in the addon list. To apply this update to an existing BetaQoL installation,
    replace the files in its folder and run `/reload`.
 
+When switching from the previous addon name to BetaQoL, fully quit and restart
+WoW once so that the new addon folder is detected reliably. The old
+`ForeverQuickAccept` folder must not remain active at the same time.
+For future updates to existing Lua files, `/reload` is sufficient.
+
 ## Usage
 
+- `/qol` opens a small window with four checkboxes: Quest Auto Accept, Fast
+  Autoloot, Enter Confirm Dialog-Box, and Actionbar Range Coloring. All four are
+  enabled by default. Changes apply immediately and are saved across reloads
+  and restarts for all characters on the account.
 - Interact with a quest NPC yourself. The addon selects offered quests and accepts
   normal quest offers as soon as the client sends the `QUEST_DETAIL` event.
   Server response times and network latency still apply.
@@ -52,8 +65,14 @@ New in 0.2.0: Faster native autoloot.
   is active again the next time you interact normally, unless you have disabled
   it with `/betaqol`.
 - `/betaqol` (or the existing alias `/fqa`) toggles automatic quest acceptance
-  off or on. It is enabled again after `/reload` or a restart. The addon does not
-  save settings.
+  off or on and updates the same saved setting as its checkbox in `/qol`.
+  Before version 0.4.0, this toggle reset to enabled after a reload or restart.
+
+The quest feature automates acceptance of quests offered by NPCs. You handle
+quest turn-ins, reward selection, and general conversation options yourself.
+Ignored quests are skipped in the modern quest list. PvP quests retain manual
+acceptance and confirmation. Item quests, adventure map quests, and special
+group confirmation flows receive no additional automation.
 
 ### Confirming with Enter
 
@@ -72,8 +91,10 @@ New in 0.2.0: Faster native autoloot.
   remain available. The dialog is confirmed only when you provide input;
   opening it does not sell or delete anything.
 
-This feature is independent of the `/betaqol` quest toggle and remains active
-whenever BetaQoL is loaded. Running `/reload` is enough to load this update.
+This feature is independent of the `/betaqol` quest toggle and has its own
+checkbox in `/qol`. Disabling it restores the handlers of dialogs already open;
+enabling it also applies to dialogs already open. Native Enter handling remains
+available where Blizzard already provides it.
 Standalone windows outside the Blizzard popup system, such as custom interfaces
 from other addons, may need a separate integration. The feature does not bind
 Enter outside an open dialog.
@@ -100,22 +121,34 @@ The addon cannot eliminate server response times or network latency.
 
 Fast Autoloot is independent of `/betaqol`, `/fqa`, and the quest Shift pause.
 Looting uses the native autoloot modifier key, which may also be set to Shift.
+Its checkbox in `/qol` switches off the addon's acceleration and window masking
+without changing WoW's native Auto Loot setting. Pending addon retries are
+cancelled, and an open loot window returns to its normal appearance. If the
+native closing animation is already running, its normal cleanup finishes first.
 
-When switching from the previous addon name to BetaQoL, fully quit and restart
-WoW once so that the new addon folder is detected reliably. The old
-`ForeverQuickAccept` folder must not remain active at the same time.
-For future updates to existing Lua files, `/reload` is sufficient.
+### Actionbar Range Coloring
 
-The quest feature automates acceptance of quests offered by NPCs. You handle
-quest turn-ins, reward selection, and general conversation options yourself.
-Ignored quests are skipped in the modern quest list. PvP quests retain manual
-acceptance and confirmation. Item quests, adventure map quests, and special
-group confirmation flows receive no additional automation.
+When WoW reports that an action is out of range, the entire spell icon becomes
+red. Returning to range restores the normal icon appearance, including native
+colors for insufficient mana or an otherwise unusable action. The feature uses
+the game's own range determination and follows target and action changes.
+
+The checkbox in `/qol` immediately enables or removes the added coloring.
+Standard Blizzard action bars are supported. Pet bars and custom replacement
+action bars are outside the supported scope.
 
 ## Technical Design and Research
 
-Two files are loaded: the `.toc` contains `## Interface: 16001` and references
-the `.lua`. No libraries or other addons are required.
+Two files are loaded: the `.toc` contains `## Interface: 16001`, declares
+`## SavedVariables: BetaQoLDB`, and references the `.lua`. No libraries or other
+addons are required.
+
+The saved table contains four Boolean settings: `autoAccept`, `fastLoot`,
+`enterConfirm`, and `rangeColor`. Missing or invalid values default to `true`;
+an explicit `false` is preserved. Initialization waits for the addon's own
+`ADDON_LOADED` event so it reads the table loaded by WoW. The `/qol` window is
+created only when first requested, using native frame and checkbox templates.
+Checkboxes apply changes directly, without an Apply button or a required reload.
 
 Quest acceptance responds to three events:
 
@@ -175,6 +208,14 @@ A focused input field prevents additional confirmation through the parent frame.
 On closing, previous handlers are restored unless they have since been replaced.
 Global dialog definitions and key bindings remain unchanged.
 
+Range coloring uses secure post-hooks on native action buttons and
+`ActionButton_UpdateRangeIndicator`. It follows the native range events rather
+than adding an `OnUpdate` loop or a polling timer. Native usability updates
+refresh the stored base icon color before the out-of-range tint is applied.
+Action changes and buttons registered later are also handled. Disabling the
+feature restores the stored native colors. No secure action attributes or
+native range-check registrations are changed.
+
 Primary sources, accessed September 18, 2026:
 
 - [Extracted Blizzard UI code for Forever 1.60.1, build 69913](https://github.com/Gethe/wow-ui-source/commit/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e)
@@ -186,6 +227,9 @@ Primary sources, accessed September 18, 2026:
 - [Forever PlayerInteractionManager: native interaction states](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_APIDocumentationGenerated/PlayerInteractionManagerDocumentation.lua)
 - [Forever StaticPopup.lua: popup events and native confirmation](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_StaticPopup/StaticPopup.lua)
 - [Forever MerchantFrame.lua: confirmation for selling gray items](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_UIPanels_Game/Mainline/MerchantFrame.lua)
+- [Forever ActionButton.lua: native range events and usability colors](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_ActionBar/Shared/ActionButton.lua)
+- [Forever ActionBarFrameDocumentation.lua: action range API](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_APIDocumentationGenerated/ActionBarFrameDocumentation.lua)
+- [Forever settings implementation guide: saved settings initialization](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_Settings_Shared/Blizzard_ImplementationReadme.lua)
 - [Leatrix Plus: release specifically for Forever 1.60.1](https://www.curseforge.com/wow/addons/leatrix-plus/files/8907317)
 - [Another addon author: Interface 16001 in ClassicUIForever](https://github.com/wowaddonmaker/classicuiforever/blob/edec276db52f78d214c1d8ef5c22cdc44b7d8246/ClassicUIForever.toc)
 
@@ -216,6 +260,12 @@ The existing quest and loot tests also continue to pass. These tests simulate
 the game engine; actual keyboard handling and protected actions require
 testing in the running game.
 
+Version 0.4.0 adds simulated-client checks for saved settings and range coloring,
+using selected native action-button code. These checks cannot validate the
+client's actual SavedVariables file loading, rendered colors, or protected
+execution during combat. The new settings window and range coloring still
+require verification in the running Forever client.
+
 For an in-game test, interact with an NPC offering a normal available quest.
 The quest should appear in your quest log. Next, hold Shift while interacting
 with a quest giver, release Shift after the window opens, and select a quest:
@@ -236,6 +286,18 @@ window. To test Enter, run `/reload`, open a confirmation dialog, and press Ente
 Cancel another dialog with Escape. For a dialog that requires confirmation text,
 first try without entering any text: nothing should be activated. Then enter the
 required text and confirm with Enter.
+
+For the settings window, run `/qol` and disable each feature independently.
+Check that the corresponding behavior stops immediately, then enable it again.
+Repeat with a confirmation dialog or loot window already open. Leave one
+feature disabled, run `/reload`, and check that its checkbox and behavior remain
+disabled. Repeat after restarting WoW and on another character on the account.
+
+For range coloring, target an enemy and move a spell into and out of range.
+Check the whole icon, then repeat while lacking mana or another resource.
+Change targets, switch action pages, and replace an action in the same slot.
+Finally, disable the feature while an icon is red: its normal color should
+return immediately. Include combat in the in-game check.
 If needed, temporarily enable Lua error messages:
 
 ```text

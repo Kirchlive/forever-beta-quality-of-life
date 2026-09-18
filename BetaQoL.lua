@@ -1,6 +1,105 @@
 -- Target: WoW Forever Beta 1.60.1 (Interface 16001).
+local addonName = ... or "BetaQoL"
+local settings = { autoAccept = true, fastLoot = true, enterConfirm = true, rangeColor = true }
+local featureChanged = {}
+local settingsLoaded = false
+local settingsWindow
+local settingsChecks = {}
+
+local function RefreshSettings()
+    for key, checkbox in pairs(settingsChecks) do
+        checkbox:SetChecked(settings[key])
+    end
+end
+
+local function LoadSettings()
+    if settingsLoaded then
+        return
+    end
+    -- SavedVariables are restored after this file runs, before ADDON_LOADED.
+    if type(BetaQoLDB) ~= "table" then
+        BetaQoLDB = {}
+    end
+    for key, default in pairs(settings) do
+        if type(BetaQoLDB[key]) ~= "boolean" then
+            BetaQoLDB[key] = default
+        end
+    end
+    settings = BetaQoLDB
+    settingsLoaded = true
+    for key, callback in pairs(featureChanged) do
+        callback(settings[key])
+    end
+    RefreshSettings()
+end
+
+local function SetFeatureEnabled(key, value)
+    LoadSettings()
+    settings[key] = value == true
+    if featureChanged[key] then
+        featureChanged[key](settings[key])
+    end
+    RefreshSettings()
+end
+
+local settingsFrame = CreateFrame("Frame")
+settingsFrame:RegisterEvent("ADDON_LOADED")
+settingsFrame:SetScript("OnEvent", function(self, _, name)
+    if name == addonName then
+        LoadSettings()
+        self:UnregisterEvent("ADDON_LOADED")
+    end
+end)
+
+SLASH_QOL1 = "/qol"
+SlashCmdList.QOL = function()
+    LoadSettings()
+    if settingsWindow then
+        if settingsWindow:IsShown() then
+            settingsWindow:Hide()
+        else
+            settingsWindow:Show()
+        end
+        return
+    end
+    local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
+    settingsWindow = window
+    window:SetSize(380, 230)
+    window:SetPoint("CENTER")
+    window:SetFrameStrata("DIALOG")
+    window.TitleText:SetText("Beta Quality of Life")
+    window:SetMovable(true)
+    window:EnableMouse(true)
+    window:RegisterForDrag("LeftButton")
+    window:SetScript("OnDragStart", window.StartMoving)
+    window:SetScript("OnDragStop", window.StopMovingOrSizing)
+    window:SetScript("OnShow", RefreshSettings)
+    tinsert(UISpecialFrames, "BetaQoLSettingsFrame")
+
+    local features = {
+        { "autoAccept", "Quest Auto Accept (hold Shift to disable)" },
+        { "fastLoot", "Fast Autoloot" },
+        { "enterConfirm", "Enter Confirm Dialog-Box" },
+        { "rangeColor", "Actionbar Range Coloring" },
+    }
+    for index, feature in ipairs(features) do
+        local key = feature[1]
+        local checkbox = CreateFrame("CheckButton", nil, window, "UICheckButtonTemplate")
+        checkbox:SetPoint("TOPLEFT", 16, -35 - (index - 1) * 36)
+        checkbox.Text:SetText(feature[2])
+        checkbox:SetScript("OnClick", function(self)
+            SetFeatureEnabled(key, self:GetChecked())
+        end)
+        settingsChecks[key] = checkbox
+    end
+    local hint = window:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
+    hint:SetPoint("BOTTOMLEFT", 20, 16)
+    hint:SetText("Changes apply immediately and are saved.")
+    RefreshSettings()
+    window:Show()
+end
+
 -- One offer per event: the server supplies QUEST_DETAIL after selection.
-local enabled = true
 local frame = CreateFrame("Frame")
 local interactionPaused = false
 local interactionNPC
@@ -78,7 +177,7 @@ frame:SetScript("OnEvent", function(_, event, arg)
     if IsShiftKeyDown() then
         interactionPaused = true
     end
-    if not enabled or interactionPaused then
+    if not settings.autoAccept or interactionPaused then
         return
     end
 
@@ -108,8 +207,9 @@ end)
 SLASH_BETAQOL1 = "/betaqol"
 SLASH_BETAQOL2 = "/fqa"
 SlashCmdList.BETAQOL = function()
-    enabled = not enabled
-    print("Beta Quality of Life: Quest Auto Accept " .. (enabled and "on" or "off") .. ". Hold Shift to keep a conversation manual.")
+    LoadSettings()
+    SetFeatureEnabled("autoAccept", not settings.autoAccept)
+    print("Beta Quality of Life: Quest Auto Accept " .. (settings.autoAccept and "on" or "off") .. ". Hold Shift to keep a conversation manual.")
 end
 
 -- Loot state is independent of the Shift latch used for quest conversations.
@@ -217,7 +317,7 @@ local function QueueLootRetry(session)
 end
 
 TryLoot = function(session)
-    if lootSession ~= session or not session.autoLoot or session.manual or session.busy then
+    if not settings.fastLoot or lootSession ~= session or not session.autoLoot or session.manual or session.busy then
         return
     end
 
@@ -262,6 +362,9 @@ TryLoot = function(session)
 end
 
 local function LootOpened(autoLoot)
+    if not settings.fastLoot then
+        return
+    end
     local session = BeginLoot(autoLoot)
     -- The opening event can refine the early readiness decision.
     if type(autoLoot) == "boolean" then
@@ -295,6 +398,9 @@ local function HookNativeLoot()
     -- Preserve the native event script and its secure execution path, including
     -- ShowUIPanel in combat. These post-hooks only adjust rendering/input.
     nativeLootFrame:HookScript("OnShow", function(self)
+        if not settings.fastLoot then
+            return
+        end
         local session = BeginLoot(self.isAutoLoot)
         if type(self.isAutoLoot) == "boolean" then
             session.autoLoot = self.isAutoLoot
@@ -327,7 +433,9 @@ lootFrame:RegisterEvent("ADDON_LOADED")
 lootFrame:RegisterEvent("PLAYER_LOGIN")
 lootFrame:SetScript("OnEvent", function(_, event, arg, detail)
     if event == "LOOT_READY" then
-        TryLoot(BeginLoot(arg))
+        if settings.fastLoot then
+            TryLoot(BeginLoot(arg))
+        end
     elseif event == "LOOT_OPENED" then
         LootOpened(arg, detail)
     elseif event == "LOOT_CLOSED" then
@@ -349,6 +457,16 @@ lootFrame:SetScript("OnEvent", function(_, event, arg, detail)
     end
 end)
 HookNativeLoot()
+
+featureChanged.fastLoot = function(active)
+    if not active then
+        lootSession = nil
+        -- Let the native close animation finish its secure HideUIPanel cleanup.
+        if not nativeLootFrame or not nativeLootFrame.HideAnim:IsPlaying() then
+            RestoreLootWindow()
+        end
+    end
+end
 
 -- Enter confirms the main button of standard Blizzard confirmation popups.
 -- Keep changes on the visible instance, never on shared dialog definitions.
@@ -374,7 +492,7 @@ end
 
 local function ConfirmPopup(dialog)
     local info = StaticPopupDialogs[dialog.which]
-    if not info or info.ignoreKeys or not IsForegroundPopup(dialog) then
+    if not settings.enterConfirm or not info or info.ignoreKeys or not IsForegroundPopup(dialog) then
         return
     end
     local button = dialog:GetButton1()
@@ -397,7 +515,7 @@ end
 local function EnablePopupEnter(_, dialog)
     RestorePopupScripts(nil, dialog)
     local info = StaticPopupDialogs[dialog.which]
-    if not info or info.ignoreKeys or not dialog.GetButton1 then
+    if not settings.enterConfirm or not info or info.ignoreKeys or not dialog.GetButton1 then
         return
     end
 
@@ -474,3 +592,102 @@ popupFrame:RegisterEvent("ADDON_LOADED")
 popupFrame:RegisterEvent("PLAYER_LOGIN")
 popupFrame:SetScript("OnEvent", HookPopupEnter)
 HookPopupEnter()
+
+featureChanged.enterConfirm = function(active)
+    if active then
+        if StaticPopup_ForEachShownDialog then
+            StaticPopup_ForEachShownDialog(function(dialog)
+                EnablePopupEnter(nil, dialog)
+            end)
+        end
+    else
+        for dialog in pairs(popupScripts) do
+            RestorePopupScripts(nil, dialog)
+        end
+    end
+end
+
+-- Reuse Blizzard's range updates; no extra polling or action attributes.
+local rangeFrame = CreateFrame("Frame")
+local rangeButtons = {}
+local rangeHooked = false
+
+local function ApplyRangeColor(button, outOfRange)
+    local state = rangeButtons[button]
+    if not state then
+        return
+    end
+    if settings.rangeColor and outOfRange then
+        button.icon:SetVertexColor(1, 0.15, 0.15, state.color[4])
+        state.tinted = true
+    elseif state.tinted then
+        button.icon:SetVertexColor(unpack(state.color))
+        state.tinted = false
+    end
+end
+
+local function RefreshRangeColor(button)
+    local inRange
+    local action = button.action
+    if settings.rangeColor and type(action) == "number"
+        and not (issecretvalue and issecretvalue(action)) and action > 0 then
+        inRange = C_ActionBar.IsActionInRange(action)
+    end
+    if issecretvalue and issecretvalue(inRange) then
+        ApplyRangeColor(button, false)
+    else
+        ApplyRangeColor(button, inRange == false)
+    end
+end
+
+local function HookRangeButton(button)
+    if rangeButtons[button] or not button.icon or type(button.UpdateUsable) ~= "function"
+        or type(button.Update) ~= "function" then
+        return
+    end
+    local state = { color = { button.icon:GetVertexColor() } }
+    rangeButtons[button] = state
+    -- Methods are copied from the mixin onto each button, so hook instances.
+    hooksecurefunc(button, "UpdateUsable", function(self)
+        -- Capture the fresh native color before applying our tint. This keeps
+        -- the blue no-mana and gray unusable states when range recovers.
+        state.color = { self.icon:GetVertexColor() }
+        state.tinted = false
+        RefreshRangeColor(self)
+    end)
+    hooksecurefunc(button, "Update", RefreshRangeColor)
+    RefreshRangeColor(button)
+end
+
+local function HookActionbarRange()
+    if rangeHooked or not ActionBarButtonEventsFrame or not C_ActionBar
+        or type(C_ActionBar.IsActionInRange) ~= "function"
+        or type(ActionButton_UpdateRangeIndicator) ~= "function" then
+        return
+    end
+    rangeHooked = true
+    hooksecurefunc("ActionButton_UpdateRangeIndicator", function(button, checksRange, inRange)
+        if (issecretvalue and (issecretvalue(checksRange) or issecretvalue(inRange))) then
+            ApplyRangeColor(button, false)
+        else
+            ApplyRangeColor(button, checksRange == true and inRange == false)
+        end
+    end)
+    hooksecurefunc(ActionBarButtonEventsFrame, "RegisterFrame", function(_, button)
+        HookRangeButton(button)
+    end)
+    ActionBarButtonEventsFrame:ForEachFrame(HookRangeButton)
+    rangeFrame:UnregisterEvent("ADDON_LOADED")
+    rangeFrame:UnregisterEvent("PLAYER_LOGIN")
+end
+
+featureChanged.rangeColor = function()
+    for button in pairs(rangeButtons) do
+        RefreshRangeColor(button)
+    end
+end
+
+rangeFrame:RegisterEvent("ADDON_LOADED")
+rangeFrame:RegisterEvent("PLAYER_LOGIN")
+rangeFrame:SetScript("OnEvent", HookActionbarRange)
+HookActionbarRange()

@@ -1,6 +1,7 @@
 ## Interface: 16001
 ## Title: Beta Quality of Life
-## Notes: Quick NPC quest acceptance, faster native auto-loot and Enter confirmation for standard popups. Shift pauses quest conversations; /betaqol toggles quest acceptance.
-## Version: 0.3.0
+## Notes: Quick quest acceptance, fast autoloot, Enter confirmation and red out-of-range icons. Open /qol to toggle each feature.
+## Version: 0.4.0
+## SavedVariables: BetaQoLDB
 
 BetaQoL.lua
