@@ -122,11 +122,11 @@ class RangeBehaviour(unittest.TestCase):
         self.load_addon()
         self.lua.execute('''
         local late=makeButton(2); assertRed(late)
-        SlashCmdList.QOL(); clickSetting(4,false)
+        SlashCmdList.QOL(); clickSetting(5,false)
         assertColor(late,0.5,0.5,1); assertColor(second,0.5,0.5,1)
         late:UpdateUsable(); ActionButton_UpdateRangeIndicator(late,true,false)
         assertColor(late,0.5,0.5,1)
-        clickSetting(4,true); assertRed(late); assertRed(second)
+        clickSetting(5,true); assertRed(late); assertRed(second)
         ''')
 
     def test_saved_disabled_preference_restores_icons_after_addon_load(self):

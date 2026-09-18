@@ -16,18 +16,18 @@ class SettingsBehaviour(unittest.TestCase):
         self.lua.execute('''
         assert(#checkboxes==0)
         SlashCmdList.QOL()
-        assert(#checkboxes==4 and #UISpecialFrames==1)
+        assert(#checkboxes==5 and #UISpecialFrames==1)
         for _,box in ipairs(checkboxes) do assert(box:GetChecked()) end
         clickSetting(1,false); emit('QUEST_DETAIL'); assert(not journal[9173])
         assert(BetaQoLDB.fastLoot and BetaQoLDB.enterConfirm and BetaQoLDB.rangeColor)
         SlashCmdList.BETAQOL(); assert(checkboxes[1]:GetChecked())
         emit('QUEST_DETAIL'); assert(journal[9173])
-        SlashCmdList.QOL(); SlashCmdList.QOL(); assert(#checkboxes==4)
+        SlashCmdList.QOL(); SlashCmdList.QOL(); assert(#checkboxes==5)
         ''')
 
     def test_saved_false_values_loaded_after_lua_are_preserved(self):
         self.lua.execute('''
-        BetaQoLDB={autoAccept=false, fastLoot=false, enterConfirm=false, rangeColor=false}
+        BetaQoLDB={autoAccept=false, autoTurnIn=false, fastLoot=false, enterConfirm=false, rangeColor=false}
         emit('ADDON_LOADED','AnotherAddon')
         emit('ADDON_LOADED','BetaQoL')
         SlashCmdList.QOL()
@@ -37,16 +37,16 @@ class SettingsBehaviour(unittest.TestCase):
         ''')
 
     def test_saved_settings_round_trip_across_fresh_lua_runtime(self):
-        self.lua.execute("SlashCmdList.QOL(); clickSetting(1,false); clickSetting(3,false)")
+        self.lua.execute("SlashCmdList.QOL(); clickSetting(1,false); clickSetting(2,false); clickSetting(4,false)")
         values = {key: self.lua.globals().BetaQoLDB[key]
-                  for key in ('autoAccept', 'fastLoot', 'enterConfirm', 'rangeColor')}
+                  for key in ('autoAccept', 'autoTurnIn', 'fastLoot', 'enterConfirm', 'rangeColor')}
         fresh = LuaRuntime(unpack_returned_tuples=True)
         fresh.execute(HOST + UI_ENGINE)
         fresh.execute(SOURCE.read_text(encoding='utf-8'))
         fresh.globals().BetaQoLDB = fresh.table_from(values)
         fresh.execute("emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL(); "
-                      "assert(not checkboxes[1]:GetChecked() and checkboxes[2]:GetChecked()); "
-                      "assert(not checkboxes[3]:GetChecked() and checkboxes[4]:GetChecked())")
+                      "assert(not checkboxes[1]:GetChecked() and not checkboxes[2]:GetChecked() and checkboxes[3]:GetChecked()); "
+                      "assert(not checkboxes[4]:GetChecked() and checkboxes[5]:GetChecked())")
 
     def test_missing_or_invalid_preferences_get_defaults_without_overwriting_false(self):
         self.lua.execute('''
@@ -67,7 +67,7 @@ class FeatureSwitchBehaviour(unittest.TestCase):
         emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
         fill({id=11}); emit('LOOT_OPENED',true,false); advance(0)
         emit('LOOT_CLOSED'); assert(LootFrame.HideAnim:IsPlaying())
-        clickSetting(2,false); advance(0.2)
+        clickSetting(3,false); advance(0.2)
         assert(not LootFrame:IsShown() and lootButton.click)
         ''')
 
@@ -82,13 +82,13 @@ class FeatureSwitchBehaviour(unittest.TestCase):
         blockedLoot=true; fill({id=11}); emit('LOOT_OPENED',true,false); advance(0)
         assert(LootFrame:GetAlpha()==0 and not lootButton.click)
         local calls=#lootCalls
-        clickSetting(2,false)
+        clickSetting(3,false)
         assert(LootFrame:GetAlpha()==1 and lootButton.click)
         advance(2); assert(#lootCalls==calls)
         emit('LOOT_CLOSED'); advance(0.2)
         emit('LOOT_READY',true); emit('LOOT_OPENED',true,false); advance(2)
         assert(#lootCalls==calls and LootFrame:IsVisible())
-        emit('LOOT_CLOSED'); advance(0.2); clickSetting(2,true)
+        emit('LOOT_CLOSED'); advance(0.2); clickSetting(3,true)
         blockedLoot=false; fill({id=22}); emit('LOOT_READY',true)
         assert(inventory[1]==22)
         ''')
@@ -100,10 +100,10 @@ class FeatureSwitchBehaviour(unittest.TestCase):
         lua.execute('''
         emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
         local dialog=openDialog('DELETE_ITEM')
-        clickSetting(3,false); key(dialog,'ENTER')
+        clickSetting(4,false); key(dialog,'ENTER')
         assert(deletions==0 and dialog:IsShown())
-        clickSetting(3,true); key(dialog,'ENTER')
+        clickSetting(4,true); key(dialog,'ENTER')
         assert(deletions==1 and not dialog:IsShown())
-        clickSetting(3,false); dialog=openDialog('DELETE_ITEM'); key(dialog,'ENTER')
+        clickSetting(4,false); dialog=openDialog('DELETE_ITEM'); key(dialog,'ENTER')
         assert(deletions==1 and dialog:IsShown())
         ''')

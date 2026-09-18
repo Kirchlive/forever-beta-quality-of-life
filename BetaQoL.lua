@@ -1,6 +1,6 @@
 -- Target: WoW Forever Beta 1.60.1 (Interface 16001).
 local addonName = ... or "BetaQoL"
-local settings = { autoAccept = true, fastLoot = true, enterConfirm = true, rangeColor = true }
+local settings = { autoAccept = true, autoTurnIn = true, fastLoot = true, enterConfirm = true, rangeColor = true }
 local featureChanged = {}
 local settingsLoaded = false
 local settingsWindow
@@ -64,7 +64,7 @@ SlashCmdList.QOL = function()
     end
     local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
     settingsWindow = window
-    window:SetSize(380, 230)
+    window:SetSize(380, 266)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
     window.TitleText:SetText("Beta Quality of Life")
@@ -78,9 +78,10 @@ SlashCmdList.QOL = function()
 
     local features = {
         { "autoAccept", "Quest Auto Accept (hold Shift to disable)" },
+        { "autoTurnIn", "Quest Auto Turn-in (hold Shift to disable)" },
         { "fastLoot", "Fast Autoloot" },
         { "enterConfirm", "Enter Confirm Dialog-Box" },
-        { "rangeColor", "Actionbar Range Coloring" },
+        { "rangeColor", "Spellicon Range Color" },
     }
     for index, feature in ipairs(features) do
         local key = feature[1]
@@ -106,11 +107,15 @@ local interactionNPC
 local interactionRevision = 0
 local gossipContinuing = false
 local interactionTypes = Enum.PlayerInteractionType
+local progressRequested
+local rewardRequested
 
 local function ResetInteraction()
     interactionPaused = false
     interactionNPC = nil
     gossipContinuing = false
+    progressRequested = nil
+    rewardRequested = nil
     interactionRevision = interactionRevision + 1
 end
 
@@ -152,6 +157,8 @@ frame:SetScript("OnEvent", function(_, event, arg)
         end
         return
     elseif event == "QUEST_FINISHED" then
+        progressRequested = nil
+        rewardRequested = nil
         CheckInteractionEnded()
         return
     elseif event == "PLAYER_INTERACTION_MANAGER_FRAME_HIDE" then
@@ -177,29 +184,68 @@ frame:SetScript("OnEvent", function(_, event, arg)
     if IsShiftKeyDown() then
         interactionPaused = true
     end
-    if not settings.autoAccept or interactionPaused then
+    if interactionPaused then
         return
     end
 
     if event == "GOSSIP_SHOW" then
-        local quests = C_GossipInfo.GetAvailableQuests()
-        for _, quest in ipairs(quests or {}) do
-            if not quest.isIgnored then
-                C_GossipInfo.SelectAvailableQuest(quest.questID)
-                return
+        if settings.autoTurnIn then
+            for _, quest in ipairs(C_GossipInfo.GetActiveQuests() or {}) do
+                if quest.isComplete and not quest.isIgnored then
+                    C_GossipInfo.SelectActiveQuest(quest.questID)
+                    return
+                end
+            end
+        end
+        if settings.autoAccept then
+            for _, quest in ipairs(C_GossipInfo.GetAvailableQuests() or {}) do
+                if not quest.isIgnored then
+                    C_GossipInfo.SelectAvailableQuest(quest.questID)
+                    return
+                end
             end
         end
     elseif event == "QUEST_GREETING" then
         -- The older greeting API expects an index, not a quest ID.
-        if GetNumAvailableQuests() > 0 then
+        if settings.autoTurnIn then
+            for index = 1, GetNumActiveQuests() do
+                local _, isComplete = GetActiveTitle(index)
+                if isComplete == true or isComplete == 1 then
+                    SelectActiveQuest(index)
+                    return
+                end
+            end
+        end
+        if settings.autoAccept and GetNumAvailableQuests() > 0 then
             SelectAvailableQuest(1)
         end
-    elseif event == "QUEST_DETAIL" then
+    elseif event == "QUEST_DETAIL" and settings.autoAccept then
         if QuestGetAutoAccept() then
             CloseQuest()
         elseif not QuestFlagsPVP() then
             -- Leave the default PvP confirmation available for manual use.
             AcceptQuest()
+        end
+    elseif (event == "QUEST_PROGRESS" or event == "QUEST_COMPLETE") and settings.autoTurnIn and npc then
+        local questID = GetQuestID()
+        if not questID or questID <= 0 then
+            return
+        end
+        if event == "QUEST_PROGRESS" then
+            if IsQuestCompletable() and progressRequested ~= questID then
+                progressRequested = questID
+                CompleteQuest()
+            end
+        else
+            local numChoices = GetNumQuestChoices()
+            local requiredMoney = GetQuestMoneyToGet()
+            -- Multiple rewards stay manual; never bypass the native gold
+            -- confirmation. Zero/one uses the same index as Blizzard's button.
+            if (numChoices == 0 or numChoices == 1) and not (requiredMoney and requiredMoney > 0)
+                and rewardRequested ~= questID then
+                rewardRequested = questID
+                GetQuestReward(numChoices)
+            end
         end
     end
 end)

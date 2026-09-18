@@ -69,6 +69,12 @@ function AcceptQuest()
 end
 function CloseQuest() dialogOpen = false end
 C_GossipInfo = {}
+function C_GossipInfo.GetActiveQuests() return {} end
+function GetNumActiveQuests() return 0 end
+function GetQuestID() return 0 end
+function IsQuestCompletable() return false end
+function GetNumQuestChoices() return 0 end
+function GetQuestMoneyToGet() return 0 end
 function C_GossipInfo.GetAvailableQuests()
     local result = {}
     for _, q in ipairs(offers) do
@@ -93,8 +99,8 @@ function SelectAvailableQuest(index)
     current = offers[index].questID
     queue[#queue+1] = 'QUEST_DETAIL'
 end
-function CompleteQuest() error('Turn-in is outside this addon scope') end
-function GetQuestReward() error('Reward selection is outside this addon scope') end
+function CompleteQuest() error('No active turn-in in this fixture') end
+function GetQuestReward() error('No active turn-in in this fixture') end
 loot, inventory, lootCalls, now = {}, {}, {}, 0
 blockedLoot, reentrantLoot = false, false
 function GetTime() return now end

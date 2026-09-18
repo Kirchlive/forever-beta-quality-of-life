@@ -8,7 +8,12 @@ running game. The detailed README was then moved into this devlog, and a concise
 README was added.
 
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
-Version 0.4.0, updated September 18, 2026. Technical addon name: BetaQoL.
+Version 0.5.0, updated September 18, 2026. Technical addon name: BetaQoL.
+
+New in 0.5.0: Quest Auto Turn-in as a separate saved setting, with the same
+conversation-wide Shift pause as Quest Auto Accept. Range coloring is now named
+Spellicon Range Color in the menu and documentation. Existing settings are
+preserved; the new turn-in feature defaults to enabled.
 
 New in 0.4.0: Whole-icon range coloring on standard action bars and a compact
 `/qol` settings window. Each of the four features can be enabled or disabled
@@ -48,8 +53,8 @@ For future updates to existing Lua files, `/reload` is sufficient.
 
 ## Usage
 
-- `/qol` opens a small window with four checkboxes: Quest Auto Accept, Fast
-  Autoloot, Enter Confirm Dialog-Box, and Actionbar Range Coloring. All four are
+- `/qol` opens a small window with five checkboxes: Quest Auto Accept, Quest Auto
+  Turn-in, Fast Autoloot, Enter Confirm Dialog-Box, and Spellicon Range Color. All five are
   enabled by default. Changes apply immediately and are saved across reloads
   and restarts for all characters on the account.
 - Interact with a quest NPC yourself. The addon selects offered quests and accepts
@@ -59,20 +64,38 @@ For future updates to existing Lua files, `/reload` is sufficient.
   further offers when the client displays the quest list again. If the NPC dialog
   closes after a quest is accepted, interact with the NPC again.
 - Hold Shift when interacting with a quest giver, and keep it held until the
-  first conversation or quest window opens. Autoaccept then stays disabled for
+  first conversation or quest window opens. Acceptance and turn-in stay paused for
   the entire conversation, even after you release Shift. You can select and
-  accept quests manually during that conversation. After it closes, autoaccept
-  is active again the next time you interact normally, unless you have disabled
-  it with `/betaqol`.
+  accept or turn in quests manually during that conversation. After it closes,
+  each enabled feature resumes the next time you interact normally.
 - `/betaqol` (or the existing alias `/fqa`) toggles automatic quest acceptance
   off or on and updates the same saved setting as its checkbox in `/qol`.
   Before version 0.4.0, this toggle reset to enabled after a reload or restart.
 
-The quest feature automates acceptance of quests offered by NPCs. You handle
-quest turn-ins, reward selection, and general conversation options yourself.
+Quest Auto Accept automates acceptance of quests offered by NPCs. Quest Auto
+Turn-in separately handles completed NPC quests. Choosing between rewards and
+general conversation options remain manual.
 Ignored quests are skipped in the modern quest list. PvP quests retain manual
 acceptance and confirmation. Item quests, adventure map quests, and special
 group confirmation flows receive no additional automation.
+
+### Quest Auto Turn-in
+
+The addon opens one completed quest at a time from the NPC's active quest list,
+before selecting new offers. Unfinished quests are skipped, as are ignored
+quests in modern gossip. A completable progress page advances to its reward page.
+Quests with no reward choice or one reward are then submitted automatically.
+
+When several rewards are offered, choose and confirm the reward yourself.
+Quests requiring gold also remain manual so the native payment confirmation
+is preserved. Quest popups without a current NPC receive no turn-in automation.
+The addon does not repeatedly retry rejected reward requests; reopen the quest
+after resolving an issue such as full bags.
+
+This feature has its own checkbox in `/qol` and works with Quest Auto Accept
+disabled. Hold Shift when starting the conversation to pause both features for
+that conversation. Shift pressed on a later quest page also pauses automation
+from that page onward; it cannot undo a request already sent to the server.
 
 ### Confirming with Enter
 
@@ -126,7 +149,7 @@ without changing WoW's native Auto Loot setting. Pending addon retries are
 cancelled, and an open loot window returns to its normal appearance. If the
 native closing animation is already running, its normal cleanup finishes first.
 
-### Actionbar Range Coloring
+### Spellicon Range Color
 
 When WoW reports that an action is out of range, the entire spell icon becomes
 red. Returning to range restores the normal icon appearance, including native
@@ -143,7 +166,7 @@ Two files are loaded: the `.toc` contains `## Interface: 16001`, declares
 `## SavedVariables: BetaQoLDB`, and references the `.lua`. No libraries or other
 addons are required.
 
-The saved table contains four Boolean settings: `autoAccept`, `fastLoot`,
+The saved table contains five Boolean settings: `autoAccept`, `autoTurnIn`, `fastLoot`,
 `enterConfirm`, and `rangeColor`. Missing or invalid values default to `true`;
 an explicit `false` is preserved. Initialization waits for the addon's own
 `ADDON_LOADED` event so it reads the table loaded by WoW. The `/qol` window is
@@ -157,6 +180,17 @@ Quest acceptance responds to three events:
 | `GOSSIP_SHOW` | Read `C_GossipInfo.GetAvailableQuests()` and select exactly one quest with `C_GossipInfo.SelectAvailableQuest(questID)`. |
 | `QUEST_GREETING` | Call `SelectAvailableQuest(1)` with a list index through the legacy greeting interface. |
 | `QUEST_DETAIL` | Call `AcceptQuest()` for normal offers. Close offers that have already been accepted automatically with `CloseQuest()`. |
+
+With turn-in enabled, `GOSSIP_SHOW` first selects a completed, non-ignored active
+quest through `C_GossipInfo.SelectActiveQuest(questID)`. `QUEST_GREETING` uses
+`GetActiveTitle(index)` and `SelectActiveQuest(index)` for the legacy equivalent.
+Each event selects only one quest and waits for the server's next quest page.
+`QUEST_PROGRESS` calls `CompleteQuest()` only when `IsQuestCompletable()` is true.
+`QUEST_COMPLETE` calls `GetQuestReward(0)` for no choice or `GetQuestReward(1)` for
+a sole reward, provided `GetQuestMoneyToGet()` reports no gold cost. Multiple
+reward choices remain manual. Request markers prevent duplicate submissions
+on repeated events and reset when the quest closes, the NPC changes, or the
+player changes worlds.
 
 The Shift pause is stored for each NPC conversation. `QUEST_PROGRESS` and
 `QUEST_COMPLETE` also capture Shift so that follow-up quests after a manual
@@ -227,6 +261,7 @@ Primary sources, accessed September 18, 2026:
 - [Forever PlayerInteractionManager: native interaction states](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_APIDocumentationGenerated/PlayerInteractionManagerDocumentation.lua)
 - [Forever StaticPopup.lua: popup events and native confirmation](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_StaticPopup/StaticPopup.lua)
 - [Forever MerchantFrame.lua: confirmation for selling gray items](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_UIPanels_Game/Mainline/MerchantFrame.lua)
+- [Forever QuestFrame.lua: progress, reward indices, and gold confirmation](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_UIPanels_Game/Mainline/QuestFrame.lua)
 - [Forever ActionButton.lua: native range events and usability colors](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_ActionBar/Shared/ActionButton.lua)
 - [Forever ActionBarFrameDocumentation.lua: action range API](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_APIDocumentationGenerated/ActionBarFrameDocumentation.lua)
 - [Forever settings implementation guide: saved settings initialization](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_Settings_Shared/Blizzard_ImplementationReadme.lua)
@@ -266,6 +301,12 @@ client's actual SavedVariables file loading, rendered colors, or protected
 execution during combat. The new settings window and range coloring still
 require verification in the running Forever client.
 
+Version 0.5.0 adds quest-journal simulations for modern and legacy turn-in,
+incomplete quests, independent settings, reward counts, required gold,
+conversation-wide Shift pause, duplicate events, and synchronous quest closure.
+The native API contracts were checked against the pinned client source; actual
+server acceptance and the expanded settings window still need an in-game check.
+
 For an in-game test, interact with an NPC offering a normal available quest.
 The quest should appear in your quest log. Next, hold Shift while interacting
 with a quest giver, release Shift after the window opens, and select a quest:
@@ -292,6 +333,12 @@ Check that the corresponding behavior stops immediately, then enable it again.
 Repeat with a confirmation dialog or loot window already open. Leave one
 feature disabled, run `/reload`, and check that its checkbox and behavior remain
 disabled. Repeat after restarting WoW and on another character on the account.
+
+For turn-in, test a completed NPC quest with no reward choice, a sole reward,
+and several reward choices. The last case must wait for manual selection and
+confirmation. Test with Auto Accept disabled, then with Auto Turn-in disabled.
+Hold Shift at the start of a conversation and release it before advancing:
+both acceptance and turn-in must remain manual until the conversation ends.
 
 For range coloring, target an enemy and move a spell into and out of range.
 Check the whole icon, then repeat while lacking mana or another resource.

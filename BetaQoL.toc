@@ -1,7 +1,7 @@
 ## Interface: 16001
 ## Title: Beta Quality of Life
-## Notes: Quick quest acceptance, fast autoloot, Enter confirmation and red out-of-range icons. Open /qol to toggle each feature.
-## Version: 0.4.0
+## Notes: Quick quest acceptance and turn-in, fast autoloot, Enter confirmation and red out-of-range icons. Open /qol to toggle each feature.
+## Version: 0.5.0
 ## SavedVariables: BetaQoLDB
 
 BetaQoL.lua

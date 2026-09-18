@@ -22,6 +22,9 @@ changes in the supported client as well. For settings changes, verify each
 checkbox takes effect immediately and remains selected after `/reload` and a
 restart. For range coloring, check entering and leaving range, changing targets
 and action pages, insufficient resources, and switching the feature off.
+For quest turn-in, check the independent toggle, Shift across conversation
+pages, incomplete quests, zero/one/multiple reward choices, and quests with a
+gold cost. Reward choices and native payment confirmation must remain manual.
 
 The build command reads the version from `BetaQoL.toc` and creates
 `dist/BetaQoL-<version>.zip`. It contains only `BetaQoL.lua`, `BetaQoL.toc`,
