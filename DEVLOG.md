@@ -8,7 +8,11 @@ running game. The detailed README was then moved into this devlog, and a concise
 README was added.
 
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
-Version 0.5.0, updated September 18, 2026. Technical addon name: BetaQoL.
+Version 0.6.0, updated September 19, 2026. Technical addon name: BetaQoL.
+
+New in 0.6.0: Whisper Tab Double-Click Close. Left-double-click a regular or
+Battle.net whisper tab to close it using Blizzard's context-menu close path.
+The new sixth setting defaults to enabled; existing preferences are preserved.
 
 New in 0.5.0: Quest Auto Turn-in as a separate saved setting, with the same
 conversation-wide Shift pause as Quest Auto Accept. Range coloring is now named
@@ -53,8 +57,9 @@ For future updates to existing Lua files, `/reload` is sufficient.
 
 ## Usage
 
-- `/qol` opens a small window with five checkboxes: Quest Auto Accept, Quest Auto
-  Turn-in, Fast Autoloot, Enter Confirm Dialog-Box, and Spellicon Range Color. All five are
+- `/qol` opens a small window with six checkboxes: Quest Auto Accept, Quest Auto
+  Turn-in, Fast Autoloot, Enter Confirm Dialog-Box, Spellicon Range Color, and
+  Whisper Tab Double-Click Close. All six are
   enabled by default. Changes apply immediately and are saved across reloads
   and restarts for all characters on the account.
 - Interact with a quest NPC yourself. The addon selects offered quests and accepts
@@ -160,14 +165,28 @@ The checkbox in `/qol` immediately enables or removes the added coloring.
 Standard Blizzard action bars are supported. Pet bars and custom replacement
 action bars are outside the supported scope.
 
+### Whisper Tab Double-Click Close
+
+Left-double-click a temporary whisper tab to close it. Regular character
+whispers and Battle.net whispers are supported, whether docked or undocked.
+This uses the same pop-in action as Close Whisper Window in the context menu,
+including restoration of message routing to the main chat and cleanup of the
+temporary conversation window.
+
+Single clicks still select the tab, and right clicks still open its menu.
+General, combat log, voice transcription, custom permanent tabs, and other
+temporary window types keep their native behavior. Disabling the feature in
+`/qol` immediately restores normal double-click behavior, including minimizing
+undocked windows. The setting persists across reloads and restarts.
+
 ## Technical Design and Research
 
 Two files are loaded: the `.toc` contains `## Interface: 16001`, declares
 `## SavedVariables: BetaQoLDB`, and references the `.lua`. No libraries or other
 addons are required.
 
-The saved table contains five Boolean settings: `autoAccept`, `autoTurnIn`, `fastLoot`,
-`enterConfirm`, and `rangeColor`. Missing or invalid values default to `true`;
+The saved table contains six Boolean settings: `autoAccept`, `autoTurnIn`, `fastLoot`,
+`enterConfirm`, `rangeColor`, and `whisperDoubleClick`. Missing or invalid values default to `true`;
 an explicit `false` is preserved. Initialization waits for the addon's own
 `ADDON_LOADED` event so it reads the table loaded by WoW. The `/qol` window is
 created only when first requested, using native frame and checkbox templates.
@@ -250,7 +269,16 @@ Action changes and buttons registered later are also handled. Disabling the
 feature restores the stored native colors. No secure action attributes or
 native range-check registrations are changed.
 
-Primary sources, accessed September 18, 2026:
+Whisper closing wraps each native chat tab's `OnDoubleClick` handler. A left
+double-click on an active temporary `WHISPER` or `BN_WHISPER` window invokes
+`FCF_PopInWindow`, exactly as the native context menu does. Other double-clicks
+are passed to the prior handler. `OnClick` remains unchanged. Existing tabs
+are discovered through `CHAT_FRAMES`, and a secure post-hook on
+`FCF_OpenTemporaryWindow` discovers later tabs. Reused tabs are hooked only
+once, with eligibility checked against their current window type on every click.
+The client detects double-clicks; no custom timing loop is added.
+
+Primary sources, accessed September 18–19, 2026:
 
 - [Extracted Blizzard UI code for Forever 1.60.1, build 69913](https://github.com/Gethe/wow-ui-source/commit/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e)
 - [Forever QuestFrame.lua: events, acceptance, and special cases](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_UIPanels_Game/Mainline/QuestFrame.lua)
@@ -262,6 +290,8 @@ Primary sources, accessed September 18, 2026:
 - [Forever StaticPopup.lua: popup events and native confirmation](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_StaticPopup/StaticPopup.lua)
 - [Forever MerchantFrame.lua: confirmation for selling gray items](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_UIPanels_Game/Mainline/MerchantFrame.lua)
 - [Forever QuestFrame.lua: progress, reward indices, and gold confirmation](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_UIPanels_Game/Mainline/QuestFrame.lua)
+- [Forever FloatingChatFrame.lua: whisper context menu and native close lifecycle](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_ChatFrameBase/Mainline/FloatingChatFrame.lua)
+- [Forever FloatingChatFrame.xml: native chat tab click handlers](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_ChatFrameBase/Mainline/FloatingChatFrame.xml)
 - [Forever ActionButton.lua: native range events and usability colors](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_ActionBar/Shared/ActionButton.lua)
 - [Forever ActionBarFrameDocumentation.lua: action range API](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_APIDocumentationGenerated/ActionBarFrameDocumentation.lua)
 - [Forever settings implementation guide: saved settings initialization](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_Settings_Shared/Blizzard_ImplementationReadme.lua)
@@ -307,6 +337,13 @@ conversation-wide Shift pause, duplicate events, and synchronous quest closure.
 The native API contracts were checked against the pinned client source; actual
 server acceptance and the expanded settings window still need an in-game check.
 
+Version 0.6.0 adds integration checks using the actual native pop-in, close,
+message-routing restoration, tab click handler, and XML double-click script.
+The tests cover existing/new/reused tabs, character and Battle.net whispers,
+docked and undocked windows, other chat types, preserved click handlers, late
+chat UI loading, and the saved feature toggle. Actual mouse input and rendering
+still require verification in the running client.
+
 For an in-game test, interact with an NPC offering a normal available quest.
 The quest should appear in your quest log. Next, hold Shift while interacting
 with a quest giver, release Shift after the window opens, and select a quest:
@@ -345,6 +382,12 @@ Check the whole icon, then repeat while lacking mana or another resource.
 Change targets, switch action pages, and replace an action in the same slot.
 Finally, disable the feature while an icon is red: its normal color should
 return immediately. Include combat in the in-game check.
+
+For whisper tabs, open a character or Battle.net whisper and left-double-click
+its tab. Repeat with an undocked tab and a conversation opened after closing
+another one. Check that one left click selects it, right click opens the menu,
+and General/combat log tabs are unaffected. Disable the feature in `/qol` and
+check that a double-click no longer closes whisper tabs.
 If needed, temporarily enable Lua error messages:
 
 ```text

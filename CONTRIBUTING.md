@@ -11,8 +11,8 @@ python tools/build_release.py
 ```
 
 The tests use `lupa.lua51` to run the addon with simulated client APIs. Loot,
-popup, and action bar tests also execute selected native UI code, including
-`ActionButton.lua`. The fetcher downloads only the seven required files from
+popup, action bar, and whisper tab tests also execute selected native UI code,
+including the chat tab's XML double-click handler. The fetcher downloads only the nine required files from
 [Gethe/wow-ui-source at the pinned commit](https://github.com/Gethe/wow-ui-source/tree/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e)
 into `.test-ui/`. These external files are ignored by Git and excluded from
 release archives. Fetching them requires internet access.
@@ -25,6 +25,8 @@ and action pages, insufficient resources, and switching the feature off.
 For quest turn-in, check the independent toggle, Shift across conversation
 pages, incomplete quests, zero/one/multiple reward choices, and quests with a
 gold cost. Reward choices and native payment confirmation must remain manual.
+For whisper tabs, check docked/undocked and newly opened conversations, regular
+and Battle.net whispers, single/right clicks, other chat tabs, and the toggle.
 
 The build command reads the version from `BetaQoL.toc` and creates
 `dist/BetaQoL-<version>.zip`. It contains only `BetaQoL.lua`, `BetaQoL.toc`,

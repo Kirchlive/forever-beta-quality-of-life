@@ -1,6 +1,9 @@
 -- Target: WoW Forever Beta 1.60.1 (Interface 16001).
 local addonName = ... or "BetaQoL"
-local settings = { autoAccept = true, autoTurnIn = true, fastLoot = true, enterConfirm = true, rangeColor = true }
+local settings = {
+    autoAccept = true, autoTurnIn = true, fastLoot = true,
+    enterConfirm = true, rangeColor = true, whisperDoubleClick = true,
+}
 local featureChanged = {}
 local settingsLoaded = false
 local settingsWindow
@@ -64,7 +67,7 @@ SlashCmdList.QOL = function()
     end
     local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
     settingsWindow = window
-    window:SetSize(380, 266)
+    window:SetSize(380, 302)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
     window.TitleText:SetText("Beta Quality of Life")
@@ -82,6 +85,7 @@ SlashCmdList.QOL = function()
         { "fastLoot", "Fast Autoloot" },
         { "enterConfirm", "Enter Confirm Dialog-Box" },
         { "rangeColor", "Spellicon Range Color" },
+        { "whisperDoubleClick", "Whisper Tab Double-Click Close" },
     }
     for index, feature in ipairs(features) do
         local key = feature[1]
@@ -737,3 +741,53 @@ rangeFrame:RegisterEvent("ADDON_LOADED")
 rangeFrame:RegisterEvent("PLAYER_LOGIN")
 rangeFrame:SetScript("OnEvent", HookActionbarRange)
 HookActionbarRange()
+
+-- Use the client's double-click detection and the context menu's pop-in path.
+local whisperFrame = CreateFrame("Frame")
+local whisperTabs = {}
+local whisperHooked = false
+
+local function AttachWhisperTabs()
+    for _, name in pairs(CHAT_FRAMES) do
+        local tab = _G[name .. "Tab"]
+        if tab and not whisperTabs[tab] then
+            local previous = tab:GetScript("OnDoubleClick")
+            tab:SetScript("OnDoubleClick", function(self, button, ...)
+                local chatFrame = FCF_GetChatFrameByID(self:GetID())
+                if settings.whisperDoubleClick and button == "LeftButton" and not MOVING_CHATFRAME
+                    and chatFrame and chatFrame.isTemporary and chatFrame.inUse
+                    and not IsBuiltinChatWindow(chatFrame)
+                    and (chatFrame.chatType == "WHISPER" or chatFrame.chatType == "BN_WHISPER") then
+                    -- Restores message routing to the main chat before closing
+                    -- and unregistering the temporary conversation window.
+                    FCF_PopInWindow(chatFrame)
+                    return
+                end
+                -- Undocked tabs normally minimize on double-click. Keep that
+                -- behavior when disabled or when the tab is not a whisper.
+                if previous then
+                    return previous(self, button, ...)
+                end
+            end)
+            whisperTabs[tab] = true
+        end
+    end
+end
+
+local function HookWhisperTabs()
+    if whisperHooked or type(CHAT_FRAMES) ~= "table"
+        or type(FCF_OpenTemporaryWindow) ~= "function" or type(FCF_PopInWindow) ~= "function"
+        or type(FCF_GetChatFrameByID) ~= "function" or type(IsBuiltinChatWindow) ~= "function" then
+        return
+    end
+    whisperHooked = true
+    hooksecurefunc("FCF_OpenTemporaryWindow", AttachWhisperTabs)
+    AttachWhisperTabs()
+    whisperFrame:UnregisterEvent("ADDON_LOADED")
+    whisperFrame:UnregisterEvent("PLAYER_LOGIN")
+end
+
+whisperFrame:RegisterEvent("ADDON_LOADED")
+whisperFrame:RegisterEvent("PLAYER_LOGIN")
+whisperFrame:SetScript("OnEvent", HookWhisperTabs)
+HookWhisperTabs()
