@@ -1,5 +1,7 @@
 # Forever Beta Quality of Life
 
+**Settings menu:** Type `/qol` in chat to enable or disable features.
+
 ## Features
 
 - **Quest Auto Accept (hold Shift to disable):** Automatically accepts ordinary NPC quest offers.
