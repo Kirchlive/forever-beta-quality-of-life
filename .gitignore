@@ -1,0 +1,5 @@
+.test-ui/
+.venv/
+__pycache__/
+*.pyc
+dist/
