@@ -16,18 +16,18 @@ class SettingsBehaviour(unittest.TestCase):
         self.lua.execute('''
         assert(#checkboxes==0)
         SlashCmdList.QOL()
-        assert(#checkboxes==7 and #UISpecialFrames==1)
-        for _,box in ipairs(checkboxes) do assert(box:GetChecked()) end
+        assert(#checkboxes==8 and #UISpecialFrames==1)
+        for index,box in ipairs(checkboxes) do assert(box:GetChecked()==(index~=8)) end
         clickSetting(1,false); emit('QUEST_DETAIL'); assert(not journal[9173])
         assert(BetaQoLDB.fastLoot and BetaQoLDB.enterConfirm and BetaQoLDB.rangeColor)
         SlashCmdList.BETAQOL(); assert(checkboxes[1]:GetChecked())
         emit('QUEST_DETAIL'); assert(journal[9173])
-        SlashCmdList.QOL(); SlashCmdList.QOL(); assert(#checkboxes==7)
+        SlashCmdList.QOL(); SlashCmdList.QOL(); assert(#checkboxes==8)
         ''')
 
     def test_saved_false_values_loaded_after_lua_are_preserved(self):
         self.lua.execute('''
-        BetaQoLDB={autoAccept=false, autoTurnIn=false, fastLoot=false, enterConfirm=false, rangeColor=false, whisperDoubleClick=false, backspaceDestroy=false}
+        BetaQoLDB={autoAccept=false, autoTurnIn=false, fastLoot=false, enterConfirm=false, rangeColor=false, whisperDoubleClick=false, backspaceDestroy=false, squareMinimap=false}
         emit('ADDON_LOADED','AnotherAddon')
         emit('ADDON_LOADED','BetaQoL')
         SlashCmdList.QOL()
@@ -37,22 +37,23 @@ class SettingsBehaviour(unittest.TestCase):
         ''')
 
     def test_saved_settings_round_trip_across_fresh_lua_runtime(self):
-        self.lua.execute("SlashCmdList.QOL(); clickSetting(1,false); clickSetting(2,false); clickSetting(4,false); clickSetting(6,false); clickSetting(7,false)")
+        self.lua.execute("SlashCmdList.QOL(); clickSetting(1,false); clickSetting(2,false); clickSetting(4,false); clickSetting(6,false); clickSetting(7,false); clickSetting(8,true)")
         values = {key: self.lua.globals().BetaQoLDB[key]
-                  for key in ('autoAccept', 'autoTurnIn', 'fastLoot', 'enterConfirm', 'rangeColor', 'whisperDoubleClick', 'backspaceDestroy')}
+                  for key in ('autoAccept', 'autoTurnIn', 'fastLoot', 'enterConfirm', 'rangeColor', 'whisperDoubleClick', 'backspaceDestroy', 'squareMinimap')}
         fresh = LuaRuntime(unpack_returned_tuples=True)
         fresh.execute(HOST + UI_ENGINE)
         fresh.execute(SOURCE.read_text(encoding='utf-8'))
         fresh.globals().BetaQoLDB = fresh.table_from(values)
         fresh.execute("emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL(); "
                       "assert(not checkboxes[1]:GetChecked() and not checkboxes[2]:GetChecked() and checkboxes[3]:GetChecked()); "
-                      "assert(not checkboxes[4]:GetChecked() and checkboxes[5]:GetChecked() and not checkboxes[6]:GetChecked() and not checkboxes[7]:GetChecked())")
+                      "assert(not checkboxes[4]:GetChecked() and checkboxes[5]:GetChecked() and not checkboxes[6]:GetChecked() and not checkboxes[7]:GetChecked() and checkboxes[8]:GetChecked())")
 
     def test_missing_or_invalid_preferences_get_defaults_without_overwriting_false(self):
         self.lua.execute('''
-        BetaQoLDB={autoAccept=false, fastLoot='false', enterConfirm=0}
+        BetaQoLDB={autoAccept=false, fastLoot='false', enterConfirm=0, squareMinimap='true'}
         emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
         assert(not BetaQoLDB.autoAccept and BetaQoLDB.fastLoot and BetaQoLDB.enterConfirm and BetaQoLDB.rangeColor)
+        assert(BetaQoLDB.squareMinimap==false and not checkboxes[8]:GetChecked())
         ''')
 
 

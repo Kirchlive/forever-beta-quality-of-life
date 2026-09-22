@@ -4,6 +4,7 @@ local settings = {
     autoAccept = true, autoTurnIn = true, fastLoot = true,
     enterConfirm = true, rangeColor = true, whisperDoubleClick = true,
     backspaceDestroy = true,
+    squareMinimap = false,
 }
 local featureChanged = {}
 local settingsLoaded = false
@@ -68,7 +69,7 @@ SlashCmdList.QOL = function()
     end
     local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
     settingsWindow = window
-    window:SetSize(380, 338)
+    window:SetSize(380, 374)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
     window.TitleText:SetText("Beta Quality of Life")
@@ -88,6 +89,7 @@ SlashCmdList.QOL = function()
         { "rangeColor", "Spellicon Range Color" },
         { "whisperDoubleClick", "Whisper Tab Doubleclick Close" },
         { "backspaceDestroy", "Backspace Destroy Select Item" },
+        { "squareMinimap", "Square Minimap" },
     }
     for index, feature in ipairs(features) do
         local key = feature[1]
@@ -903,3 +905,157 @@ for _, event in ipairs({ "CURSOR_CHANGED", "PLAYER_REGEN_DISABLED", "PLAYER_REGE
 end
 destroyEvents:SetScript("OnEvent", UpdateDestroyKeys)
 UpdateDestroyKeys()
+
+-- Forever's skin resets the circular mask when rotateMinimap changes.
+-- Keep the map geometry and controls intact; hide only the two ring textures.
+local minimapEvents = CreateFrame("Frame")
+local minimapHooked = false
+local minimapActive = false
+local changingMinimapMask = false
+local normalMinimapMask = "ui-hud-minimap-frame-generic-mask"
+local minimapBorderAlpha = {}
+local squareMinimapBorder
+local minimapMedia = "Interface\\AddOns\\" .. addonName .. "\\Media\\"
+local previousMinimapShape
+local function SquareMinimapShape()
+    return "SQUARE"
+end
+
+local function SetMinimapMask(mask)
+    changingMinimapMask = true
+    Minimap:SetMaskTexture(mask)
+    changingMinimapMask = false
+end
+
+local minimapIcons = {}
+
+local function ReadIconPoints(icon)
+    local points = {}
+    for index = 1, icon:GetNumPoints() do
+        points[index] = { icon:GetPoint(index) }
+    end
+    return points
+end
+
+local function ApplyMinimapIcon(icon, state)
+    -- The group-finder button belongs to Edit Mode; defer anchor changes in combat.
+    if InCombatLockdown and InCombatLockdown() then
+        return
+    end
+    state.changing = true
+    if minimapActive then
+        icon:ClearAllPoints()
+        icon:SetPoint("CENTER", Minimap, state.corner, state.x, state.y)
+        state.applied = true
+    elseif state.applied then
+        icon:ClearAllPoints()
+        for _, point in ipairs(state.points) do
+            icon:SetPoint(unpack(point))
+        end
+        state.applied = false
+    end
+    state.changing = false
+end
+
+local function PositionMinimapIcon(icon, corner, x, y)
+    if not icon then
+        return
+    end
+    local state = minimapIcons[icon]
+    if not state then
+        state = { points = ReadIconPoints(icon), scale = icon:GetScale(), corner = corner, x = x, y = y }
+        minimapIcons[icon] = state
+        hooksecurefunc(icon, "SetPoint", function()
+            if not state.changing then
+                local points = ReadIconPoints(icon)
+                local scale = icon:GetScale()
+                local point = points[1]
+                if state.applied and #points == 1 and point[1] == "CENTER"
+                    and point[2] == Minimap and point[3] == state.corner then
+                    -- Edit Mode reads back our corner anchor while scaling.
+                    -- Rescale the saved native offsets, not the square anchor.
+                    for _, original in ipairs(state.points) do
+                        original[4] = original[4] * state.scale / scale
+                        original[5] = original[5] * state.scale / scale
+                    end
+                else
+                    state.points = points
+                end
+                state.scale = scale
+                ApplyMinimapIcon(icon, state)
+            end
+        end)
+    end
+    ApplyMinimapIcon(icon, state)
+end
+
+local function UpdateSquareMinimap()
+    if not settingsLoaded or not Minimap or type(Minimap.SetMaskTexture) ~= "function" then
+        return
+    end
+    if not minimapHooked then
+        minimapHooked = true
+        hooksecurefunc(Minimap, "SetMaskTexture", function(_, mask)
+            if changingMinimapMask then
+                return
+            end
+            normalMinimapMask = mask
+            if minimapActive then
+                SetMinimapMask(minimapMedia .. "SquareMinimapMask2")
+            end
+        end)
+    end
+    if settings.squareMinimap then
+        if not minimapActive then
+            previousMinimapShape = GetMinimapShape
+            GetMinimapShape = SquareMinimapShape
+            minimapActive = true
+        end
+        SetMinimapMask(minimapMedia .. "SquareMinimapMask2")
+        if not squareMinimapBorder then
+            squareMinimapBorder = CreateFrame("Frame", "BetaQoLSquareMinimapBorder", Minimap)
+            squareMinimapBorder:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -11, 11)
+            squareMinimapBorder:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 11, -11)
+            squareMinimapBorder:SetFrameLevel(Minimap:GetFrameLevel() + 1)
+            squareMinimapBorder:EnableMouse(false)
+            local border = squareMinimapBorder:CreateTexture(nil, "OVERLAY")
+            border:SetAllPoints()
+            border:SetTexture(minimapMedia .. "SquareMinimapBorder3", "CLAMP", "CLAMP", "LINEAR")
+            border:SetSnapToPixelGrid(false)
+            border:SetTexelSnappingBias(0)
+        end
+        squareMinimapBorder:Show()
+        for _, name in ipairs({ "MinimapCompassTexture", "MinimapCompassTextureUnderlay" }) do
+            local texture = _G[name]
+            if texture then
+                if minimapBorderAlpha[texture] == nil then
+                    minimapBorderAlpha[texture] = texture:GetAlpha()
+                end
+                -- Alpha survives native Show/Hide calls without changing their state.
+                texture:SetAlpha(0)
+            end
+        end
+    elseif minimapActive then
+        minimapActive = false
+        if squareMinimapBorder then
+            squareMinimapBorder:Hide()
+        end
+        SetMinimapMask(normalMinimapMask)
+        for texture, alpha in pairs(minimapBorderAlpha) do
+            texture:SetAlpha(alpha)
+        end
+        minimapBorderAlpha = {}
+        if GetMinimapShape == SquareMinimapShape then
+            GetMinimapShape = previousMinimapShape
+        end
+    end
+    PositionMinimapIcon(MinimapCluster and MinimapCluster.DielFrame, "TOPRIGHT", -8, -8)
+    PositionMinimapIcon(QueueStatusButton, "BOTTOMLEFT", 11, 11)
+end
+
+featureChanged.squareMinimap = UpdateSquareMinimap
+minimapEvents:RegisterEvent("ADDON_LOADED")
+minimapEvents:RegisterEvent("PLAYER_LOGIN")
+minimapEvents:RegisterEvent("PLAYER_ENTERING_WORLD")
+minimapEvents:RegisterEvent("PLAYER_REGEN_ENABLED")
+minimapEvents:SetScript("OnEvent", UpdateSquareMinimap)

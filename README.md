@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 0.7.0** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
+**Version 0.8.0** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
 
 ## Features
 
@@ -20,22 +20,27 @@
   your bags to open its normal delete confirmation. Works outside combat;
   Backspace keeps its usual behavior in text fields and without a picked-up item.
   Split stacks are excluded; whole items and whole stacks are supported.
+- **Square Minimap:** Displays the standard minimap as a square with rounded corners and a
+  bronze-toned WoW-style border. The day/night icon sits at the top-right corner
+  and the group-finder eye at the bottom-left. Disable to restore the round map
+  and native icon positions. Map position, size, and button actions are preserved.
+  Disabled by default; enable it in `/qol`.
 
 **Settings menu:** Type `/qol` in chat to enable or disable features.
 
 ## Installation and updates
 
-1. Download **BetaQoL-0.7.0.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
+1. Download **BetaQoL-0.8.0.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
 2. Extract the `BetaQoL` folder into
    `World of Warcraft\_classic_beta_\Interface\AddOns\`.
-   `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`.
+   `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`. Keep the included `Media` folder.
 3. For a first installation, restart WoW and enable **Beta Quality of Life**.
    For updates, replace the files and run `/reload`.
 
 ## Usage
 
-- `/qol`: Open a small settings window with one checkbox per feature. All seven
-  features start enabled. Changes apply immediately and are saved across reloads
+- `/qol`: Open a small settings window with one checkbox per feature. Square Minimap
+  starts disabled; the other seven features start enabled. Changes apply immediately and are saved across reloads
   and restarts for all characters on the account.
 - `/betaqol` or `/fqa`: Toggle Quest Auto Accept and save the choice.
 - Hold Shift when opening a quest conversation to pause both acceptance and turn-in
@@ -51,5 +56,7 @@
 - Pick up an item from your backpack or carried bags, then press Backspace.
   Confirm the native dialog to destroy it, or cancel to keep it. Required
   confirmation text is preserved. No permanent key binding is changed.
+- Square Minimap supports Blizzard's standard minimap. Icon repositioning during
+  combat applies after combat ends. Custom minimap replacements are not covered.
 
 Development notes, version history and technical details: [DEVLOG.md](DEVLOG.md).

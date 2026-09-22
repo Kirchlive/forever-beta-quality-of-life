@@ -1,4 +1,4 @@
-"""Package the four addon files under BetaQoL/ in a versioned release ZIP."""
+"""Package the addon files and minimap textures under BetaQoL/ in a versioned release ZIP."""
 
 from pathlib import Path
 import re
@@ -6,7 +6,8 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ('BetaQoL.lua', 'BetaQoL.toc', 'README.md', 'DEVLOG.md')
+FILES = ('BetaQoL.lua', 'BetaQoL.toc', 'README.md', 'DEVLOG.md',
+         'Media/SquareMinimapBorder3.tga', 'Media/SquareMinimapMask2.tga')
 
 
 def main():

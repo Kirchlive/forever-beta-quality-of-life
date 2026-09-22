@@ -1,7 +1,7 @@
 ## Interface: 16001
 ## Title: Beta Quality of Life
-## Notes: Quick quests, fast autoloot, Enter confirmation, range colors, whisper tab closing and Backspace item deletion prompts. Open /qol to toggle each feature.
-## Version: 0.7.0
+## Notes: Quick quests, fast autoloot, Enter confirmation, range colors, whisper tab closing, Backspace item deletion prompts and a square minimap. Open /qol to toggle each feature.
+## Version: 0.8.0
 ## SavedVariables: BetaQoLDB
 
 BetaQoL.lua
