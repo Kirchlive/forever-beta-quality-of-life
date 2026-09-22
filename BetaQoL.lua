@@ -3,6 +3,7 @@ local addonName = ... or "BetaQoL"
 local settings = {
     autoAccept = true, autoTurnIn = true, fastLoot = true,
     enterConfirm = true, rangeColor = true, whisperDoubleClick = true,
+    backspaceDestroy = true,
 }
 local featureChanged = {}
 local settingsLoaded = false
@@ -67,7 +68,7 @@ SlashCmdList.QOL = function()
     end
     local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
     settingsWindow = window
-    window:SetSize(380, 302)
+    window:SetSize(380, 338)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
     window.TitleText:SetText("Beta Quality of Life")
@@ -86,6 +87,7 @@ SlashCmdList.QOL = function()
         { "enterConfirm", "Enter Confirm Dialog-Box" },
         { "rangeColor", "Spellicon Range Color" },
         { "whisperDoubleClick", "Whisper Tab Doubleclick Close" },
+        { "backspaceDestroy", "Backspace Destroy Select Item" },
     }
     for index, feature in ipairs(features) do
         local key = feature[1]
@@ -791,3 +793,113 @@ whisperFrame:RegisterEvent("ADDON_LOADED")
 whisperFrame:RegisterEvent("PLAYER_LOGIN")
 whisperFrame:SetScript("OnEvent", HookWhisperTabs)
 HookWhisperTabs()
+
+-- Backspace is intercepted only for a real item picked up from carried bags.
+-- Request the native confirmation; never delete directly from this shortcut.
+local destroyEvents = CreateFrame("Frame")
+local destroyKeys
+local backspaceDown = false
+local splitCursor = false
+local splitHooked = false
+
+local function GetPickedUpBagItemGUID()
+    if splitCursor or not CursorHasItem() then
+        return
+    end
+    local location = C_Cursor.GetCursorItem()
+    if not location or not location:IsBagAndSlot() then
+        return
+    end
+    local bag = location:GetBagAndSlot()
+    local lastBag = NUM_TOTAL_EQUIPPED_BAG_SLOTS or NUM_BAG_SLOTS
+    if not lastBag or bag < 0 or bag > lastBag then
+        return
+    end
+    local guid = C_Item.GetItemGUID(location)
+    if not (issecretvalue and issecretvalue(guid)) then
+        return guid
+    end
+end
+
+local function UpdateDestroyKeys()
+    if not C_Cursor or type(C_Cursor.GetCursorItem) ~= "function" or not C_Item
+        or type(C_Item.ConfirmDeleteItem) ~= "function" or type(C_Item.GetItemGUID) ~= "function"
+        or not C_Container or type(C_Container.SplitContainerItem) ~= "function" then
+        return
+    end
+    if not splitHooked then
+        splitHooked = true
+        hooksecurefunc(C_Container, "SplitContainerItem", function()
+            -- A location GUID may refer to the original stack. Leave split
+            -- quantities to native cursor deletion until the cursor is empty.
+            if CursorHasItem() then
+                splitCursor = true
+                UpdateDestroyKeys()
+            end
+        end)
+    end
+    if not CursorHasItem() then
+        splitCursor = false
+    end
+    if not settings.backspaceDestroy or InCombatLockdown() then
+        if destroyKeys then
+            destroyKeys:Hide()
+        end
+        backspaceDown = false
+        return
+    end
+    if not destroyKeys then
+        destroyKeys = CreateFrame("Frame", nil, UIParent)
+        destroyKeys:SetSize(1, 1)
+        destroyKeys:SetPoint("CENTER")
+        destroyKeys:SetFrameStrata("FULLSCREEN_DIALOG")
+        destroyKeys:EnableKeyboard(true)
+        destroyKeys:SetScript("OnKeyDown", function(self, key)
+            if InCombatLockdown() then
+                self:Hide()
+                return
+            end
+            local handled = false
+            if settings.backspaceDestroy and key == "BACKSPACE"
+                and not GetCurrentKeyBoardFocus()
+                and not IsShiftKeyDown() and not IsControlKeyDown() and not IsAltKeyDown() then
+                local guid = GetPickedUpBagItemGUID()
+                if guid then
+                    handled = true
+                    if not backspaceDown then
+                        backspaceDown = true
+                        C_Item.ConfirmDeleteItem(guid)
+                    end
+                end
+            end
+            -- ConfirmDeleteItem can synchronously change the cursor. Decide
+            -- propagation last so the triggering key stays consumed.
+            if not InCombatLockdown() then
+                self:SetPropagateKeyboardInput(not handled)
+            end
+        end)
+        destroyKeys:SetScript("OnKeyUp", function(self, key)
+            if key == "BACKSPACE" then
+                backspaceDown = false
+            end
+            if not InCombatLockdown() then
+                self:SetPropagateKeyboardInput(true)
+            end
+        end)
+    end
+    destroyKeys:SetPropagateKeyboardInput(true)
+    if GetPickedUpBagItemGUID() then
+        destroyKeys:Show()
+    else
+        destroyKeys:Hide()
+        backspaceDown = false
+    end
+end
+
+featureChanged.backspaceDestroy = UpdateDestroyKeys
+for _, event in ipairs({ "CURSOR_CHANGED", "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED",
+    "PLAYER_ENTERING_WORLD", "PLAYER_LOGIN", "ADDON_LOADED" }) do
+    destroyEvents:RegisterEvent(event)
+end
+destroyEvents:SetScript("OnEvent", UpdateDestroyKeys)
+UpdateDestroyKeys()

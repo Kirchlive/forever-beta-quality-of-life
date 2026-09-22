@@ -8,7 +8,14 @@ running game. The detailed README was then moved into this devlog, and a concise
 README was added.
 
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
-Version 0.6.0, updated September 19, 2026. Technical addon name: BetaQoL.
+Version 0.7.0, updated September 22, 2026. Technical addon name: BetaQoL.
+
+New in 0.7.0: Backspace Destroy Select Item. Outside combat, press Backspace
+while holding a carried bag item on the cursor to open its native deletion
+confirmation. Text fields and unrelated keys retain their normal behavior.
+Split stacks are excluded until the cursor is cleared: the native GUID-based
+confirmation may refer to the original stack rather than its picked-up portion.
+The new seventh setting defaults to enabled and preserves existing preferences.
 
 New in 0.6.0: Whisper Tab Doubleclick Close. Left-double-click a regular or
 Battle.net whisper tab to close it using Blizzard's context-menu close path.
@@ -57,9 +64,9 @@ For future updates to existing Lua files, `/reload` is sufficient.
 
 ## Usage
 
-- `/qol` opens a small window with six checkboxes: Quest Auto Accept, Quest Auto
-  Turn-in, Fast Autoloot, Enter Confirm Dialog-Box, Spellicon Range Color, and
-  Whisper Tab Doubleclick Close. All six are
+- `/qol` opens a small window with seven checkboxes: Quest Auto Accept, Quest Auto
+  Turn-in, Fast Autoloot, Enter Confirm Dialog-Box, Spellicon Range Color,
+  Whisper Tab Doubleclick Close, and Backspace Destroy Select Item. All seven are
   enabled by default. Changes apply immediately and are saved across reloads
   and restarts for all characters on the account.
 - Interact with a quest NPC yourself. The addon selects offered quests and accepts
@@ -179,14 +186,31 @@ temporary window types keep their native behavior. Disabling the feature in
 `/qol` immediately restores normal double-click behavior, including minimizing
 undocked windows. The setting persists across reloads and restarts.
 
+### Backspace Destroy Select Item
+
+Pick up an item from the backpack or an equipped bag and press Backspace to
+request deletion. Blizzard's normal confirmation dialog opens; the shortcut
+does not delete the item directly. Rare items retain their typed confirmation,
+and quest items retain their quest-specific dialog. Enter Confirm Dialog-Box
+can confirm eligible dialogs when that separate feature is enabled.
+
+Backspace is intercepted only with a real carried bag item on the cursor,
+outside combat, and with no text field focused. Empty cursors, spell/macro
+cursors, bank items, equipment-slot items, and modified Backspace combinations
+keep their ordinary behavior. After putting the item down or disabling the
+feature in `/qol`, the keyboard listener is hidden. It also pauses during combat
+and resumes afterward. No permanent key bindings or override bindings are set.
+Split stacks are excluded until the cursor is cleared; whole stacks are supported.
+
 ## Technical Design and Research
 
 Two files are loaded: the `.toc` contains `## Interface: 16001`, declares
 `## SavedVariables: BetaQoLDB`, and references the `.lua`. No libraries or other
 addons are required.
 
-The saved table contains six Boolean settings: `autoAccept`, `autoTurnIn`, `fastLoot`,
-`enterConfirm`, `rangeColor`, and `whisperDoubleClick`. Missing or invalid values default to `true`;
+The saved table contains seven Boolean settings: `autoAccept`, `autoTurnIn`, `fastLoot`,
+`enterConfirm`, `rangeColor`, `whisperDoubleClick`, and `backspaceDestroy`.
+Missing or invalid values default to `true`;
 an explicit `false` is preserved. Initialization waits for the addon's own
 `ADDON_LOADED` event so it reads the table loaded by WoW. The `/qol` window is
 created only when first requested, using native frame and checkbox templates.
@@ -278,7 +302,18 @@ are discovered through `CHAT_FRAMES`, and a secure post-hook on
 once, with eligibility checked against their current window type on every click.
 The client detects double-clicks; no custom timing loop is added.
 
-Primary sources, accessed September 18–19, 2026:
+The Backspace feature follows `CURSOR_CHANGED` and combat transitions. It checks
+`C_Cursor.GetCursorItem()` for a carried bag location, resolves its item GUID
+through `C_Item.GetItemGUID()`, and rechecks it on the actual key press.
+`C_Item.ConfirmDeleteItem(guid)` requests Blizzard's confirmation event, which
+selects the appropriate native popup. A small keyboard frame propagates every
+unhandled key. Focused edit boxes and Shift/Ctrl/Alt combinations are excluded.
+The listener hides during combat so it never changes protected keyboard
+propagation then. Repeated key-down events request only one prompt per press.
+A secure post-hook on `C_Container.SplitContainerItem` excludes split stacks
+until the cursor is empty because GUID-based deletion may target the original stack.
+
+Primary sources, accessed September 18–22, 2026:
 
 - [Extracted Blizzard UI code for Forever 1.60.1, build 69913](https://github.com/Gethe/wow-ui-source/commit/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e)
 - [Forever QuestFrame.lua: events, acceptance, and special cases](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_UIPanels_Game/Mainline/QuestFrame.lua)
@@ -292,6 +327,9 @@ Primary sources, accessed September 18–19, 2026:
 - [Forever QuestFrame.lua: progress, reward indices, and gold confirmation](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_UIPanels_Game/Mainline/QuestFrame.lua)
 - [Forever FloatingChatFrame.lua: whisper context menu and native close lifecycle](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_ChatFrameBase/Mainline/FloatingChatFrame.lua)
 - [Forever FloatingChatFrame.xml: native chat tab click handlers](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_ChatFrameBase/Mainline/FloatingChatFrame.xml)
+- [Forever item API: ConfirmDeleteItem and GetItemGUID](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_APIDocumentationGenerated/ItemDocumentation.lua)
+- [Forever cursor API: current item location and cursor events](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_APIDocumentationGenerated/CursorDocumentation.lua)
+- [Forever deletion event routing: native confirmation selection](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_Game/Camelot/EventImplementation.lua)
 - [Forever ActionButton.lua: native range events and usability colors](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_ActionBar/Shared/ActionButton.lua)
 - [Forever ActionBarFrameDocumentation.lua: action range API](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_APIDocumentationGenerated/ActionBarFrameDocumentation.lua)
 - [Forever settings implementation guide: saved settings initialization](https://github.com/Gethe/wow-ui-source/blob/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e/Interface/AddOns/Blizzard_Settings_Shared/Blizzard_ImplementationReadme.lua)
@@ -344,6 +382,14 @@ docked and undocked windows, other chat types, preserved click handlers, late
 chat UI loading, and the saved feature toggle. Actual mouse input and rendering
 still require verification in the running client.
 
+Version 0.7.0 adds simulated keyboard routing tests and executes the native
+item-location and deletion-event code alongside the existing native popups.
+Checks cover empty/non-item cursors, carried bags versus bank/equipment slots,
+focused text fields, modifiers, other keys, repeated key-down events, settings,
+combat transitions, and normal/rare/quest-item confirmations. The tests cannot
+validate real hardware-event restrictions or the client's cursor behavior;
+these still require an in-game check.
+
 For an in-game test, interact with an NPC offering a normal available quest.
 The quest should appear in your quest log. Next, hold Shift while interacting
 with a quest giver, release Shift after the window opens, and select a quest:
@@ -388,6 +434,13 @@ its tab. Repeat with an undocked tab and a conversation opened after closing
 another one. Check that one left click selects it, right click opens the menu,
 and General/combat log tabs are unaffected. Disable the feature in `/qol` and
 check that a double-click no longer closes whisper tabs.
+
+For Backspace, pick up a disposable bag item and verify that one key press opens
+the usual confirmation without deleting immediately. Cancel first, then test
+the normal confirmation. Check a rare item's text requirement, typing in chat
+while holding an item, empty/non-item cursors, setting changes, and entering and
+leaving combat. Whole stacks should open confirmation; split stacks must leave
+Backspace unchanged until the cursor is cleared.
 If needed, temporarily enable Lua error messages:
 
 ```text
