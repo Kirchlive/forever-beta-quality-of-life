@@ -3,7 +3,7 @@ local addonName = ... or "BetaQoL"
 local settings = {
     autoAccept = true, autoTurnIn = true, fastLoot = true,
     enterConfirm = true, rangeColor = true, whisperDoubleClick = true,
-    backspaceDestroy = false,
+    backspaceDestroy = true,
 }
 local featureChanged = {}
 local settingsLoaded = false

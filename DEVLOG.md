@@ -8,17 +8,14 @@ running game. The detailed README was then moved into this devlog, and a concise
 README was added.
 
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
-Version 0.7.1, updated September 22, 2026. Technical addon name: BetaQoL.
-
-New in 0.7.1: Backspace Destroy Select Item now defaults to disabled.
-Existing explicitly saved preferences remain unchanged.
+Version 0.7.0, updated September 22, 2026. Technical addon name: BetaQoL.
 
 New in 0.7.0: Backspace Destroy Select Item. Outside combat, press Backspace
 while holding a carried bag item on the cursor to open its native deletion
 confirmation. Text fields and unrelated keys retain their normal behavior.
 Split stacks are excluded until the cursor is cleared: the native GUID-based
 confirmation may refer to the original stack rather than its picked-up portion.
-The seventh setting preserves existing preferences; since 0.7.1 it defaults to disabled.
+The new seventh setting defaults to enabled and preserves existing preferences.
 
 New in 0.6.0: Whisper Tab Doubleclick Close. Left-double-click a regular or
 Battle.net whisper tab to close it using Blizzard's context-menu close path.
@@ -69,8 +66,8 @@ For future updates to existing Lua files, `/reload` is sufficient.
 
 - `/qol` opens a small window with seven checkboxes: Quest Auto Accept, Quest Auto
   Turn-in, Fast Autoloot, Enter Confirm Dialog-Box, Spellicon Range Color,
-  Whisper Tab Doubleclick Close, and Backspace Destroy Select Item. Backspace Destroy
-  Select Item defaults to disabled; the other six default to enabled. Changes apply immediately and are saved across reloads
+  Whisper Tab Doubleclick Close, and Backspace Destroy Select Item. All seven are
+  enabled by default. Changes apply immediately and are saved across reloads
   and restarts for all characters on the account.
 - Interact with a quest NPC yourself. The addon selects offered quests and accepts
   normal quest offers as soon as the client sends the `QUEST_DETAIL` event.
@@ -213,8 +210,8 @@ addons are required.
 
 The saved table contains seven Boolean settings: `autoAccept`, `autoTurnIn`, `fastLoot`,
 `enterConfirm`, `rangeColor`, `whisperDoubleClick`, and `backspaceDestroy`.
-Missing or invalid values use each feature's default: `false` for `backspaceDestroy`,
-`true` for the other six. Explicit Boolean preferences are preserved. Initialization waits for the addon's own
+Missing or invalid values default to `true`;
+an explicit `false` is preserved. Initialization waits for the addon's own
 `ADDON_LOADED` event so it reads the table loaded by WoW. The `/qol` window is
 created only when first requested, using native frame and checkbox templates.
 Checkboxes apply changes directly, without an Apply button or a required reload.

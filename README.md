@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 0.7.1** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
+**Version 0.7.0** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
 
 ## Features
 
@@ -19,13 +19,13 @@
 - **Backspace Destroy Select Item:** Press Backspace with an item picked up from
   your bags to open its normal delete confirmation. Works outside combat;
   Backspace keeps its usual behavior in text fields and without a picked-up item.
-  Disabled by default. Split stacks are excluded; whole items and whole stacks are supported.
+  Split stacks are excluded; whole items and whole stacks are supported.
 
 **Settings menu:** Type `/qol` in chat to enable or disable features.
 
 ## Installation and updates
 
-1. Download **BetaQoL-0.7.1.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
+1. Download **BetaQoL-0.7.0.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
 2. Extract the `BetaQoL` folder into
    `World of Warcraft\_classic_beta_\Interface\AddOns\`.
    `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`.
@@ -34,8 +34,8 @@
 
 ## Usage
 
-- `/qol`: Open a small settings window with one checkbox per feature. Backspace Destroy
-  Select Item starts disabled; the other six features start enabled. Changes apply immediately and are saved across reloads
+- `/qol`: Open a small settings window with one checkbox per feature. All seven
+  features start enabled. Changes apply immediately and are saved across reloads
   and restarts for all characters on the account.
 - `/betaqol` or `/fqa`: Toggle Quest Auto Accept and save the choice.
 - Hold Shift when opening a quest conversation to pause both acceptance and turn-in

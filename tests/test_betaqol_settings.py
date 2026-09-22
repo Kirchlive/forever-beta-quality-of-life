@@ -17,7 +17,7 @@ class SettingsBehaviour(unittest.TestCase):
         assert(#checkboxes==0)
         SlashCmdList.QOL()
         assert(#checkboxes==7 and #UISpecialFrames==1)
-        for index,box in ipairs(checkboxes) do assert(box:GetChecked()==(index~=7)) end
+        for _,box in ipairs(checkboxes) do assert(box:GetChecked()) end
         clickSetting(1,false); emit('QUEST_DETAIL'); assert(not journal[9173])
         assert(BetaQoLDB.fastLoot and BetaQoLDB.enterConfirm and BetaQoLDB.rangeColor)
         SlashCmdList.BETAQOL(); assert(checkboxes[1]:GetChecked())
@@ -37,7 +37,7 @@ class SettingsBehaviour(unittest.TestCase):
         ''')
 
     def test_saved_settings_round_trip_across_fresh_lua_runtime(self):
-        self.lua.execute("SlashCmdList.QOL(); clickSetting(1,false); clickSetting(2,false); clickSetting(4,false); clickSetting(6,false); clickSetting(7,true)")
+        self.lua.execute("SlashCmdList.QOL(); clickSetting(1,false); clickSetting(2,false); clickSetting(4,false); clickSetting(6,false); clickSetting(7,false)")
         values = {key: self.lua.globals().BetaQoLDB[key]
                   for key in ('autoAccept', 'autoTurnIn', 'fastLoot', 'enterConfirm', 'rangeColor', 'whisperDoubleClick', 'backspaceDestroy')}
         fresh = LuaRuntime(unpack_returned_tuples=True)
@@ -46,14 +46,13 @@ class SettingsBehaviour(unittest.TestCase):
         fresh.globals().BetaQoLDB = fresh.table_from(values)
         fresh.execute("emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL(); "
                       "assert(not checkboxes[1]:GetChecked() and not checkboxes[2]:GetChecked() and checkboxes[3]:GetChecked()); "
-                      "assert(not checkboxes[4]:GetChecked() and checkboxes[5]:GetChecked() and not checkboxes[6]:GetChecked() and checkboxes[7]:GetChecked())")
+                      "assert(not checkboxes[4]:GetChecked() and checkboxes[5]:GetChecked() and not checkboxes[6]:GetChecked() and not checkboxes[7]:GetChecked())")
 
     def test_missing_or_invalid_preferences_get_defaults_without_overwriting_false(self):
         self.lua.execute('''
-        BetaQoLDB={autoAccept=false, fastLoot='false', enterConfirm=0, backspaceDestroy='true'}
+        BetaQoLDB={autoAccept=false, fastLoot='false', enterConfirm=0}
         emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
         assert(not BetaQoLDB.autoAccept and BetaQoLDB.fastLoot and BetaQoLDB.enterConfirm and BetaQoLDB.rangeColor)
-        assert(BetaQoLDB.backspaceDestroy==false and not checkboxes[7]:GetChecked())
         ''')
 
 

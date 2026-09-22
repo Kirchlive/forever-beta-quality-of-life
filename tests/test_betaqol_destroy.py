@@ -94,19 +94,7 @@ class DestroyBehaviour(unittest.TestCase):
         self.lua=LuaRuntime(unpack_returned_tuples=True)
         self.lua.execute(HOST + UI_ENGINE + popups.ENGINE + popups.NATIVE + NATIVE + ENGINE)
         self.lua.execute(SOURCE.read_text(encoding='utf-8'))
-        self.lua.execute("emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL(); clickSetting(7,true)")
-
-    def test_default_does_not_intercept_backspace_until_enabled(self):
-        lua=LuaRuntime(unpack_returned_tuples=True)
-        lua.execute(HOST + UI_ENGINE + popups.ENGINE + popups.NATIVE + NATIVE + ENGINE)
-        lua.execute(SOURCE.read_text(encoding='utf-8'))
-        lua.execute('''
-        pickup('item',0,'Item-A'); assert(not press('BACKSPACE'))
-        emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
-        assert(BetaQoLDB.backspaceDestroy==false and not checkboxes[7]:GetChecked())
-        assert(not press('BACKSPACE') and #confirmations==0)
-        clickSetting(7,true); assert(press('BACKSPACE') and #confirmations==1)
-        ''')
+        self.lua.execute("emit('ADDON_LOADED','BetaQoL')")
 
     def test_backspace_opens_native_confirmation_without_deleting(self):
         self.lua.execute('''
