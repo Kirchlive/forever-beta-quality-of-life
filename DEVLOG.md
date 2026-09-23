@@ -3,6 +3,36 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.9.0 — Quest Target Nameplate Icon
+
+Adds a ninth `/qol` option, enabled by default. A non-interactive native purse
+texture appears to the left of the standard nameplate health bar for NPCs with
+unfinished objectives of the player's active quests. Item drops, kills and
+non-count interactions use the same typed quest-objective data. A completed
+objective for this NPC does not remain marked merely because a different
+objective of the same quest is incomplete. Another open quest for the same NPC
+keeps the marker visible. Explicit preferences are preserved.
+
+The live Forever 1.60.1 capture supplied by the user contains QuestTitle type 17
+with `id=844`, followed by QuestObjective type 8 with `completed=false`,
+`numFulfilled=1` and `numRequired=7`. Eligibility uses `C_QuestLog.IsOnQuest(id)`
+and these objective fields. QuestPlayer blocks restrict progress to the local
+player. Missing, restricted or unavailable data produces no marker. No tooltip
+CVars are changed, and no mob/drop database or additional addon is required.
+
+Quest/nameplate events coalesce refreshes. A half-second refresh while plates
+are present handles delayed server data; disabling the feature stops polling.
+Textures follow the native health-bar pool, hide on unit removal, and do not
+alter click areas, scale or targeting. They also disappear with the health bar.
+
+Validation: 143 automated tests pass, including the captured live tooltip,
+objective completion, multiple quests, party filtering, pooled-frame reuse
+using the pinned native NamePlateBaseMixin, delayed data and saved settings.
+The user confirmed the feature works in the live client and supplied a screenshot
+showing the marker beside a Greater Plainstrider. Grouped QuestPlayer formatting
+remains covered by simulated data, not a captured live group tooltip.
+Released September 23, 2026.
+
 ## Version 0.8.2 — Narrower Minimap Rim and Refactor
 
 Compresses the Square Minimap rim from 10.2 to 8.2 UI units: its outer edge
@@ -72,7 +102,7 @@ running game. The detailed README was then moved into this devlog, and a concise
 README was added.
 
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
-Version 0.8.2, updated September 23, 2026. Technical addon name: BetaQoL.
+Version 0.9.0, updated September 23, 2026. Technical addon name: BetaQoL.
 
 New in 0.7.0: Backspace Destroy Select Item. Outside combat, press Backspace
 while holding a carried bag item on the cursor to open its native deletion
@@ -128,10 +158,10 @@ For future updates to existing Lua files, `/reload` is sufficient.
 
 ## Usage
 
-- `/qol` opens a small window with eight checkboxes: Quest Auto Accept, Quest Auto
+- `/qol` opens a small window with nine checkboxes: Quest Auto Accept, Quest Auto
   Turn-in, Fast Autoloot, Enter Confirm Dialog-Box, Spellicon Range Color,
-  Whisper Tab Doubleclick Close, Backspace Destroy Select Item, and Square Minimap. Square Minimap starts
-  disabled; the other seven start enabled. Changes apply immediately and are saved across reloads
+  Whisper Tab Doubleclick Close, Backspace Destroy Select Item, Square Minimap, and Quest Target Nameplate Icon. Square Minimap starts
+  disabled; the other eight start enabled. Changes apply immediately and are saved across reloads
   and restarts for all characters on the account.
 - Interact with a quest NPC yourself. The addon selects offered quests and accepts
   normal quest offers as soon as the client sends the `QUEST_DETAIL` event.
@@ -272,10 +302,10 @@ Two files are loaded: the `.toc` contains `## Interface: 16001`, declares
 `## SavedVariables: BetaQoLDB`, and references the `.lua`. No libraries or other
 addons are required.
 
-The saved table contains eight Boolean settings: `autoAccept`, `autoTurnIn`, `fastLoot`,
-`enterConfirm`, `rangeColor`, `whisperDoubleClick`, `backspaceDestroy`, and `squareMinimap`.
+The saved table contains nine Boolean settings: `autoAccept`, `autoTurnIn`, `fastLoot`,
+`enterConfirm`, `rangeColor`, `whisperDoubleClick`, `backspaceDestroy`, `squareMinimap`, and `questNameplateBag`.
 Missing or invalid values use each feature's default: `false` for `squareMinimap`
-and `true` for the other seven. Explicit Boolean choices are preserved. Initialization waits for the addon's own
+and `true` for the other eight. Explicit Boolean choices are preserved. Initialization waits for the addon's own
 `ADDON_LOADED` event so it reads the table loaded by WoW. The `/qol` window is
 created only when first requested, using native frame and checkbox templates.
 Checkboxes apply changes directly, without an Apply button or a required reload.

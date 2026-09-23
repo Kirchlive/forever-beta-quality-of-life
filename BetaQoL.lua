@@ -5,6 +5,7 @@ local settings = {
     enterConfirm = true, rangeColor = true, whisperDoubleClick = true,
     backspaceDestroy = true,
     squareMinimap = false,
+    questNameplateBag = true,
 }
 local featureChanged = {}
 local settingsLoaded = false
@@ -69,7 +70,7 @@ SlashCmdList.QOL = function()
     end
     local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
     settingsWindow = window
-    window:SetSize(380, 374)
+    window:SetSize(380, 410)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
     window.TitleText:SetText("Beta Quality of Life")
@@ -90,6 +91,7 @@ SlashCmdList.QOL = function()
         { "whisperDoubleClick", "Whisper Tab Doubleclick Close" },
         { "backspaceDestroy", "Backspace Destroy Select Item" },
         { "squareMinimap", "Square Minimap" },
+        { "questNameplateBag", "Quest Target Nameplate Icon" },
     }
     for index, feature in ipairs(features) do
         local key = feature[1]
@@ -1074,3 +1076,155 @@ minimapEvents:RegisterEvent("PLAYER_LOGIN")
 minimapEvents:RegisterEvent("PLAYER_ENTERING_WORLD")
 minimapEvents:RegisterEvent("PLAYER_REGEN_ENABLED")
 minimapEvents:SetScript("OnEvent", UpdateSquareMinimap)
+
+-- Read typed quest objectives without opening or changing the visible tooltip.
+-- Each objective belongs to this NPC; whole-quest completion is not sufficient.
+local questPlateEvents = CreateFrame("Frame")
+local questPlateIcons = {}
+local questPlateRefreshPending = false
+local questPlateElapsed = 0
+
+local function IsReadableQuestValue(value)
+    return not issecretvalue or not issecretvalue(value)
+end
+
+local function IsOwnQuestPlayer(text)
+    if not IsReadableQuestValue(text) or type(text) ~= "string" then
+        return false
+    end
+    local name, realm = UnitName("player")
+    if not name then
+        return false
+    end
+    realm = realm or (GetRealmName and GetRealmName())
+    text = text:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):match("^%s*(.-)%s*$")
+    return text == name or (realm and text == name .. "-" .. realm:gsub("%s", ""))
+end
+
+local function IsQuestObjectiveIncomplete(line)
+    if not IsReadableQuestValue(line.completed) or not IsReadableQuestValue(line.numFulfilled)
+        or not IsReadableQuestValue(line.numRequired) or line.completed == true then
+        return false
+    end
+    if type(line.numFulfilled) == "number" and type(line.numRequired) == "number"
+        and line.numRequired > 0 then
+        return line.numFulfilled < line.numRequired
+    end
+    -- Interactions and other objectives need not have a numeric target.
+    return line.completed == false
+end
+
+local function UnitNeedsQuestBag(unit)
+    local isPlayer = UnitIsPlayer(unit)
+    if not IsReadableQuestValue(isPlayer) or isPlayer then
+        return false
+    end
+    local ok, data = pcall(C_TooltipInfo.GetUnit, unit)
+    if not ok or not data or type(data.lines) ~= "table" then
+        return false
+    end
+    local types = Enum.TooltipDataLineType
+    local ownQuest, ownPlayer = false, true
+    for _, line in ipairs(data.lines) do
+        if not IsReadableQuestValue(line.type) then
+            return false
+        end
+        if line.type == types.QuestTitle then
+            ownQuest = false
+            ownPlayer = true
+            if IsReadableQuestValue(line.id) and type(line.id) == "number" and line.id > 0 then
+                local active = C_QuestLog.IsOnQuest(line.id)
+                ownQuest = IsReadableQuestValue(active) and active == true
+            end
+        elseif line.type == types.QuestPlayer then
+            ownPlayer = IsOwnQuestPlayer(line.leftText)
+        elseif line.type == types.QuestObjective and ownQuest and ownPlayer
+            and IsQuestObjectiveIncomplete(line) then
+            return true
+        end
+    end
+    return false
+end
+
+local function HideQuestPlateIcons()
+    for _, icon in pairs(questPlateIcons) do
+        icon:Hide()
+    end
+end
+
+local RefreshQuestPlateIcons
+local function PollQuestPlateIcons(_, elapsed)
+    questPlateElapsed = questPlateElapsed + elapsed
+    if questPlateElapsed >= 0.5 then
+        questPlateElapsed = 0
+        RefreshQuestPlateIcons()
+    end
+end
+
+RefreshQuestPlateIcons = function()
+    HideQuestPlateIcons()
+    questPlateEvents:SetScript("OnUpdate", nil)
+    if not settingsLoaded or not settings.questNameplateBag
+        or not C_NamePlate or not C_NamePlate.GetNamePlates
+        or not C_TooltipInfo or not C_TooltipInfo.GetUnit
+        or not C_QuestLog or not C_QuestLog.IsOnQuest
+        or not Enum.TooltipDataLineType then
+        return
+    end
+    local plates = C_NamePlate.GetNamePlates()
+    for _, plate in ipairs(plates) do
+        if not (plate.IsForbidden and plate:IsForbidden()) then
+            local unitFrame = plate.UnitFrame
+            local unit = plate.GetUnit and plate:GetUnit()
+            if IsReadableQuestValue(unit) and type(unit) == "string" and unitFrame
+                and not (unitFrame.IsForbidden and unitFrame:IsForbidden()) then
+                local bar = unitFrame.healthBar
+                if bar and bar:IsShown() and UnitNeedsQuestBag(unit) then
+                    local icon = questPlateIcons[bar]
+                    if not icon then
+                        icon = bar:CreateTexture(nil, "OVERLAY")
+                        icon:SetTexture("Interface\\Minimap\\Tracking\\Banker")
+                        icon:SetSize(20, 20)
+                        icon:SetPoint("RIGHT", bar, "LEFT", -6, 0)
+                        questPlateIcons[bar] = icon
+                    end
+                    icon:Show()
+                end
+            end
+        end
+    end
+    -- Retry delayed server data only while nameplates exist. Reuse textures with
+    -- the native health-bar pool; never keep quest eligibility on pooled frames.
+    if #plates > 0 then
+        questPlateEvents:SetScript("OnUpdate", PollQuestPlateIcons)
+    end
+end
+
+local function QueueQuestPlateRefresh()
+    if questPlateRefreshPending or not settingsLoaded or not settings.questNameplateBag then
+        return
+    end
+    questPlateRefreshPending = true
+    C_Timer.After(0, function()
+        questPlateRefreshPending = false
+        RefreshQuestPlateIcons()
+    end)
+end
+
+featureChanged.questNameplateBag = function()
+    questPlateElapsed = 0
+    RefreshQuestPlateIcons()
+end
+for _, event in ipairs({ "NAME_PLATE_UNIT_ADDED", "NAME_PLATE_UNIT_REMOVED",
+    "QUEST_LOG_UPDATE", "QUEST_ACCEPTED", "QUEST_REMOVED", "QUEST_WATCH_UPDATE",
+    "PLAYER_ENTERING_WORLD", "GROUP_ROSTER_UPDATE", "LOOT_CLOSED" }) do
+    questPlateEvents:RegisterEvent(event)
+end
+questPlateEvents:SetScript("OnEvent", function(_, event)
+    if event == "NAME_PLATE_UNIT_REMOVED" then
+        -- Hide before Blizzard releases/reassigns the pooled UnitFrame. The
+        -- deferred refresh runs after all native nameplate handlers finish.
+        HideQuestPlateIcons()
+    end
+    QueueQuestPlateRefresh()
+end)
