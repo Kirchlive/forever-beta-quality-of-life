@@ -3,6 +3,20 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.8.2 — Narrower Minimap Rim and Refactor
+
+Compresses the Square Minimap rim from 10.2 to 8.2 UI units: its outer edge
+moves inward by one unit and its inner edge outward by one unit. The centerline
+and bronze color profile are preserved. The rounded mask expands to meet the
+new inner edge, retaining the small overlap that prevents transparent seams.
+Icon positions and settings remain unchanged. Square Minimap remains disabled
+by default; existing saved preferences are preserved.
+
+Separates border creation and native ring visibility into focused Lua helpers.
+The artwork generator now names its UI-space geometry explicitly. The refactor
+preserves the narrower artwork byte for byte. All 129 automated tests pass.
+Released September 23, 2026.
+
 ## Version 0.8.1 — Brighter Minimap Highlight
 
 Brightens only the central bronze highlight and its immediate shoulders.
@@ -58,7 +72,7 @@ running game. The detailed README was then moved into this devlog, and a concise
 README was added.
 
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
-Version 0.8.1, updated September 23, 2026. Technical addon name: BetaQoL.
+Version 0.8.2, updated September 23, 2026. Technical addon name: BetaQoL.
 
 New in 0.7.0: Backspace Destroy Select Item. Outside combat, press Backspace
 while holding a carried bag item on the cursor to open its native deletion

@@ -83,7 +83,7 @@ class MinimapBehaviour(unittest.TestCase):
         self.lua.execute(r'''
         MinimapCompassTexture:SetAlpha(0.8)
         emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
-        assert(Minimap.mask=='Interface\\AddOns\\BetaQoL\\Media\\SquareMinimapMask2')
+        assert(Minimap.mask=='Interface\\AddOns\\BetaQoL\\Media\\SquareMinimapMask3')
         assert(MinimapCompassTexture:GetAlpha()==0 and MinimapCompassTextureUnderlay:GetAlpha()==0)
         assert(GetMinimapShape()=='SQUARE')
         assert(squareBorder:IsShown() and squareBorder.mouseEnabled==false)
@@ -100,7 +100,7 @@ class MinimapBehaviour(unittest.TestCase):
         self.lua.execute(r'''
         emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
         setRotation(true)
-        assert(Minimap.mask=='Interface\\AddOns\\BetaQoL\\Media\\SquareMinimapMask2')
+        assert(Minimap.mask=='Interface\\AddOns\\BetaQoL\\Media\\SquareMinimapMask3')
         assert(MinimapCompassTextureUnderlay.shown and MinimapCompassTextureUnderlay:GetAlpha()==0)
         clickSetting(8,false)
         assert(Minimap.mask=='ui-hud-minimap-frame-generic-mask')

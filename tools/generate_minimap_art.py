@@ -9,6 +9,18 @@ import struct
 
 ROOT = Path(__file__).resolve().parents[1]
 SIZE = 512
+# UI-space geometry: the 220-unit border extends 11 units past the 198-unit map.
+MAP_SIZE = 198
+BORDER_SIZE = 220
+BORDER_CENTER = BORDER_SIZE / 2
+OUTER_INSET = 7
+OUTER_RADIUS = 15.2
+RIM_WIDTH = 8.2
+# Half-length of a straight edge before its rounded corner begins.
+STRAIGHT_HALF_EXTENT = 87.8
+# The mask overlaps the inner rim by 0.6 units to prevent transparent seams.
+MASK_INSET = 3.6
+MASK_RADIUS = 7.6
 PROFILE = (
     # Depth from outside to inside, derived from the aligned native rim sample.
     # Slight highlight compensation offsets downsampling at the in-game size.
@@ -44,24 +56,25 @@ def distance(x, y, size, inset, radius):
 def sample(x, y, mask):
     if mask:
         # Slightly overlap the rim to avoid a transparent seam when downsampled.
-        return (255, 255, 255, 255 if distance(x, y, 198, 4.6, 6.6) <= 0 else 0)
-    # The rim grows inward, moving the highlight toward the map rather than
-    # enlarging its outside bounds. Inner radius: 16.2 - 10.2 = 6 UI units.
-    d = distance(x, y, 220, 6, 16.2)
-    qx = abs(x - 110) - 87.8
-    qy = abs(y - 110) - 87.8
+        return (255, 255, 255, 255 if distance(x, y, MAP_SIZE, MASK_INSET, MASK_RADIUS) <= 0 else 0)
+    # Compress the rim by one UI unit on each side of its existing centerline.
+    # Outer radius: 16.2 - 1; inner radius: 15.2 - 8.2 = 7 UI units.
+    d = distance(x, y, BORDER_SIZE, OUTER_INSET, OUTER_RADIUS)
+    qx = abs(x - BORDER_CENTER) - STRAIGHT_HALF_EXTENT
+    qy = abs(y - BORDER_CENTER) - STRAIGHT_HALF_EXTENT
     side = qx / math.hypot(qx, qy) if qx > 0 and qy > 0 else float(qx > qy)
     # Carry the lighter bevel around the upper corners, leaving the lower
     # face darker instead of making every edge equally bright or black.
-    side = 0.65 + 0.35 * side if y < 110 else 0.10 + 0.90 * side
-    if 0 < d < 5.2:
+    side = 0.65 + 0.35 * side if y < BORDER_CENTER else 0.10 + 0.90 * side
+    if 0 < d < SHADOW[-1][0]:
         for (start, a), (end, b) in zip(SHADOW, SHADOW[1:]):
             if d <= end:
                 return (31 + 18 * side, 15 + 18 * side, 2 + 21 * side,
                         255 * (a + (b - a) * (d - start) / (end - start)))
-    if not -10.2 <= d <= 0:
+    if not -RIM_WIDTH <= d <= 0:
         return (0, 0, 0, 0)
-    depth = -d
+    # Keep the complete bronze color profile and highlight centered.
+    depth = -d * (PROFILE[-1][0] / RIM_WIDTH)
     for index, ((start, a), (end, b)) in enumerate(zip(PROFILE, PROFILE[1:])):
         if depth <= end:
             t = (depth - start) / (end - start)
@@ -73,7 +86,7 @@ def sample(x, y, mask):
 
 
 def render(mask):
-    scale = (198 if mask else 220) / SIZE
+    scale = (MAP_SIZE if mask else BORDER_SIZE) / SIZE
     pixels = bytearray()
     # Four area samples per output pixel; average premultiplied colors to
     # avoid dark fringes at transparent rounded corners.
@@ -103,7 +116,7 @@ def write_tga(path, rgba):
 def main():
     media = ROOT / 'Media'
     media.mkdir(exist_ok=True)
-    for name, mask in (('SquareMinimapBorder4.tga', False), ('SquareMinimapMask2.tga', True)):
+    for name, mask in (('SquareMinimapBorder5.tga', False), ('SquareMinimapMask3.tga', True)):
         write_tga(media / name, render(mask))
         print(f'Generated Media/{name} ({SIZE}x{SIZE}, RGBA)')
 

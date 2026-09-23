@@ -916,6 +916,9 @@ local normalMinimapMask = "ui-hud-minimap-frame-generic-mask"
 local minimapBorderAlpha = {}
 local squareMinimapBorder
 local minimapMedia = "Interface\\AddOns\\" .. addonName .. "\\Media\\"
+local squareMinimapMask = minimapMedia .. "SquareMinimapMask3"
+local squareMinimapTexture = minimapMedia .. "SquareMinimapBorder5"
+local nativeMinimapRings = { "MinimapCompassTexture", "MinimapCompassTextureUnderlay" }
 local previousMinimapShape
 local function SquareMinimapShape()
     return "SQUARE"
@@ -989,6 +992,42 @@ local function PositionMinimapIcon(icon, corner, x, y)
     ApplyMinimapIcon(icon, state)
 end
 
+local function GetSquareMinimapBorder()
+    if not squareMinimapBorder then
+        squareMinimapBorder = CreateFrame("Frame", "BetaQoLSquareMinimapBorder", Minimap)
+        squareMinimapBorder:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -11, 11)
+        squareMinimapBorder:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 11, -11)
+        squareMinimapBorder:SetFrameLevel(Minimap:GetFrameLevel() + 1)
+        squareMinimapBorder:EnableMouse(false)
+        local border = squareMinimapBorder:CreateTexture(nil, "OVERLAY")
+        border:SetAllPoints()
+        border:SetTexture(squareMinimapTexture, "CLAMP", "CLAMP", "LINEAR")
+        border:SetSnapToPixelGrid(false)
+        border:SetTexelSnappingBias(0)
+    end
+    return squareMinimapBorder
+end
+
+local function HideNativeMinimapRings()
+    for _, name in ipairs(nativeMinimapRings) do
+        local texture = _G[name]
+        if texture then
+            if minimapBorderAlpha[texture] == nil then
+                minimapBorderAlpha[texture] = texture:GetAlpha()
+            end
+            -- Alpha survives native Show/Hide calls without changing their state.
+            texture:SetAlpha(0)
+        end
+    end
+end
+
+local function RestoreNativeMinimapRings()
+    for texture, alpha in pairs(minimapBorderAlpha) do
+        texture:SetAlpha(alpha)
+    end
+    minimapBorderAlpha = {}
+end
+
 local function UpdateSquareMinimap()
     if not settingsLoaded or not Minimap or type(Minimap.SetMaskTexture) ~= "function" then
         return
@@ -1001,7 +1040,7 @@ local function UpdateSquareMinimap()
             end
             normalMinimapMask = mask
             if minimapActive then
-                SetMinimapMask(minimapMedia .. "SquareMinimapMask2")
+                SetMinimapMask(squareMinimapMask)
             end
         end)
     end
@@ -1011,40 +1050,16 @@ local function UpdateSquareMinimap()
             GetMinimapShape = SquareMinimapShape
             minimapActive = true
         end
-        SetMinimapMask(minimapMedia .. "SquareMinimapMask2")
-        if not squareMinimapBorder then
-            squareMinimapBorder = CreateFrame("Frame", "BetaQoLSquareMinimapBorder", Minimap)
-            squareMinimapBorder:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -11, 11)
-            squareMinimapBorder:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMRIGHT", 11, -11)
-            squareMinimapBorder:SetFrameLevel(Minimap:GetFrameLevel() + 1)
-            squareMinimapBorder:EnableMouse(false)
-            local border = squareMinimapBorder:CreateTexture(nil, "OVERLAY")
-            border:SetAllPoints()
-            border:SetTexture(minimapMedia .. "SquareMinimapBorder4", "CLAMP", "CLAMP", "LINEAR")
-            border:SetSnapToPixelGrid(false)
-            border:SetTexelSnappingBias(0)
-        end
-        squareMinimapBorder:Show()
-        for _, name in ipairs({ "MinimapCompassTexture", "MinimapCompassTextureUnderlay" }) do
-            local texture = _G[name]
-            if texture then
-                if minimapBorderAlpha[texture] == nil then
-                    minimapBorderAlpha[texture] = texture:GetAlpha()
-                end
-                -- Alpha survives native Show/Hide calls without changing their state.
-                texture:SetAlpha(0)
-            end
-        end
+        SetMinimapMask(squareMinimapMask)
+        GetSquareMinimapBorder():Show()
+        HideNativeMinimapRings()
     elseif minimapActive then
         minimapActive = false
         if squareMinimapBorder then
             squareMinimapBorder:Hide()
         end
         SetMinimapMask(normalMinimapMask)
-        for texture, alpha in pairs(minimapBorderAlpha) do
-            texture:SetAlpha(alpha)
-        end
-        minimapBorderAlpha = {}
+        RestoreNativeMinimapRings()
         if GetMinimapShape == SquareMinimapShape then
             GetMinimapShape = previousMinimapShape
         end
