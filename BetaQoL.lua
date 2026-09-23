@@ -5,7 +5,7 @@ local settings = {
     enterConfirm = true, rangeColor = true, whisperDoubleClick = true,
     backspaceDestroy = true,
     squareMinimap = false,
-    questNameplateBag = true,
+    questNameplateBag = false,
 }
 local featureChanged = {}
 local settingsLoaded = false

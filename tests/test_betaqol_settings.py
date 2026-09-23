@@ -17,7 +17,7 @@ class SettingsBehaviour(unittest.TestCase):
         assert(#checkboxes==0)
         SlashCmdList.QOL()
         assert(#checkboxes==9 and #UISpecialFrames==1)
-        for index,box in ipairs(checkboxes) do assert(box:GetChecked()==(index~=8)) end
+        for index,box in ipairs(checkboxes) do assert(box:GetChecked()==(index~=8 and index~=9)) end
         clickSetting(1,false); emit('QUEST_DETAIL'); assert(not journal[9173])
         assert(BetaQoLDB.fastLoot and BetaQoLDB.enterConfirm and BetaQoLDB.rangeColor)
         SlashCmdList.BETAQOL(); assert(checkboxes[1]:GetChecked())
@@ -50,10 +50,11 @@ class SettingsBehaviour(unittest.TestCase):
 
     def test_missing_or_invalid_preferences_get_defaults_without_overwriting_false(self):
         self.lua.execute('''
-        BetaQoLDB={autoAccept=false, fastLoot='false', enterConfirm=0, squareMinimap='true'}
+        BetaQoLDB={autoAccept=false, fastLoot='false', enterConfirm=0, squareMinimap='true', questNameplateBag='true'}
         emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
         assert(not BetaQoLDB.autoAccept and BetaQoLDB.fastLoot and BetaQoLDB.enterConfirm and BetaQoLDB.rangeColor)
         assert(BetaQoLDB.squareMinimap==false and not checkboxes[8]:GetChecked())
+        assert(BetaQoLDB.questNameplateBag==false and not checkboxes[9]:GetChecked())
         ''')
 
 

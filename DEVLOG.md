@@ -3,6 +3,14 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.9.1 — Quest Icon Disabled by Default
+
+Quest Target Nameplate Icon now starts disabled for new installations and when
+its saved setting is missing or invalid. Enable it in `/qol`. Existing explicit
+on/off preferences are preserved. Square Minimap also remains disabled by default.
+Released September 23, 2026. All 143 automated tests pass, covering both default-off
+initialization and continued operation with a saved enabled preference.
+
 ## Version 0.9.0 — Quest Target Nameplate Icon
 
 Adds a ninth `/qol` option, enabled by default. A non-interactive native purse
@@ -102,7 +110,7 @@ running game. The detailed README was then moved into this devlog, and a concise
 README was added.
 
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
-Version 0.9.0, updated September 23, 2026. Technical addon name: BetaQoL.
+Version 0.9.1, updated September 23, 2026. Technical addon name: BetaQoL.
 
 New in 0.7.0: Backspace Destroy Select Item. Outside combat, press Backspace
 while holding a carried bag item on the cursor to open its native deletion
@@ -160,8 +168,8 @@ For future updates to existing Lua files, `/reload` is sufficient.
 
 - `/qol` opens a small window with nine checkboxes: Quest Auto Accept, Quest Auto
   Turn-in, Fast Autoloot, Enter Confirm Dialog-Box, Spellicon Range Color,
-  Whisper Tab Doubleclick Close, Backspace Destroy Select Item, Square Minimap, and Quest Target Nameplate Icon. Square Minimap starts
-  disabled; the other eight start enabled. Changes apply immediately and are saved across reloads
+  Whisper Tab Doubleclick Close, Backspace Destroy Select Item, Square Minimap, and Quest Target Nameplate Icon. Square Minimap and Quest Target Nameplate Icon start
+  disabled; the other seven start enabled. Changes apply immediately and are saved across reloads
   and restarts for all characters on the account.
 - Interact with a quest NPC yourself. The addon selects offered quests and accepts
   normal quest offers as soon as the client sends the `QUEST_DETAIL` event.
@@ -305,7 +313,7 @@ addons are required.
 The saved table contains nine Boolean settings: `autoAccept`, `autoTurnIn`, `fastLoot`,
 `enterConfirm`, `rangeColor`, `whisperDoubleClick`, `backspaceDestroy`, `squareMinimap`, and `questNameplateBag`.
 Missing or invalid values use each feature's default: `false` for `squareMinimap`
-and `true` for the other eight. Explicit Boolean choices are preserved. Initialization waits for the addon's own
+and `questNameplateBag`, and `true` for the other seven. Explicit Boolean choices are preserved. Initialization waits for the addon's own
 `ADDON_LOADED` event so it reads the table loaded by WoW. The `/qol` window is
 created only when first requested, using native frame and checkbox templates.
 Checkboxes apply changes directly, without an Apply button or a required reload.

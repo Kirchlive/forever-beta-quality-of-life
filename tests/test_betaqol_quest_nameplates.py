@@ -66,6 +66,7 @@ class QuestNameplateBehaviour(unittest.TestCase):
     def setUp(self):
         self.lua=LuaRuntime(unpack_returned_tuples=True)
         self.lua.execute(HOST + UI_ENGINE + ENGINE)
+        self.lua.execute("BetaQoLDB={questNameplateBag=true}")
         self.lua.execute(SOURCE.read_text(encoding='utf-8'))
         self.lua.execute("emit('ADDON_LOADED','BetaQoL'); runTimers()")
 

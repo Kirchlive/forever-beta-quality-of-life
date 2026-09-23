@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 0.9.0** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
+**Version 0.9.1** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
 
 ## Features
 
@@ -27,13 +27,13 @@
   Disabled by default; enable it in `/qol`.
 - **Quest Target Nameplate Icon:** Shows a small bag to the left of a mob's standard nameplate
   while it contributes to one of your unfinished quest objectives (items, kills, or
-  interactions). Hides when that mob's relevant goals are complete. Enabled by default.
+  interactions). Hides when that mob's relevant goals are complete. Disabled by default; enable it in `/qol`.
 
 **Settings menu:** Type `/qol` in chat to enable or disable features.
 
 ## Installation and updates
 
-1. Download **BetaQoL-0.9.0.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
+1. Download **BetaQoL-0.9.1.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
 2. Extract the `BetaQoL` folder into
    `World of Warcraft\_classic_beta_\Interface\AddOns\`.
    `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`. Keep the included `Media` folder.
@@ -42,8 +42,8 @@
 
 ## Usage
 
-- `/qol`: Open a small settings window with one checkbox per feature. Square Minimap
-  starts disabled; the other eight features start enabled. Changes apply immediately and are saved across reloads
+- `/qol`: Open a small settings window with one checkbox per feature. Square Minimap and
+  Quest Target Nameplate Icon start disabled; the other seven features start enabled. Changes apply immediately and are saved across reloads
   and restarts for all characters on the account.
 - `/betaqol` or `/fqa`: Toggle Quest Auto Accept and save the choice.
 - Hold Shift when opening a quest conversation to pause both acceptance and turn-in
