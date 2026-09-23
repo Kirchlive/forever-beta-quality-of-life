@@ -1020,7 +1020,7 @@ local function UpdateSquareMinimap()
             squareMinimapBorder:EnableMouse(false)
             local border = squareMinimapBorder:CreateTexture(nil, "OVERLAY")
             border:SetAllPoints()
-            border:SetTexture(minimapMedia .. "SquareMinimapBorder3", "CLAMP", "CLAMP", "LINEAR")
+            border:SetTexture(minimapMedia .. "SquareMinimapBorder4", "CLAMP", "CLAMP", "LINEAR")
             border:SetSnapToPixelGrid(false)
             border:SetTexelSnappingBias(0)
         end

@@ -3,6 +3,15 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.8.1 — Brighter Minimap Highlight
+
+Brightens only the central bronze highlight and its immediate shoulders.
+Border geometry, inner/outer contours, shadow, mask, and icon positions stay
+unchanged. Texture revision 4 avoids reusing the client's cached release art.
+Released September 23, 2026. The user tested and approved the updated appearance
+in the running Forever client. All 129 automated tests pass. Square Minimap
+remains disabled by default; existing saved preferences are preserved.
+
 ## Version 0.8.0 — Square Minimap
 
 Released September 23, 2026. Adds an eighth `/qol` option, disabled by default,
@@ -49,7 +58,7 @@ running game. The detailed README was then moved into this devlog, and a concise
 README was added.
 
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
-Version 0.8.0, updated September 23, 2026. Technical addon name: BetaQoL.
+Version 0.8.1, updated September 23, 2026. Technical addon name: BetaQoL.
 
 New in 0.7.0: Backspace Destroy Select Item. Outside combat, press Backspace
 while holding a carried bag item on the cursor to open its native deletion

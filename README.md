@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 0.8.0** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
+**Version 0.8.1** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
 
 ## Features
 
@@ -30,7 +30,7 @@
 
 ## Installation and updates
 
-1. Download **BetaQoL-0.8.0.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
+1. Download **BetaQoL-0.8.1.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
 2. Extract the `BetaQoL` folder into
    `World of Warcraft\_classic_beta_\Interface\AddOns\`.
    `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`. Keep the included `Media` folder.

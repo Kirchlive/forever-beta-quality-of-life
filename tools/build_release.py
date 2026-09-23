@@ -7,7 +7,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = ('BetaQoL.lua', 'BetaQoL.toc', 'README.md', 'DEVLOG.md',
-         'Media/SquareMinimapBorder3.tga', 'Media/SquareMinimapMask2.tga')
+         'Media/SquareMinimapBorder4.tga', 'Media/SquareMinimapMask2.tga')
 
 
 def main():
