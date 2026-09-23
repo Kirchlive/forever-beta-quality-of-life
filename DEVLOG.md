@@ -3,6 +3,22 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.9.2 — Stable Quest Nameplate Icons
+
+Fixes an unnecessary hide/show cycle: removing any nameplate previously hid all
+quest markers until a deferred refresh. Refreshes also hid and re-showed every
+eligible icon even when its state had not changed. Two regression tests reproduce
+both behaviors in 0.9.1 and pass with this change.
+
+Removal now hides only the departing unit's marker. Refreshes reconcile visibility
+once after scanning, leaving unchanged icons shown. Completed objectives, missing
+or restricted data, disabled settings and pooled-frame reuse still hide markers
+as before. The feature remains disabled by default; saved choices are preserved.
+
+All 145 automated tests pass. The user reports that the movement-related flicker
+appears resolved after testing the local fix in the live client.
+Released September 23, 2026.
+
 ## Version 0.9.1 — Quest Icon Disabled by Default
 
 Quest Target Nameplate Icon now starts disabled for new installations and when
@@ -110,7 +126,7 @@ running game. The detailed README was then moved into this devlog, and a concise
 README was added.
 
 A small addon for World of Warcraft: Forever Beta 1.60.1, Interface 16001.
-Version 0.9.1, updated September 23, 2026. Technical addon name: BetaQoL.
+Version 0.9.2, updated September 23, 2026. Technical addon name: BetaQoL.
 
 New in 0.7.0: Backspace Destroy Select Item. Outside combat, press Backspace
 while holding a carried bag item on the cursor to open its native deletion

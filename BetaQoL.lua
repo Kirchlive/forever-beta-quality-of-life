@@ -1081,6 +1081,7 @@ minimapEvents:SetScript("OnEvent", UpdateSquareMinimap)
 -- Each objective belongs to this NPC; whole-quest completion is not sufficient.
 local questPlateEvents = CreateFrame("Frame")
 local questPlateIcons = {}
+local questPlateUnits = {}
 local questPlateRefreshPending = false
 local questPlateElapsed = 0
 
@@ -1146,9 +1147,14 @@ local function UnitNeedsQuestBag(unit)
     return false
 end
 
-local function HideQuestPlateIcons()
-    for _, icon in pairs(questPlateIcons) do
-        icon:Hide()
+local function HideQuestPlateIcons(unit)
+    for bar, icon in pairs(questPlateIcons) do
+        if not unit or questPlateUnits[bar] == unit then
+            if icon:IsShown() then
+                icon:Hide()
+            end
+            questPlateUnits[bar] = nil
+        end
     end
 end
 
@@ -1162,16 +1168,17 @@ local function PollQuestPlateIcons(_, elapsed)
 end
 
 RefreshQuestPlateIcons = function()
-    HideQuestPlateIcons()
     questPlateEvents:SetScript("OnUpdate", nil)
     if not settingsLoaded or not settings.questNameplateBag
         or not C_NamePlate or not C_NamePlate.GetNamePlates
         or not C_TooltipInfo or not C_TooltipInfo.GetUnit
         or not C_QuestLog or not C_QuestLog.IsOnQuest
         or not Enum.TooltipDataLineType then
+        HideQuestPlateIcons()
         return
     end
     local plates = C_NamePlate.GetNamePlates()
+    local visibleUnits = {}
     for _, plate in ipairs(plates) do
         if not (plate.IsForbidden and plate:IsForbidden()) then
             local unitFrame = plate.UnitFrame
@@ -1188,11 +1195,22 @@ RefreshQuestPlateIcons = function()
                         icon:SetPoint("RIGHT", bar, "LEFT", -6, 0)
                         questPlateIcons[bar] = icon
                     end
-                    icon:Show()
+                    visibleUnits[bar] = unit
+                    if not icon:IsShown() then
+                        icon:Show()
+                    end
                 end
             end
         end
     end
+    -- Reconcile once after scanning. Unchanged icons stay shown while their
+    -- nameplates move; removing another unit must not blank every marker.
+    for bar, icon in pairs(questPlateIcons) do
+        if not visibleUnits[bar] and icon:IsShown() then
+            icon:Hide()
+        end
+    end
+    questPlateUnits = visibleUnits
     -- Retry delayed server data only while nameplates exist. Reuse textures with
     -- the native health-bar pool; never keep quest eligibility on pooled frames.
     if #plates > 0 then
@@ -1220,11 +1238,11 @@ for _, event in ipairs({ "NAME_PLATE_UNIT_ADDED", "NAME_PLATE_UNIT_REMOVED",
     "PLAYER_ENTERING_WORLD", "GROUP_ROSTER_UPDATE", "LOOT_CLOSED" }) do
     questPlateEvents:RegisterEvent(event)
 end
-questPlateEvents:SetScript("OnEvent", function(_, event)
+questPlateEvents:SetScript("OnEvent", function(_, event, unit)
     if event == "NAME_PLATE_UNIT_REMOVED" then
-        -- Hide before Blizzard releases/reassigns the pooled UnitFrame. The
-        -- deferred refresh runs after all native nameplate handlers finish.
-        HideQuestPlateIcons()
+        -- Clear only the departing unit before Blizzard reuses its frame.
+        -- The deferred refresh runs after all native handlers finish.
+        HideQuestPlateIcons(unit)
     end
     QueueQuestPlateRefresh()
 end)

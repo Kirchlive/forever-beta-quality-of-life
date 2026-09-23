@@ -30,8 +30,8 @@ function addPlate(unit,data,bar)
             function t:SetTexture(value) self.texture=value end
             function t:SetSize(w,h) self.width=w;self.height=h end
             function t:SetPoint(...) self.point={...} end
-            function t:Show() self.shown=true end
-            function t:Hide() self.shown=false end
+            function t:Show() self.shown=true; self.showCalls=(self.showCalls or 0)+1 end
+            function t:Hide() self.shown=false; self.hideCalls=(self.hideCalls or 0)+1 end
             function t:IsShown() return self.shown end
             return t
         end
@@ -229,4 +229,25 @@ class QuestNameplateBehaviour(unittest.TestCase):
         bar.shown=false;tick(0.6);assert(not bar.icon.shown)
         bar.shown=true;units.nameplate1.data.lines[1].id=secret
         tick(0.6);assert(not visible(bar))
+        ''')
+
+    def test_other_mob_leaving_range_does_not_hide_remaining_bag(self):
+        self.lua.execute('''
+        local p,bar=addPlate('nameplate1',tooltip(objective(1,7,false)))
+        local q,other=addPlate('nameplate2',tooltip(objective(2,7,false)))
+        runTimers();assert(visible(bar) and visible(other))
+        emit('NAME_PLATE_UNIT_REMOVED','nameplate2')
+        assert(visible(bar),'Another mob leaving range must not hide this bag, even for one frame')
+        assert(not visible(other))
+        plates={p};units.nameplate2=nil;runTimers();assert(visible(bar))
+        ''')
+
+    def test_unchanged_progress_never_toggles_texture_visibility(self):
+        self.lua.execute('''
+        local p,bar=addPlate('nameplate1',tooltip(objective(1,7,false)))
+        runTimers();assert(visible(bar))
+        local shows,hides=bar.icon.showCalls,bar.icon.hideCalls or 0
+        for i=1,5 do tick(0.6);emit('QUEST_LOG_UPDATE');runTimers() end
+        assert((bar.icon.hideCalls or 0)==hides,'Unchanged polling must not hide the bag')
+        assert(bar.icon.showCalls==shows,'Unchanged polling must not reshow the bag')
         ''')
