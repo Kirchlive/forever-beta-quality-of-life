@@ -116,6 +116,93 @@ end
 local chatArrowModes = {}
 local chatArrowHooks = {}
 local chatArrowFrame = CreateFrame("Frame")
+local chatHistories = {}
+local chatDraftAttributes = { "chatType", "tellTarget", "channelTarget" }
+
+local function AttachChatHistory(box)
+    if chatHistories[box] or not box.AddHistoryLine or not box.HookScript then
+        return
+    end
+    local history = { lines = {} }
+    chatHistories[box] = history
+    local function ResetSelection()
+        history.index, history.draft, history.context = nil, nil, nil
+    end
+    hooksecurefunc(box, "AddHistoryLine", function(_, text)
+        ResetSelection()
+        if (issecretvalue and issecretvalue(text)) or type(text) ~= "string" then
+            return
+        end
+        text = text:match("^%s*(.-)%s*$")
+        if text == "" then return end
+        local command = text:match("^(/%S+)")
+        -- Re-inserting protected commands through addon code can taint execution.
+        if command and (not IsSecureCmd or IsSecureCmd(command:upper())) then
+            return
+        end
+        local lines = history.lines
+        if lines[#lines] ~= text then
+            lines[#lines + 1] = text
+        end
+        local limit = math.min(32, box:GetHistoryLines())
+        while #lines > limit do table.remove(lines, 1) end
+    end)
+    if box.ClearHistory then
+        hooksecurefunc(box, "ClearHistory", function()
+            history.lines = {}
+            ResetSelection()
+        end)
+    end
+    box:HookScript("OnEditFocusGained", ResetSelection)
+    box:HookScript("OnEditFocusLost", ResetSelection)
+    box:HookScript("OnTextChanged", function(_, userInput)
+        if userInput then ResetSelection() end
+    end)
+    box:HookScript("OnArrowPressed", function(self, key)
+        if not settings.chatArrowKeys or not self:HasFocus()
+            or (key ~= "UP" and key ~= "DOWN")
+            or (IsAltKeyDown and IsAltKeyDown())
+            or (IsControlKeyDown and IsControlKeyDown()) or IsShiftKeyDown()
+            or (AutoCompleteBox and AutoCompleteBox.parent == self and AutoCompleteBox:IsShown()) then
+            return
+        end
+        local count = #history.lines
+        if count == 0 then return end
+        if not history.index then
+            if key == "DOWN" then return end
+            local draft = self:GetText()
+            if issecretvalue and issecretvalue(draft) then return end
+            local command = draft:match("^%s*(/%S+)")
+            if command and (not IsSecureCmd or IsSecureCmd(command:upper())) then return end
+            history.draft, history.index = draft, count + 1
+            history.context = {
+                source = self.autoCompleteSource,
+                params = self.autoCompleteParams,
+            }
+            for _, attribute in ipairs(chatDraftAttributes) do
+                history.context[attribute] = self:GetAttribute(attribute)
+            end
+        end
+        history.index = math.max(1, math.min(count + 1, history.index + (key == "UP" and -1 or 1)))
+        local restoringDraft = history.index == count + 1
+        if restoringDraft then
+            -- Recalled slash prefixes change the destination in native SetText.
+            -- Restore it too, so a whisper draft cannot become a public message.
+            for _, attribute in ipairs(chatDraftAttributes) do
+                self:SetAttribute(attribute, history.context[attribute])
+            end
+            self.autoCompleteSource = history.context.source
+            self.autoCompleteParams = history.context.params
+        end
+        local text = history.lines[history.index] or history.draft
+        self:SetText(text)
+        self:SetCursorPosition(#self:GetText())
+        if restoringDraft then
+            self:UpdateHeader()
+            ResetSelection()
+        end
+    end)
+end
 
 local function ApplyChatArrowKeys()
     if not settingsLoaded then
@@ -125,6 +212,7 @@ local function ApplyChatArrowKeys()
         local chat = _G[name]
         local box = chat and chat.editBox
         if box and box.GetAltArrowKeyMode and box.SetAltArrowKeyMode then
+            AttachChatHistory(box)
             local completing = AutoCompleteBox and AutoCompleteBox.parent == box
             if settings.chatArrowKeys and chatArrowModes[box] == nil then
                 local original = box:GetAltArrowKeyMode()
@@ -146,6 +234,8 @@ local function ApplyChatArrowKeys()
                 end
                 if not settings.chatArrowKeys then
                     chatArrowModes[box] = nil
+                    local history = chatHistories[box]
+                    if history then history.index, history.draft, history.context = nil, nil, nil end
                 end
             end
         end

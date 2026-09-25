@@ -3,6 +3,27 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.9.4 — Chat Input History Recall
+
+The user found that Up/Down still required Alt after the 0.9.3 release. Setting
+`SetAltArrowKeyMode(false)` alone enables cursor movement but does not supply
+unmodified input-history recall. The original tests verified arrow-mode state,
+not recalled text, and missed this behavior.
+
+Adds a bounded, per-edit-box session history by observing native `AddHistoryLine`
+calls. Up/Down browse those entries, preserving the current draft. Existing native
+history and send handlers remain untouched. Focus, modifiers, autocomplete,
+disabling the feature, and clearing history are respected. Protected commands
+are excluded to avoid re-inserting them through an insecure addon execution path;
+they remain available through native Alt+Up/Down. History is not saved to disk
+and starts with messages entered after the addon attaches to the edit box.
+
+Five new regression cases fail against 0.9.3 and pass with the correction.
+A sixth parser-aware case verifies that returning to a whisper draft also restores
+its recipient and chat type after recalling a public message. All 160 tests pass.
+The user confirmed Up/Down recall works in the live client.
+Released September 25, 2026.
+
 ## Version 0.9.3 — Chat Arrow Keys, Grouped Quest Names and Defaults
 
 Adds **Arrow Keys Chat Control**, enabled by default and independently switchable

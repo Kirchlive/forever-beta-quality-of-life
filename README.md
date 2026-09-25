@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 0.9.3** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
+**Version 0.9.4** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
 
 ## Features
 
@@ -30,13 +30,16 @@
   interactions). Hides when that mob's relevant goals are complete. Enabled by default; toggle it in `/qol`.
 - **Arrow Keys Chat Control:** Use Left/Right to move the cursor and Up/Down for
   input history without holding Alt while a standard chat input has focus. Also
-  works in new whisper windows. Disable to restore the previous arrow-key mode.
+  works in new whisper windows. Remembers up to 32 entries per chat input during
+  the current session, starting when the addon loads. Protected commands such as
+  `/cast` remain in the native Alt+Up/Down history. Disable to restore the previous
+  arrow-key mode.
 
 **Settings menu:** Type `/qol` in chat to enable or disable features.
 
 ## Installation and updates
 
-1. Download **BetaQoL-0.9.3.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
+1. Download **BetaQoL-0.9.4.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
 2. Extract the `BetaQoL` folder into
    `World of Warcraft\_classic_beta_\Interface\AddOns\`.
    `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`. Keep the included `Media` folder.
