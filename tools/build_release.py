@@ -7,6 +7,9 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = ('BetaQoL.lua', 'BetaQoL.toc', 'README.md', 'DEVLOG.md',
+         'Data/QuestItemDrops.lua', 'Data/NOTICE.md', 'Data/COPYING.txt',
+         'Data/Source/classicItemDrops.lua', 'Data/Source/itemDropCorrections.lua',
+         'tools/import_questie_drops.py',
          'Media/SquareMinimapBorder5.tga', 'Media/SquareMinimapMask3.tga')
 
 

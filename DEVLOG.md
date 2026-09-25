@@ -3,6 +3,39 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.9.6 — Quest Item Drop Rate
+
+Adds a default-on `/qol` option for quest-item drop estimates in the standard
+mob tooltip. Native typed quest lines determine ownership;
+`C_QuestLog.GetQuestObjectives` restricts the display to item objectives from quests
+still in the player's log. Completed objectives remain eligible (including 5/5);
+turn-in or abandonment removes eligibility even if native tooltip data is stale.
+Grouped player sections use GUIDs when available, with the existing Forever
+first-name fallback. Exact objective/item names are matched against the NPC's
+item candidates; ambiguous names are omitted. Localized names come from C_Item,
+with English source names as an English-client fallback. Missing localized item
+names are requested once and picked up on subsequent native tooltip builds.
+
+Research of Questie Forever v27 found its drop display uses Classic database
+lookups by NPC/item pair: explicit Era corrections, then CMaNGOS, then Wowhead.
+BetaQoL bundles a generated lookup with that same precedence. The Classic
+provenance and lack of verified Forever-specific probabilities are explained in the README. Rates appear as a yellow `(40%)` suffix on the native
+quest-item row, using its recorded `lineIndex`. No extra tooltip line is added;
+native colors and completion icons are preserved. Shared tooltip data is not
+modified and repeat callbacks do not duplicate the suffix. There is no made-up
+default rate, loot recorder, network access or external addon dependency. Original data, GPLv3 notice and the reproducible
+Python importer ship with the package. See `Data/NOTICE.md`.
+
+Tests cover known and unknown NPC/item pairs, incomplete/completed item goals,
+kill objectives, own/group sections and GUIDs, exact and ambiguous item names,
+localized/uncached data, rebuild deduplication, settings persistence, secret and
+forbidden values, and all packaged rate ranges. All 183 automated tests pass.
+The user confirmed the Classic Ornery Plainstrider
+(NPC 3245) / Plainstrider Kidney (4894) value of 40% in the live client.
+The final inline styling is covered by automated tests and native UI source
+inspection; live visual confirmation remains pending.
+Released September 25, 2026.
+
 ## Version 0.9.5 — Questlog Quest XP (+ for item rewards)
 
 Adds **Questlog Quest XP (+ for item rewards)**, enabled by default with its own `/qol` switch.

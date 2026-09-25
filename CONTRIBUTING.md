@@ -13,7 +13,7 @@ python tools/build_release.py
 The tests use `lupa.lua51` to run the addon with simulated client APIs. Loot,
 popup, action bar, whisper tab, and item deletion tests also execute selected native UI code,
 including the chat tab's XML double-click handler Forever's minimap rotation skin, and native Edit Mode scaling.
-The fetcher downloads only the thirteen required files from
+The fetcher downloads only the required files from
 [Gethe/wow-ui-source at the pinned commit](https://github.com/Gethe/wow-ui-source/tree/70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e)
 into `.test-ui/`. These external files are ignored by Git and excluded from
 release archives. Fetching them requires internet access.
@@ -39,5 +39,11 @@ disabled, UI scale changes, and deferred repositioning after combat.
 
 The build command reads the version from `BetaQoL.toc` and creates
 `dist/BetaQoL-<version>.zip`. It contains only `BetaQoL.lua`, `BetaQoL.toc`,
-`README.md`, `DEVLOG.md`, and the two `Media/*.tga` textures inside a `BetaQoL/` folder.
+`README.md`, `DEVLOG.md`, the two `Media/*.tga` textures, and the drop database
+with attribution, license, original data and importer inside a `BetaQoL/` folder.
+Rebuild the drop lookup with `python tools/import_questie_drops.py`; this reads
+the included `Data/Source` files without network access.
+For drop tooltips, check own and grouped quests, incomplete and completed item
+objectives, turn-in and abandonment, yellow inline percentages, and unknown
+NPC/item pairs. The Classic database does not verify actual Forever drop rates.
 Regenerate the original minimap artwork with `python tools/generate_minimap_art.py`.

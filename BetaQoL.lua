@@ -8,6 +8,7 @@ local settings = {
     questNameplateBag = true,
     chatArrowKeys = true,
     questLogXP = true,
+    questDropRate = true,
 }
 local featureChanged = {}
 local settingsLoaded = false
@@ -72,7 +73,7 @@ SlashCmdList.QOL = function()
     end
     local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
     settingsWindow = window
-    window:SetSize(380, 482)
+    window:SetSize(380, 518)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
     window.TitleText:SetText("Beta Quality of Life")
@@ -96,6 +97,7 @@ SlashCmdList.QOL = function()
         { "questNameplateBag", "Quest Target Nameplate Icon" },
         { "chatArrowKeys", "Arrow Keys Chat Control" },
         { "questLogXP", "Questlog Quest XP (+ for item rewards)" },
+        { "questDropRate", "Quest Item Drop Rate" },
     }
     for index, feature in ipairs(features) do
         local key = feature[1]
@@ -1477,3 +1479,120 @@ questPlateEvents:SetScript("OnEvent", function(_, event, unit)
     end
     QueueQuestPlateRefresh()
 end)
+
+
+-- Questie-style NPC/item lookup for the player's quests still in the quest log.
+-- Values come from the bundled Classic database; provenance is documented in README.
+local function QuestItemObjectiveName(text)
+    if not IsReadableQuestValue(text) or type(text) ~= "string" then return nil end
+    text = text:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):match("^%s*(.-)%s*$")
+    return text:match("^%d+%s*/%s*%d+%s+(.+)$")
+        or text:match("^(.+):%s*%d+%s*/%s*%d+$") or text
+end
+
+local function QuestItemObjectives(questID)
+    if not IsReadableQuestValue(questID) or type(questID) ~= "number" then return nil end
+    local active = C_QuestLog.IsOnQuest(questID)
+    if not IsReadableQuestValue(active) or not active then return nil end
+    local ok, objectives = pcall(C_QuestLog.GetQuestObjectives, questID)
+    if not ok or type(objectives) ~= "table" then return nil end
+    local names = {}
+    for _, objective in ipairs(objectives) do
+        if IsReadableQuestValue(objective.type) and objective.type == "item" then
+            local name = QuestItemObjectiveName(objective.text)
+            if name then names[name] = true end
+        end
+    end
+    return names
+end
+
+local requestedDropItems = {}
+local function QuestDropItemName(itemID, database)
+    local name = C_Item and C_Item.GetItemNameByID and C_Item.GetItemNameByID(itemID)
+    if not IsReadableQuestValue(name) then return nil end
+    if type(name) == "string" then return name end
+    local locale = GetLocale()
+    if locale == "enUS" or locale == "enGB" then return database.names[itemID] end
+    -- Request missing localized names once; a later native tooltip build picks them up.
+    if C_Item and C_Item.RequestLoadItemDataByID and not requestedDropItems[itemID] then
+        requestedDropItems[itemID] = true
+        C_Item.RequestLoadItemDataByID(itemID)
+    end
+end
+
+local function AddQuestDropRates(tooltip, data)
+    if not settingsLoaded or not settings.questDropRate or tooltip ~= GameTooltip
+        or (tooltip.IsForbidden and tooltip:IsForbidden())
+        or not data or type(data.lines) ~= "table" or not IsReadableQuestValue(data.guid)
+        or type(data.guid) ~= "string" or not BetaQoLQuestDrops
+        or not C_QuestLog or not C_QuestLog.IsOnQuest or not C_QuestLog.GetQuestObjectives
+        or not Enum.TooltipDataLineType then return end
+    local npcID = tonumber(data.guid:match("^Creature%-%d+%-%d+%-%d+%-%d+%-(%d+)%-"))
+    local database = BetaQoLQuestDrops
+    local drops = npcID and database.npcs[npcID]
+    if not drops then return end
+    local types = Enum.TooltipDataLineType
+    local ownItems, ownPlayer, itemNames = nil, true, {}
+    for _, line in ipairs(data.lines) do
+        if not IsReadableQuestValue(line.type) then return end
+        if line.type == types.QuestTitle then
+            ownItems, ownPlayer = QuestItemObjectives(line.id), true
+        elseif line.type == types.QuestPlayer then
+            -- GUIDs avoid surname/display-name differences in grouped tooltips.
+            if IsReadableQuestValue(line.guid) and type(line.guid) == "string" then
+                local playerGUID = UnitGUID("player")
+                ownPlayer = IsReadableQuestValue(playerGUID) and line.guid == playerGUID
+            else
+                ownPlayer = IsOwnQuestPlayer(line.leftText)
+            end
+        elseif line.type == types.QuestObjective and ownItems and ownPlayer then
+            local objectiveName = QuestItemObjectiveName(line.leftText)
+            if objectiveName and ownItems[objectiveName] then
+                local matchedRate, ambiguous
+                for itemID, rate in pairs(drops) do
+                    if itemNames[itemID] == nil then
+                        itemNames[itemID] = QuestDropItemName(itemID, database) or false
+                    end
+                    if itemNames[itemID] == objectiveName then
+                        if matchedRate then ambiguous = true; break end
+                        matchedRate = rate
+                    end
+                end
+                -- Some distinct items share a name (e.g. Windsor's Lost Information).
+                -- Native objective text cannot distinguish them: omit, never guess.
+                if matchedRate and not ambiguous and IsReadableQuestValue(line.lineIndex)
+                    and type(line.lineIndex) == "number" then
+                    -- The native handler records the rendered row, including any extra lines.
+                    -- Keep its colors, completion icon and shared tooltip data intact.
+                    local fontString = _G["GameTooltipTextLeft" .. line.lineIndex]
+                    local text = fontString and fontString:GetText()
+                    if IsReadableQuestValue(text) and type(text) == "string" then
+                        local percent = matchedRate < 0.001 and "<0.001" or
+                            string.format(matchedRate < 0.1 and "%.3f" or "%.1f", matchedRate):gsub("%.?0+$", "")
+                        local suffix = " |cffffff00(" .. percent .. "%)|r"
+                        if text:sub(-#suffix) ~= suffix then
+                            fontString:SetText(text .. suffix)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local dropTooltipHooked = false
+local function HookQuestDropTooltip()
+    if not dropTooltipHooked and TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
+        and Enum.TooltipDataType and Enum.TooltipDataType.Unit then
+        TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, AddQuestDropRates)
+        dropTooltipHooked = true
+    end
+end
+featureChanged.questDropRate = HookQuestDropTooltip
+local dropTooltipEvents = CreateFrame("Frame")
+dropTooltipEvents:RegisterEvent("ADDON_LOADED")
+dropTooltipEvents:SetScript("OnEvent", function(self)
+    HookQuestDropTooltip()
+    if dropTooltipHooked then self:UnregisterEvent("ADDON_LOADED") end
+end)
+HookQuestDropTooltip()

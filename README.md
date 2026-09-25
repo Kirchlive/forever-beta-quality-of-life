@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 0.9.5** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
+**Version 0.9.6** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
 
 ## Features
 
@@ -41,20 +41,31 @@
   `[4,400+]`. Uses the current client reward value and number formatting. Missing or hidden
   rewards are omitted; disabling restores the standard titles.
 
+- **Quest Item Drop Rate:** Adds a yellow percentage directly after each matching quest item
+  in the standard mob tooltip, for example `0/5 Plainstrider Kidney (40%)`.
+  Only your own item quests still in the quest log are included.
+  Remains visible at full progress (such as 5/5); disappears after turn-in or abandonment.
+  Uses a local database derived from Questie Forever v27; no extra addon is required.
+  **The values are transferred from Classic data and are not verified Forever server drop rates.**
+  Unknown drops and ambiguous item names are omitted. New Forever NPC/item combinations
+  are not automatically learned; existing quest progress and nameplate markers still work.
+  Group members' objectives do not trigger the display. Enabled by default.
+  [Data sources, license and reproduction](Data/NOTICE.md).
+
 **Settings menu:** Type `/qol` in chat to enable or disable features.
 
 ## Installation and updates
 
-1. Download **BetaQoL-0.9.5.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
+1. Download **BetaQoL-0.9.6.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
 2. Extract the `BetaQoL` folder into
    `World of Warcraft\_classic_beta_\Interface\AddOns\`.
-   `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`. Keep the included `Media` folder.
+   `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`. Keep the included `Media` and `Data` folders.
 3. For a first installation, restart WoW and enable **Beta Quality of Life**.
    For updates, replace the files and run `/reload`.
 
 ## Usage
 
-- `/qol`: Open a small settings window with one checkbox per feature. All eleven features
+- `/qol`: Open a small settings window with one checkbox per feature. All twelve features
   start enabled. Changes apply immediately; existing saved on/off choices are preserved
   when the client restores SavedVariables. Settings are shared across characters on the account.
 - `/betaqol` or `/fqa`: Toggle Quest Auto Accept and save the choice.
