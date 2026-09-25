@@ -4,8 +4,9 @@ local settings = {
     autoAccept = true, autoTurnIn = true, fastLoot = true,
     enterConfirm = true, rangeColor = true, whisperDoubleClick = true,
     backspaceDestroy = true,
-    squareMinimap = false,
-    questNameplateBag = false,
+    squareMinimap = true,
+    questNameplateBag = true,
+    chatArrowKeys = true,
 }
 local featureChanged = {}
 local settingsLoaded = false
@@ -70,7 +71,7 @@ SlashCmdList.QOL = function()
     end
     local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
     settingsWindow = window
-    window:SetSize(380, 410)
+    window:SetSize(380, 446)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
     window.TitleText:SetText("Beta Quality of Life")
@@ -92,6 +93,7 @@ SlashCmdList.QOL = function()
         { "backspaceDestroy", "Backspace Destroy Select Item" },
         { "squareMinimap", "Square Minimap" },
         { "questNameplateBag", "Quest Target Nameplate Icon" },
+        { "chatArrowKeys", "Arrow Keys Chat Control" },
     }
     for index, feature in ipairs(features) do
         local key = feature[1]
@@ -109,6 +111,61 @@ SlashCmdList.QOL = function()
     RefreshSettings()
     window:Show()
 end
+
+-- Native edit-box arrow handling only consumes keys while the box has focus.
+local chatArrowModes = {}
+local chatArrowHooks = {}
+local chatArrowFrame = CreateFrame("Frame")
+
+local function ApplyChatArrowKeys()
+    if not settingsLoaded then
+        return
+    end
+    for _, name in pairs(CHAT_FRAMES or {}) do
+        local chat = _G[name]
+        local box = chat and chat.editBox
+        if box and box.GetAltArrowKeyMode and box.SetAltArrowKeyMode then
+            local completing = AutoCompleteBox and AutoCompleteBox.parent == box
+            if settings.chatArrowKeys and chatArrowModes[box] == nil then
+                local original = box:GetAltArrowKeyMode()
+                if completing and type(AutoCompleteBox.parentArrows) == "boolean" then
+                    original = AutoCompleteBox.parentArrows
+                end
+                chatArrowModes[box] = original
+            end
+            local original = chatArrowModes[box]
+            if original ~= nil then
+                local mode = not settings.chatArrowKeys and original
+                -- Autocomplete temporarily owns the arrows. Update its saved
+                -- mode so closing the suggestions restores the current choice.
+                if completing then
+                    AutoCompleteBox.parentArrows = mode
+                    box:SetAltArrowKeyMode(false)
+                else
+                    box:SetAltArrowKeyMode(mode)
+                end
+                if not settings.chatArrowKeys then
+                    chatArrowModes[box] = nil
+                end
+            end
+        end
+    end
+end
+
+local function HookChatArrowKeys()
+    for _, name in ipairs({ "FCF_OpenNewWindow", "FCF_OpenTemporaryWindow" }) do
+        if not chatArrowHooks[name] and type(_G[name]) == "function" then
+            hooksecurefunc(name, ApplyChatArrowKeys)
+            chatArrowHooks[name] = true
+        end
+    end
+    ApplyChatArrowKeys()
+end
+
+featureChanged.chatArrowKeys = HookChatArrowKeys
+chatArrowFrame:RegisterEvent("ADDON_LOADED")
+chatArrowFrame:RegisterEvent("PLAYER_LOGIN")
+chatArrowFrame:SetScript("OnEvent", HookChatArrowKeys)
 
 -- One offer per event: the server supplies QUEST_DETAIL after selection.
 local frame = CreateFrame("Frame")
@@ -1093,13 +1150,20 @@ local function IsOwnQuestPlayer(text)
     if not IsReadableQuestValue(text) or type(text) ~= "string" then
         return false
     end
+    text = text:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):match("^%s*(.-)%s*$")
+    -- Forever's UnitName and UnitNameUnmodified can both include a surname,
+    -- while QuestPlayer lines show the first name. Use its native name parser.
+    local firstName = NameUtil and NameUtil.GetUnitFirstName and NameUtil.GetUnitFirstName("player")
+    if IsReadableQuestValue(firstName) and type(firstName) == "string" and text == firstName then
+        return true
+    end
     local name, realm = UnitName("player")
-    if not name then
+    if not IsReadableQuestValue(name) or type(name) ~= "string" then
         return false
     end
     realm = realm or (GetRealmName and GetRealmName())
-    text = text:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):match("^%s*(.-)%s*$")
-    return text == name or (realm and text == name .. "-" .. realm:gsub("%s", ""))
+    return text == name or (IsReadableQuestValue(realm) and type(realm) == "string"
+        and text == name .. "-" .. realm:gsub("%s", ""))
 end
 
 local function IsQuestObjectiveIncomplete(line)

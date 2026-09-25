@@ -177,12 +177,12 @@ class MinimapBehaviour(unittest.TestCase):
         assert(math.abs(point[5]-(-70/1.5))<0.00001)
         ''')
 
-    def test_missing_preference_defaults_off_until_user_enables_it(self):
+    def test_missing_preference_defaults_on_and_user_can_disable_it(self):
         self.lua.execute('''
         BetaQoLDB={}; emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
-        assert(not BetaQoLDB.squareMinimap and not checkboxes[8]:GetChecked())
+        assert(BetaQoLDB.squareMinimap and checkboxes[8]:GetChecked())
+        assert(GetMinimapShape()=='SQUARE' and MinimapCluster.DielFrame.points[1][3]=='TOPRIGHT')
+        clickSetting(8,false)
         assert(Minimap.mask=='ui-hud-minimap-frame-generic-mask')
         assert(MinimapCluster.DielFrame.points[1][4]==63)
-        clickSetting(8,true)
-        assert(GetMinimapShape()=='SQUARE' and MinimapCluster.DielFrame.points[1][3]=='TOPRIGHT')
         ''')

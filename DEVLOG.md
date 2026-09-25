@@ -3,6 +3,42 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.9.3 — Chat Arrow Keys, Grouped Quest Names and Defaults
+
+Adds **Arrow Keys Chat Control**, enabled by default and independently switchable
+under `/qol`. Native chat edit boxes use `SetAltArrowKeyMode(false)` for cursor
+movement and input history while focused. Existing and newly opened chat/whisper
+windows are covered. Disabling restores each edit box's previous mode; active
+autocomplete keeps its arrow navigation and restores the correct mode afterward.
+No global key bindings or unrelated edit boxes are changed. The settings window
+now accommodates ten features. All 154 automated tests pass, including five new
+chat-mode tests. The user confirmed Arrow Keys Chat Control works in the live client.
+
+Fixes a grouped-tooltip name mismatch: the user's live API dump returns
+`Zeig Mal, nil` from both `UnitName` and `UnitNameUnmodified`, while `UnitFullName`
+returns `Zeig Mal, ClassicBetaPvE`. The grouped quest tooltip displays only
+`Zeig` (3/8) and `Dark` (5/8). Exact comparison with the combined name rejected
+all of the player's objectives in a group, even before any kill.
+
+The matcher now uses Forever's native `NameUtil.GetUnitFirstName` to recognize
+the short tooltip name. Full display-name and realm-qualified fallbacks remain
+supported. Completed own objectives still hide markers while another player's
+objectives remain incomplete. The 0.9.2 visibility fix remains.
+
+All ten features now default to enabled at the user's request. Explicit restored
+on/off preferences are still preserved. The community project
+[ForeverSVFix](https://github.com/nobewayo/ForeverSVFix) reports a beta-client bug
+that writes SavedVariables but fails to restore them. Our simulated restart tests
+validate addon logic only; they cannot establish that the client loader works.
+The workaround has not been installed or bundled.
+
+Grouped-name tests execute the pinned native Camelot `NameUtil`
+against the captured API values, covering the first sighting while grouped,
+solo-to-group transitions, own completion and full/single-name fallbacks.
+The reproduced group cases fail without the name change. The user confirmed the
+grouped display after enabling the option.
+Released September 25, 2026.
+
 ## Version 0.9.2 — Stable Quest Nameplate Icons
 
 Fixes an unnecessary hide/show cycle: removing any nameplate previously hid all
@@ -184,9 +220,10 @@ For future updates to existing Lua files, `/reload` is sufficient.
 
 - `/qol` opens a small window with nine checkboxes: Quest Auto Accept, Quest Auto
   Turn-in, Fast Autoloot, Enter Confirm Dialog-Box, Spellicon Range Color,
-  Whisper Tab Doubleclick Close, Backspace Destroy Select Item, Square Minimap, and Quest Target Nameplate Icon. Square Minimap and Quest Target Nameplate Icon start
-  disabled; the other seven start enabled. Changes apply immediately and are saved across reloads
-  and restarts for all characters on the account.
+  Whisper Tab Doubleclick Close, Backspace Destroy Select Item, Square Minimap, and Quest Target Nameplate Icon.
+  All ten features start enabled. Changes apply immediately; restored saved choices
+  are preserved and shared across characters on the account. The beta client may
+  fail to restore SavedVariables, as described above.
 - Interact with a quest NPC yourself. The addon selects offered quests and accepts
   normal quest offers as soon as the client sends the `QUEST_DETAIL` event.
   Server response times and network latency still apply.
@@ -328,8 +365,8 @@ addons are required.
 
 The saved table contains nine Boolean settings: `autoAccept`, `autoTurnIn`, `fastLoot`,
 `enterConfirm`, `rangeColor`, `whisperDoubleClick`, `backspaceDestroy`, `squareMinimap`, and `questNameplateBag`.
-Missing or invalid values use each feature's default: `false` for `squareMinimap`
-and `questNameplateBag`, and `true` for the other seven. Explicit Boolean choices are preserved. Initialization waits for the addon's own
+Missing or invalid values use `true` for all ten features. Explicit Boolean choices
+are preserved. Initialization waits for the addon's own
 `ADDON_LOADED` event so it reads the table loaded by WoW. The `/qol` window is
 created only when first requested, using native frame and checkbox templates.
 Checkboxes apply changes directly, without an Apply button or a required reload.

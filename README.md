@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 0.9.2** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
+**Version 0.9.3** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
 
 ## Features
 
@@ -24,16 +24,19 @@
   bronze-toned WoW-style border. The day/night icon sits at the top-right corner
   and the group-finder eye at the bottom-left. Disable to restore the round map
   and native icon positions. Map position, size, and button actions are preserved.
-  Disabled by default; enable it in `/qol`.
+  Enabled by default; toggle it in `/qol`.
 - **Quest Target Nameplate Icon:** Shows a small bag to the left of a mob's standard nameplate
   while it contributes to one of your unfinished quest objectives (items, kills, or
-  interactions). Hides when that mob's relevant goals are complete. Disabled by default; enable it in `/qol`.
+  interactions). Hides when that mob's relevant goals are complete. Enabled by default; toggle it in `/qol`.
+- **Arrow Keys Chat Control:** Use Left/Right to move the cursor and Up/Down for
+  input history without holding Alt while a standard chat input has focus. Also
+  works in new whisper windows. Disable to restore the previous arrow-key mode.
 
 **Settings menu:** Type `/qol` in chat to enable or disable features.
 
 ## Installation and updates
 
-1. Download **BetaQoL-0.9.2.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
+1. Download **BetaQoL-0.9.3.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
 2. Extract the `BetaQoL` folder into
    `World of Warcraft\_classic_beta_\Interface\AddOns\`.
    `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`. Keep the included `Media` folder.
@@ -42,9 +45,9 @@
 
 ## Usage
 
-- `/qol`: Open a small settings window with one checkbox per feature. Square Minimap and
-  Quest Target Nameplate Icon start disabled; the other seven features start enabled. Changes apply immediately and are saved across reloads
-  and restarts for all characters on the account.
+- `/qol`: Open a small settings window with one checkbox per feature. All ten features
+  start enabled. Changes apply immediately; existing saved on/off choices are preserved
+  when the client restores SavedVariables. Settings are shared across characters on the account.
 - `/betaqol` or `/fqa`: Toggle Quest Auto Accept and save the choice.
 - Hold Shift when opening a quest conversation to pause both acceptance and turn-in
   for that entire conversation, even after releasing Shift.
@@ -65,5 +68,9 @@
 - Quest markers use the quest objectives supplied by the client for each NPC.
   Objectives absent from the native tooltip cannot be inferred. Group members'
   objectives do not keep your completed marker visible. Custom nameplates are not covered.
+
+The Forever beta has a reported SavedVariables loading bug: preferences may reset
+to defaults even when correctly saved. See [ForeverSVFix](https://github.com/nobewayo/ForeverSVFix)
+for the community report and workaround. This addon does not include that workaround.
 
 Development notes, version history and technical details: [DEVLOG.md](DEVLOG.md).

@@ -60,6 +60,17 @@ end
 '''
 
 NATIVE_BASE = (ROOT / '.test-ui/Blizzard_NamePlates/Blizzard_NamePlateBase.lua').read_text(encoding='utf-8')
+NATIVE_NAMES = (ROOT / '.test-ui/Blizzard_FrameXMLUtil/Camelot/NameUtil.lua').read_text(encoding='utf-8')
+FOREVER_NAMES = r'''
+-- Actual live name API values reported by the user.
+function UnitName() return 'Zeig Mal',nil end
+function UnitNameUnmodified() return 'Zeig Mal',nil end
+function UnitFullName() return 'Zeig Mal','ClassicBetaPvE' end
+function GetRealmName() return 'ClassicBetaPvE' end
+function RegionalUniqueNamesEnabled() return true end
+Constants={CharacterNameSeparatorConsts={CHARACTERNAME_SURNAME_SEPARATOR=' '}}
+strmatch=string.match
+'''
 
 
 class QuestNameplateBehaviour(unittest.TestCase):
@@ -250,4 +261,48 @@ class QuestNameplateBehaviour(unittest.TestCase):
         for i=1,5 do tick(0.6);emit('QUEST_LOG_UPDATE');runTimers() end
         assert((bar.icon.hideCalls or 0)==hides,'Unchanged polling must not hide the bag')
         assert(bar.icon.showCalls==shows,'Unchanged polling must not reshow the bag')
+        ''')
+
+    def test_forever_surname_does_not_lose_own_grouped_kill_progress(self):
+        self.lua.execute(NATIVE_NAMES + FOREVER_NAMES)
+        self.lua.execute('''
+        local p,bar=addPlate('nameplate1',tooltip(objective(2,8,false)))
+        local q,other=addPlate('nameplate2',tooltip(objective(2,8,false)))
+        runTimers();assert(visible(bar) and visible(other))
+        local grouped=tooltip({type=18,leftText='Zeig'},objective(3,8,false),
+            {type=18,leftText='Dark'},objective(5,8,false))
+        units.nameplate1.data=grouped;units.nameplate2.data=grouped
+        emit('QUEST_LOG_UPDATE');runTimers()
+        assert(visible(bar) and visible(other),'Own unfinished goals must survive grouped tooltip names')
+        grouped.lines[3]=objective(8,8,true)
+        emit('QUEST_LOG_UPDATE');runTimers()
+        assert(not visible(bar) and not visible(other),'Party member progress must not keep own completed goals marked')
+        grouped.lines[2].leftText='Zeigbert';grouped.lines[3]=objective(1,8,false)
+        emit('QUEST_LOG_UPDATE');runTimers();assert(not visible(bar))
+        ''')
+
+    def test_forever_grouped_marker_shows_without_prior_solo_sighting(self):
+        self.lua.execute(NATIVE_NAMES + FOREVER_NAMES)
+        self.lua.execute('''
+        local p,bar=addPlate('nameplate1',tooltip(
+            {type=18,leftText='Dark'},objective(5,8,false),
+            {type=18,leftText='|cffffff00Zeig|r'},objective(3,8,false)))
+        runTimers();assert(visible(bar),'First sighting in a group must show own objective')
+        units.nameplate1.data.lines[5]=objective(8,8,true)
+        emit('QUEST_LOG_UPDATE');runTimers();assert(not visible(bar))
+        ''')
+
+    def test_forever_full_names_and_single_names_keep_exact_matching(self):
+        self.lua.execute(NATIVE_NAMES + FOREVER_NAMES)
+        self.lua.execute('''
+        local data=tooltip({type=18,leftText='Zeig Mal'},objective(3,8,false))
+        local p,bar=addPlate('nameplate1',data)
+        runTimers();assert(visible(bar))
+        data.lines[2].leftText='Zeig Mal-ClassicBetaPvE'
+        emit('QUEST_LOG_UPDATE');runTimers();assert(visible(bar))
+        data.lines[2].leftText='Zeigbert'
+        emit('QUEST_LOG_UPDATE');runTimers();assert(not visible(bar))
+        function UnitName() return 'Tester',nil end
+        data.lines[2].leftText='Tester'
+        emit('QUEST_LOG_UPDATE');runTimers();assert(visible(bar))
         ''')
