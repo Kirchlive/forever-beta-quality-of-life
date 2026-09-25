@@ -146,7 +146,7 @@ class TurnInBehaviour(unittest.TestCase):
         self.lua.execute('''
         BetaQoLDB={autoAccept=false,fastLoot=false,enterConfirm=false,rangeColor=false}
         emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
-        assert(#checkboxes==10 and checkboxes[2]:GetChecked() and BetaQoLDB.autoTurnIn and checkboxes[6]:GetChecked() and checkboxes[7]:GetChecked())
+        assert(#checkboxes==11 and checkboxes[2]:GetChecked() and BetaQoLDB.autoTurnIn and checkboxes[6]:GetChecked() and checkboxes[7]:GetChecked())
         assert(not checkboxes[1]:GetChecked() and not checkboxes[3]:GetChecked()
             and not checkboxes[4]:GetChecked() and not checkboxes[5]:GetChecked())
         ''')

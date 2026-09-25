@@ -3,6 +3,31 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.9.5 — Questlog Quest XP (+ for item rewards)
+
+Adds **Questlog Quest XP (+ for item rewards)**, enabled by default with its own `/qol` switch.
+The quest overview displays `[level] [XP] title` using the client-provided
+`GetQuestLogRewardXP(questID)` value and localized number formatting. The explicit
+quest ID avoids changing quest selection. Hidden, unavailable, or invalid reward
+values do not add a label; a known zero reward displays `[0]`. A `+` inside the
+brackets indicates guaranteed or selectable item rewards. Money, reputation
+and currency rewards alone do not add the marker.
+
+Extends the native Camelot title prefix before title measurement and layout,
+keeping native level/elite notation, party counts, title colors, and wrapping.
+Native quest-list rebuilds pick up current values without a reward cache;
+data-load and player-level events also refresh the visible list. The setting
+restores native titles immediately when disabled.
+
+Eight new tests run the pinned native title builder and Camelot prefix, covering
+format/order, repeated builds, elite/group markers, saved settings and toggles,
+missing/hidden rewards, delayed data, level changes, late UI loading and event
+coalescing. All 168 automated tests pass. The user confirmed the XP values,
+layout, and item-reward markers in the live client. Missing reward data is
+displayed when supplied by the client; this feature does not initiate additional
+reward-data requests.
+Released September 25, 2026.
+
 ## Version 0.9.4 — Chat Input History Recall
 
 The user found that Up/Down still required Alt after the 0.9.3 release. Setting

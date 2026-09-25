@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 0.9.4** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
+**Version 0.9.5** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
 
 ## Features
 
@@ -35,11 +35,17 @@
   `/cast` remain in the native Alt+Up/Down history. Disable to restore the previous
   arrow-key mode.
 
+- **Questlog Quest XP (+ for item rewards):** Shows the XP reward between quest level and title in
+  the quest log overview, for example `[16] [4,400] Returning the Lost Satchel`.
+  Adds `+` when guaranteed or selectable item rewards are available, such as
+  `[4,400+]`. Uses the current client reward value and number formatting. Missing or hidden
+  rewards are omitted; disabling restores the standard titles.
+
 **Settings menu:** Type `/qol` in chat to enable or disable features.
 
 ## Installation and updates
 
-1. Download **BetaQoL-0.9.4.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
+1. Download **BetaQoL-0.9.5.zip** from [Releases](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
 2. Extract the `BetaQoL` folder into
    `World of Warcraft\_classic_beta_\Interface\AddOns\`.
    `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`. Keep the included `Media` folder.
@@ -48,7 +54,7 @@
 
 ## Usage
 
-- `/qol`: Open a small settings window with one checkbox per feature. All ten features
+- `/qol`: Open a small settings window with one checkbox per feature. All eleven features
   start enabled. Changes apply immediately; existing saved on/off choices are preserved
   when the client restores SavedVariables. Settings are shared across characters on the account.
 - `/betaqol` or `/fqa`: Toggle Quest Auto Accept and save the choice.

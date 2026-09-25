@@ -8,6 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 COMMIT = '70ef1b2fd78061a73f886c4a1e79dc5b5cff6d5e'
 BASE_URL = f'https://raw.githubusercontent.com/Gethe/wow-ui-source/{COMMIT}/Interface/AddOns/'
 FILES = (
+    'Blizzard_UIPanels_Game/Camelot/QuestMapFrameOverrides.lua',
+    'Blizzard_UIPanels_Game/Mainline/QuestMapFrame.lua',
     'Blizzard_FrameXMLUtil/Camelot/NameUtil.lua',
     'Blizzard_NamePlates/Blizzard_NamePlateBase.lua',
     'Blizzard_EditMode/Shared/EditModeSystemTemplates.lua',

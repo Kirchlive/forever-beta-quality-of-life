@@ -7,6 +7,7 @@ local settings = {
     squareMinimap = true,
     questNameplateBag = true,
     chatArrowKeys = true,
+    questLogXP = true,
 }
 local featureChanged = {}
 local settingsLoaded = false
@@ -71,7 +72,7 @@ SlashCmdList.QOL = function()
     end
     local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
     settingsWindow = window
-    window:SetSize(380, 446)
+    window:SetSize(380, 482)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
     window.TitleText:SetText("Beta Quality of Life")
@@ -94,6 +95,7 @@ SlashCmdList.QOL = function()
         { "squareMinimap", "Square Minimap" },
         { "questNameplateBag", "Quest Target Nameplate Icon" },
         { "chatArrowKeys", "Arrow Keys Chat Control" },
+        { "questLogXP", "Questlog Quest XP (+ for item rewards)" },
     }
     for index, feature in ipairs(features) do
         local key = feature[1]
@@ -111,6 +113,81 @@ SlashCmdList.QOL = function()
     RefreshSettings()
     window:Show()
 end
+
+-- Extend the native prefix before WoW measures and lays out each quest row.
+local questXPFrame = CreateFrame("Frame")
+local questXPHooked = false
+local questXPRefreshPending = false
+
+local function HasQuestRewardItems(countFunction, questID)
+    if type(countFunction) ~= "function" then return false end
+    -- Choice counts omit currencies by default, as in the native item tooltip.
+    local ok, count = pcall(countFunction, questID)
+    return ok and not (issecretvalue and issecretvalue(count))
+        and type(count) == "number" and count > 0
+end
+
+local function RefreshQuestXP()
+    if questXPRefreshPending or not QuestScrollFrame or not QuestScrollFrame:IsVisible()
+        or type(QuestLogQuests_Update) ~= "function" then
+        return
+    end
+    questXPRefreshPending = true
+    C_Timer.After(0, function()
+        questXPRefreshPending = false
+        if QuestScrollFrame and QuestScrollFrame:IsVisible() then
+            QuestLogQuests_Update()
+        end
+    end)
+end
+
+local function HookQuestXP()
+    if not settingsLoaded or questXPHooked or not QuestMapFrameOverrides
+        or type(QuestMapFrameOverrides.GetQuestTitlePrefix) ~= "function" then
+        return
+    end
+    local nativePrefix = QuestMapFrameOverrides.GetQuestTitlePrefix
+    QuestMapFrameOverrides.GetQuestTitlePrefix = function(info)
+        local prefix = nativePrefix(info)
+        if not settings.questLogXP or info.isHeader or not info.questID
+            or type(GetQuestLogRewardXP) ~= "function" then
+            return prefix
+        end
+        if C_QuestLog.ShouldShowQuestRewards and not C_QuestLog.ShouldShowQuestRewards(info.questID) then
+            return prefix
+        end
+        if HaveQuestRewardData and not HaveQuestRewardData(info.questID) then
+            return prefix
+        end
+        -- The explicit quest ID keeps the selected quest and details unchanged.
+        local ok, xp = pcall(GetQuestLogRewardXP, info.questID)
+        if not ok or (issecretvalue and issecretvalue(xp)) or type(xp) ~= "number"
+            or xp < 0 or xp ~= xp or xp == math.huge then
+            return prefix
+        end
+        local hasItems = HasQuestRewardItems(GetNumQuestLogRewards, info.questID)
+            or HasQuestRewardItems(GetNumQuestLogChoices, info.questID)
+        return (prefix or "") .. "[" .. BreakUpLargeNumbers(xp) .. (hasItems and "+" or "") .. "] "
+    end
+    questXPHooked = true
+    questXPFrame:UnregisterEvent("ADDON_LOADED")
+    RefreshQuestXP()
+end
+
+featureChanged.questLogXP = function()
+    HookQuestXP()
+    RefreshQuestXP()
+end
+questXPFrame:RegisterEvent("ADDON_LOADED")
+questXPFrame:RegisterEvent("QUEST_DATA_LOAD_RESULT")
+questXPFrame:RegisterEvent("PLAYER_LEVEL_UP")
+questXPFrame:SetScript("OnEvent", function(_, event)
+    if event == "ADDON_LOADED" then
+        HookQuestXP()
+    elseif settingsLoaded and settings.questLogXP then
+        RefreshQuestXP()
+    end
+end)
 
 -- Native edit-box arrow handling only consumes keys while the box has focus.
 local chatArrowModes = {}
