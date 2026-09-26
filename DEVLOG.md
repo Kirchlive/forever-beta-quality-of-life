@@ -5,6 +5,15 @@ The concise feature overview and installation instructions are in the [README](R
 Entries below are historical records, including superseded experiments. Current
 release status and remaining checks are in [RELEASE.md](RELEASE.md).
 
+## Version 1.0.1 - Missing Spell Check defaults off
+
+Changed only the missingSpellCheck default to false. The existing loader continues
+to preserve valid saved booleans, so previously enabled installations stay enabled
+until the user switches them off. Missing/invalid preferences now initialize off.
+Updated default-state UI fixtures and added a silent-start regression covering
+fresh, absent and invalid values; explicit enabled/disabled behavior remains covered.
+All 275 tests pass. Published as the latest stable patch release.
+
 ## Version 1.0.0 - Latest stable release
 
 Published the current code and documentation as v1.0.0 at the user's request,

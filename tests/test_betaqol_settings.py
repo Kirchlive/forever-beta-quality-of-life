@@ -17,7 +17,7 @@ class SettingsBehaviour(unittest.TestCase):
         assert(#checkboxes==0)
         SlashCmdList.QOL()
         assert(#checkboxes==19 and #UISpecialFrames==1)
-        for index,box in ipairs(checkboxes) do assert(box:GetChecked()==true) end
+        for index,box in ipairs(checkboxes) do assert(box:GetChecked()==(index~=19)) end
         clickSetting(1,false); emit('QUEST_DETAIL'); assert(not journal[9173])
         assert(BetaQoLDB.fastLoot and BetaQoLDB.enterConfirm and BetaQoLDB.rangeColor)
         SlashCmdList.BETAQOL(); assert(checkboxes[1]:GetChecked())

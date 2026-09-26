@@ -1,7 +1,14 @@
 # Changelog
 
-Current release: **1.0.0**.
+Current release: **1.0.1**.
 Intermediate builds and research are recorded in [DEVLOG.md](DEVLOG.md).
+
+## 1.0.1 - 2026-09-26
+
+Missing Spell Check now defaults to disabled for fresh, missing or invalid saved
+preferences. Existing explicit on/off choices are preserved. Low Spell Rank Check
+and all other feature defaults are unchanged. Enable Missing Spell Check in /qol
+when desired; it runs at the next login/reload.
 
 ## 1.0.0 - 2026-09-26
 

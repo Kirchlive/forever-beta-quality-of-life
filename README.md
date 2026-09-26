@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 1.0.0** | WoW Forever Beta 1.60.1 | Interface 16001 | No dependencies.
+**Version 1.0.1** | WoW Forever Beta 1.60.1 | Interface 16001 | No dependencies.
 
 Open settings with `/qol` or the Mana button on the minimap.
 [Installation](#installation-and-updates) | [Settings](#settings-window) | [License](#license-and-data-attribution)
@@ -13,8 +13,9 @@ Open settings with `/qol` or the Mana button on the minimap.
 
 ## Features
 
-All 19 switches start enabled on a fresh installation. Existing saved choices
-are preserved. The groups below match the settings window.
+Missing Spell Check starts disabled on a fresh installation; the other 18
+switches start enabled. Existing saved choices are preserved, including a
+previously enabled Missing Spell Check. The groups below match the settings window.
 
 ### Quests
 
@@ -172,8 +173,9 @@ are preserved. The groups below match the settings window.
   example `BetaQoL: Smite not in actionbar.`, with a yellow `BetaQoL:` prefix.
   General, passive abilities, unlearned and off-spec entries are excluded.
   Shares the rank check's direct-action scope, login/reload timing and combat
-  deferral. Does not place spells or alter your bars. Enabled by default; its
-  separate `/qol` switch applies at the next login/reload.
+  deferral. Does not place spells or alter your bars. Disabled by default; enable
+  its separate `/qol` switch to run it at the next login/reload. Updates preserve
+  an existing saved on/off choice.
 
 ## Settings window
 
@@ -197,7 +199,7 @@ Drag the window to move it and press Escape to close it.
 
 ## Installation and updates
 
-1. Download **BetaQoL-1.0.0.zip** from [Latest release](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
+1. Download **BetaQoL-1.0.1.zip** from [Latest release](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
 2. Extract the `BetaQoL` folder into
    `World of Warcraft\_classic_beta_\Interface\AddOns\`.
    `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`. Keep the included `Media` and `Data` folders.
@@ -212,8 +214,8 @@ run `/console taintLog 0` before reloading. All other existing features remain a
 
 ## Usage
 
-- `/qol`: Open the settings window with one checkbox per feature. Available features
-  start enabled. Most changes apply immediately; spell checks run at the next
+- `/qol`: Open the settings window with one checkbox per feature. Missing Spell Check
+  starts disabled; other features start enabled. Most changes apply immediately; spell checks run at the next
   login or reload. Existing saved on/off choices are preserved
   when the client restores SavedVariables. Settings are shared across characters on the account.
 - `/betaqol` or `/fqa`: Toggle Quest Auto Accept and save the choice.
@@ -252,7 +254,7 @@ attribution; the MIT grant does not relicense them. See
 
 ## Release status and documentation
 
-**1.0.0** is the current release, including the latest Controls ordering with
+**1.0.1** is the current release, including the latest Controls ordering with
 Panel Arrow Keys first. It includes 19 features, the compact settings window,
 minimap access and the MIT code license.
 

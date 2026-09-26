@@ -1,20 +1,21 @@
-# Release 1.0.0
+# Release 1.0.1
 
-Current release: **1.0.0**, targeting WoW Forever Beta 1.60.1, build 70009,
-Interface 16001. GitHub tag: `v1.0.0`; archive: `BetaQoL-1.0.0.zip`.
+Current release: **1.0.1**, targeting WoW Forever Beta 1.60.1, build 70009,
+Interface 16001. GitHub tag: `v1.0.1`; archive: `BetaQoL-1.0.1.zip`.
 The release is marked **Latest**, so [the stable download link](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest)
-opens 1.0.0. The older dev.25 prerelease remains available separately.
+opens 1.0.1. The older dev.25 prerelease remains available separately.
 
 ## Included and verified
 
-- 19 independently switchable features, saved keys preserved.
+- 19 independently switchable features, saved keys preserved. Missing Spell Check
+  now defaults off; explicit saved choices are preserved.
 - Final Controls ordering: Panel Arrow Keys first, followed by the Backspace,
   Enter and reload shortcuts.
 - Compact searchable settings window and Primal Mana minimap launcher.
 - Completed quest-item catalog snapshot with 17,015 NPC/item pairs.
 - MIT license for original work, separate GPL data and third-party notices.
 - Four unchanged user-supplied README screenshots, bundled in the archive.
-- 274 passing automated tests; ZIP integrity and contents checked against source.
+- 275 passing automated tests; ZIP integrity and contents checked against source.
 
 Tests do not run the game renderer, server or secret-value/taint VM. Earlier live
 feedback is recorded in DEVLOG. The comprehensive regression checklist in

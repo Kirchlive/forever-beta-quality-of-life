@@ -116,7 +116,7 @@ class SettingsLayout(unittest.TestCase):
         assert(not window.FooterToggle:IsShown() and not window.CategoryToggle:IsShown())
         assert(window.FooterPanel:IsShown() and window.ListScroll:GetHeight()==height)
         for _,header in pairs(window.CategoryHeaders) do assert(header:IsShown()) end
-        for _,box in ipairs(checkboxes) do assert(box:GetChecked()) end
+        for index,box in ipairs(checkboxes) do assert(box:GetChecked()==(index~=19)) end
         ''')
 
     def test_flat_list_removes_headers_gaps_and_collapsed_category_filter(self):

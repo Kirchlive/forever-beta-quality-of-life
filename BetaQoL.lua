@@ -17,7 +17,7 @@ local settings = {
     professionArrowKeys = true,
     fasterChatScroll = true,
     lowSpellReminder = true,
-    missingSpellCheck = true,
+    missingSpellCheck = false,
 }
 local featureChanged = {}
 local settingsLoaded = false

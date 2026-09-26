@@ -7,6 +7,17 @@ class MissingSpells(unittest.TestCase):
     def make(self, setup=''):
         return leveling.LevelingFeatures().make('BetaQoLDB={lowSpellReminder=false,missingSpellCheck=true}; '+setup)
 
+    def test_missing_or_invalid_preference_defaults_off_without_messages(self):
+        for settings in ('nil', '{lowSpellReminder=false}', '{lowSpellReminder=false,missingSpellCheck="true"}'):
+            with self.subTest(settings=settings):
+                lua=leveling.LevelingFeatures().make('BetaQoLDB='+settings+'; actions={}')
+                lua.execute("""
+                emit('PLAYER_ENTERING_WORLD',true,false); runTimers()
+                assert(BetaQoLDB.missingSpellCheck==false)
+                assert(#messages==0)
+                SlashCmdList.QOL(); assert(not checkboxes[19]:GetChecked())
+                """)
+
     def test_missing_spell_warns_once_per_family_with_yellow_prefix(self):
         lua=self.make("actions={[1]={'spell',100}}")
         lua.execute('''

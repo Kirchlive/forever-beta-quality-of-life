@@ -16,7 +16,7 @@ python -m unittest discover -s tests -v
 python tools/build_release.py
 ```
 
-The 274 tests use `lupa.lua51` to run the addon with simulated client APIs. Loot,
+The 275 tests use `lupa.lua51` to run the addon with simulated client APIs. Loot,
 popup, action bar, whisper tab, and item deletion tests also execute selected native UI code,
 including the chat tab's XML double-click handler, Forever's minimap rotation skin,
 native Edit Mode scaling, quest-title formatting and return-from-quest-details behavior.
@@ -28,7 +28,7 @@ release archives. Fetching them requires internet access.
 ## Runtime and live-client validation
 
 Preserve saved setting keys when renaming labels. BetaQoLDB is account-wide;
-explicit false values must survive restoration. New switches default on. Most
+explicit false values must survive restoration. Missing Spell Check defaults off; other switches default on. Most
 changes apply immediately; spell checks apply at the next login/reload. The
 minimap launcher is settings access, not a twentieth gameplay switch.
 
@@ -94,7 +94,7 @@ Regenerate the original minimap artwork with `python tools/generate_minimap_art.
 
 ## Current settings and input checks
 
-The 1.0.0 release uses a compact LFG-style settings list. Open `/qol`:
+The 1.0.1 release uses a compact LFG-style settings list. Open `/qol`:
 check portrait/search spacing, the gray toolbar, dark background, full feature names
 and left-aligned category headings with indented rows. Hovering a row or checkbox
 must show its description without changing the setting; clicking either must toggle
@@ -130,10 +130,12 @@ the panel and opening both professions and guild panels: only the active target
 should respond. The interface toggle controls both panels; Chatbox Arrow Keys
 remains a separate toggle for standard chat input behavior.
 
-Missing Spell Check is a separate default-on option: remove all ranks of a
+Missing Spell Check is a separate default-off option: enable it, then remove all ranks of a
 class spell from the mouse/keyboard bars, then reload and check for one yellow
 message. Place any rank to suppress it. General and passive spells must stay
-quiet. Test both options enabled, each option alone, and both disabled.
+quiet. Test both options enabled, each option alone, and both disabled. Also
+verify fresh/missing/invalid saved preferences stay off without messages and
+explicit saved true/false values survive updates.
 
 The addon minimap launcher now uses native icon 132849 with a standard round
 border. Verify its position on the right edge below center with Square Minimap on/off, minimap
