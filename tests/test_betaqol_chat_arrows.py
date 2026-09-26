@@ -68,22 +68,22 @@ class ChatArrowBehaviour(unittest.TestCase):
     def test_defaults_and_immediate_toggle_restore_previous_modes(self):
         self.lua.execute('''
         emit('ADDON_LOADED', 'BetaQoL'); SlashCmdList.QOL()
-        assert(checkboxes[10].Text.text == 'Arrow Keys Chat Control')
+        assert(checkboxes[12].Text.text == 'Arrow Keys Chat Control')
         assert(not normal.mode and not alreadyFree.mode and unrelated.mode)
-        clickSetting(10, false)
+        clickSetting(12, false)
         assert(normal.mode and not alreadyFree.mode)
-        clickSetting(10, true); assert(not normal.mode)
+        clickSetting(12, true); assert(not normal.mode)
         ''')
 
     def test_saved_disabled_setting_and_new_windows(self):
         self.lua.execute('''
         BetaQoLDB = {chatArrowKeys = false}
         emit('ADDON_LOADED', 'BetaQoL'); SlashCmdList.QOL()
-        assert(normal.mode and not checkboxes[10]:GetChecked())
+        assert(normal.mode and not checkboxes[12]:GetChecked())
         local whisper = FCF_OpenTemporaryWindow(); assert(whisper.mode)
-        clickSetting(10, true); assert(not whisper.mode)
+        clickSetting(12, true); assert(not whisper.mode)
         local regular = FCF_OpenNewWindow(); assert(not regular.mode)
-        clickSetting(10, false); assert(regular.mode and whisper.mode)
+        clickSetting(12, false); assert(regular.mode and whisper.mode)
         ''')
 
     def test_autocomplete_open_before_enable_does_not_restore_stale_mode(self):
@@ -91,13 +91,13 @@ class ChatArrowBehaviour(unittest.TestCase):
         startComplete(normal)
         emit('ADDON_LOADED', 'BetaQoL'); SlashCmdList.QOL()
         endComplete(normal); assert(not normal.mode)
-        clickSetting(10, false); assert(normal.mode)
+        clickSetting(12, false); assert(normal.mode)
         ''')
 
     def test_disabling_preserves_autocomplete_navigation_then_restores_alt(self):
         self.lua.execute('''
         emit('ADDON_LOADED', 'BetaQoL'); SlashCmdList.QOL()
-        startComplete(normal); clickSetting(10, false)
+        startComplete(normal); clickSetting(12, false)
         assert(not normal.mode)
         endComplete(normal); assert(normal.mode)
         ''')
@@ -132,9 +132,9 @@ class ChatArrowBehaviour(unittest.TestCase):
         alt=false; ctrl=true; normal:arrow('UP'); assert(normal.text=='draft')
         ctrl=false; shift=true; normal:arrow('UP'); assert(normal.text=='draft')
         shift=false; startComplete(normal); normal:arrow('UP'); assert(normal.text=='draft')
-        endComplete(normal); clickSetting(10,false)
+        endComplete(normal); clickSetting(12,false)
         normal:arrow('UP'); assert(normal.text=='draft')
-        clickSetting(10,true); normal:arrow('UP'); assert(normal.text=='saved')
+        clickSetting(12,true); normal:arrow('UP'); assert(normal.text=='saved')
         ''')
 
     def test_native_secure_commands_are_not_recalled_by_addon(self):

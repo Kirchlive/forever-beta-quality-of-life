@@ -1,0 +1,4360 @@
+{
+  "schema": 1,
+  "source": "Wowhead Forever item dropped-by Listviews",
+  "generated_utc": "2026-09-26T03:02:31+00:00",
+  "coverage": {
+    "catalog_items": 2133,
+    "parsed_items": 2133,
+    "missing_items": [],
+    "invalid_pages": {},
+    "included_items": 176,
+    "included_npcs": 283,
+    "included_pairs": 337
+  },
+  "items": [
+    {
+      "item_id": 732,
+      "name": "Okra",
+      "item_status": "unchanged",
+      "quest_ids": [
+        38
+      ],
+      "drops": [
+        {
+          "npc_id": 276061,
+          "npc_name": "Decrepit Harvester",
+          "npc_status": "new",
+          "count": 2,
+          "outof": 34
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=732",
+      "page_sha256": "798bd8cae7c32c7c8d82d235522adc4dd55610f72e4b9b4d7a496b743a00b35d"
+    },
+    {
+      "item_id": 772,
+      "name": "Large Candle",
+      "item_status": "unchanged",
+      "quest_ids": [
+        60
+      ],
+      "drops": [
+        {
+          "npc_id": 248464,
+          "npc_name": "Nimsy",
+          "npc_status": "new",
+          "count": 54,
+          "outof": 144
+        },
+        {
+          "npc_id": 248474,
+          "npc_name": "Geosculptor Yip",
+          "npc_status": "new",
+          "count": 4,
+          "outof": 132
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=772",
+      "page_sha256": "258935d74e2ce04214301c7d912ec69198a536aacfad7794776e89bb6f4bb92e"
+    },
+    {
+      "item_id": 773,
+      "name": "Gold Dust",
+      "item_status": "unchanged",
+      "quest_ids": [
+        47
+      ],
+      "drops": [
+        {
+          "npc_id": 248464,
+          "npc_name": "Nimsy",
+          "npc_status": "new",
+          "count": 59,
+          "outof": 144
+        },
+        {
+          "npc_id": 248474,
+          "npc_name": "Geosculptor Yip",
+          "npc_status": "new",
+          "count": 4,
+          "outof": 132
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=773",
+      "page_sha256": "5f1243811a51d4f47ffba74d40c8a4e1cf185f9872adf1efb3f999376c8f1411"
+    },
+    {
+      "item_id": 780,
+      "name": "Torn Murloc Fin",
+      "item_status": "unchanged",
+      "quest_ids": [
+        46
+      ],
+      "drops": [
+        {
+          "npc_id": 248278,
+          "npc_name": "Croaky",
+          "npc_status": "new",
+          "count": 17,
+          "outof": 143
+        },
+        {
+          "npc_id": 276180,
+          "npc_name": "Elder Finseer",
+          "npc_status": "new",
+          "count": 3,
+          "outof": 8
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=780",
+      "page_sha256": "a1cf5b24f22bbafc7d5b9d98ce8fc42c196b5eb5534b590856f64a1a212aef7f"
+    },
+    {
+      "item_id": 895,
+      "name": "Worgen Skull",
+      "item_status": "unchanged",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 259897,
+          "npc_name": "Old Fire-Eye",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 3
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=895",
+      "page_sha256": "f664ff4df062a99e8c06dcff957d1f5d60409f52e6fed4fc0eee7fa9fb823c6f"
+    },
+    {
+      "item_id": 896,
+      "name": "Worgen Fang",
+      "item_status": "unchanged",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 259897,
+          "npc_name": "Old Fire-Eye",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 3
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=896",
+      "page_sha256": "c10980ea80394439b44a2e3affa17172494bc4fd6c4aed4ad582a36619de7366"
+    },
+    {
+      "item_id": 1274,
+      "name": "Hops",
+      "item_status": "unchanged",
+      "quest_ids": [
+        117
+      ],
+      "drops": [
+        {
+          "npc_id": 276061,
+          "npc_name": "Decrepit Harvester",
+          "npc_status": "new",
+          "count": 11,
+          "outof": 34
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=1274",
+      "page_sha256": "b2f0251868c9eacd8f3a99d3020a7f616454e8fc23788efea756283a312b5620"
+    },
+    {
+      "item_id": 2671,
+      "name": "Wendigo Mane",
+      "item_status": "unchanged",
+      "quest_ids": [
+        313
+      ],
+      "drops": [
+        {
+          "npc_id": 271486,
+          "npc_name": "Wendigo Shaman",
+          "npc_status": "new",
+          "count": 137,
+          "outof": 1069
+        },
+        {
+          "npc_id": 271530,
+          "npc_name": "Elder Wendigo",
+          "npc_status": "new",
+          "count": 387,
+          "outof": 3311
+        },
+        {
+          "npc_id": 271587,
+          "npc_name": "Frosthowl",
+          "npc_status": "new",
+          "count": 18,
+          "outof": 300
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=2671",
+      "page_sha256": "5acbc3d9de73a20815e526f34fad30836f7b497e7752634c9f0188d0c0a04530"
+    },
+    {
+      "item_id": 2839,
+      "name": "A Letter to Yvette",
+      "item_status": "unchanged",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 260432,
+          "npc_name": "Shadowvale Mystic",
+          "npc_status": "new",
+          "count": 3,
+          "outof": 315
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=2839",
+      "page_sha256": "49873758d89b61238e8c3e8cbe1b3b0af6b563b6e41a0f5739c6736df13d4ebd"
+    },
+    {
+      "item_id": 2859,
+      "name": "Vile Fin Scale",
+      "item_status": "unchanged",
+      "quest_ids": [
+        368
+      ],
+      "drops": [
+        {
+          "npc_id": 250282,
+          "npc_name": "Vile Fin Seer",
+          "npc_status": "new",
+          "count": 40,
+          "outof": 1104
+        },
+        {
+          "npc_id": 250283,
+          "npc_name": "Vile Fin Attacker",
+          "npc_status": "new",
+          "count": 32,
+          "outof": 836
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=2859",
+      "page_sha256": "0e1f0949a59993f80554fda861dfa493f37aa759b09b0a9251758ce1f8072de7"
+    },
+    {
+      "item_id": 2875,
+      "name": "Scarlet Insignia Ring",
+      "item_status": "unchanged",
+      "quest_ids": [
+        374
+      ],
+      "drops": [
+        {
+          "npc_id": 259433,
+          "npc_name": "Tarnished Zealot",
+          "npc_status": "new",
+          "count": 137,
+          "outof": 1670
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=2875",
+      "page_sha256": "82d3d7bbc0feb5eb654e37b5e2fd2f49a0885fbaba2a9e1c27bde93e916baa19"
+    },
+    {
+      "item_id": 2925,
+      "name": "Crocolisk Skin",
+      "item_status": "unchanged",
+      "quest_ids": [
+        385
+      ],
+      "drops": [
+        {
+          "npc_id": 270693,
+          "npc_name": "Daggerfang",
+          "npc_status": "new",
+          "count": 16,
+          "outof": 81
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=2925",
+      "page_sha256": "2c3563f9e093c0492728a1cb4bffe347364b0220db01d5e35ca91988a0f86fa4"
+    },
+    {
+      "item_id": 2939,
+      "name": "Crocolisk Tear",
+      "item_status": "unchanged",
+      "quest_ids": [
+        278
+      ],
+      "drops": [
+        {
+          "npc_id": 270693,
+          "npc_name": "Daggerfang",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 81
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=2939",
+      "page_sha256": "7d7be59b38f4d9adae37072c09adc7d44c3dbf3d755b42ca6e2c4f2a768b4045"
+    },
+    {
+      "item_id": 3163,
+      "name": "Blackened Skull",
+      "item_status": "unchanged",
+      "quest_ids": [
+        426
+      ],
+      "drops": [
+        {
+          "npc_id": 260432,
+          "npc_name": "Shadowvale Mystic",
+          "npc_status": "new",
+          "count": 22,
+          "outof": 315
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=3163",
+      "page_sha256": "5cb0dba3b0a7b282fdfaddfb33ce4306e66c9a8d47b892740d27f8adfd821fe1"
+    },
+    {
+      "item_id": 3253,
+      "name": "Grizzled Bear Heart",
+      "item_status": "unchanged",
+      "quest_ids": [
+        447
+      ],
+      "drops": [
+        {
+          "npc_id": 248299,
+          "npc_name": "Elmpaw",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 40
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=3253",
+      "page_sha256": "69487f29a3165817edb6a007b2340a24c46b73bcdb81b65a35145c40efe10360"
+    },
+    {
+      "item_id": 3412,
+      "name": "Webwood Spider Silk",
+      "item_status": "unchanged",
+      "quest_ids": [
+        488
+      ],
+      "drops": [
+        {
+          "npc_id": 266849,
+          "npc_name": "Ridgeshade Lurker",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 942
+        },
+        {
+          "npc_id": 272096,
+          "npc_name": "Befouled Webwood",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 972
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=3412",
+      "page_sha256": "aea6ea0f34aa725fd6fb34acaa62eae2353c867b8f4aed81ccaed8bfd4a7fde0"
+    },
+    {
+      "item_id": 3692,
+      "name": "Hillsbrad Human Skull",
+      "item_status": "unchanged",
+      "quest_ids": [
+        546
+      ],
+      "drops": [
+        {
+          "npc_id": 266216,
+          "npc_name": "Lord Tomas",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 2
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=3692",
+      "page_sha256": "04075a29a408cc4d791e1318866111540b2458da4c4e215d557250ce578eec59"
+    },
+    {
+      "item_id": 4758,
+      "name": "Prairie Wolf Paw",
+      "item_status": "unchanged",
+      "quest_ids": [
+        748
+      ],
+      "drops": [
+        {
+          "npc_id": 268558,
+          "npc_name": "Chakuyak",
+          "npc_status": "new",
+          "count": 18,
+          "outof": 206
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=4758",
+      "page_sha256": "fa0f5619f1760c8f8e0a59e71f5801b5713aed2a121f8ab06eef89861db105a2"
+    },
+    {
+      "item_id": 4804,
+      "name": "Prairie Wolf Heart",
+      "item_status": "unchanged",
+      "quest_ids": [
+        766
+      ],
+      "drops": [
+        {
+          "npc_id": 268558,
+          "npc_name": "Chakuyak",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 206
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=4804",
+      "page_sha256": "00111d99819087cca529ae76f9c77568066cf92c6eeca4db7ac5fa78f8ea112e"
+    },
+    {
+      "item_id": 4892,
+      "name": "Durotar Tiger Fur",
+      "item_status": "unchanged",
+      "quest_ids": [
+        817
+      ],
+      "drops": [
+        {
+          "npc_id": 276198,
+          "npc_name": "Shal'ma",
+          "npc_status": "new",
+          "count": 21,
+          "outof": 48
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=4892",
+      "page_sha256": "dd855667646749cfc5a6f93545107973923c776b295537650bc1da44d21ff995"
+    },
+    {
+      "item_id": 5085,
+      "name": "Bristleback Quilboar Tusk",
+      "item_status": "unchanged",
+      "quest_ids": [
+        899
+      ],
+      "drops": [
+        {
+          "npc_id": 268624,
+          "npc_name": "Razormane Raider",
+          "npc_status": "new",
+          "count": 268,
+          "outof": 386
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=5085",
+      "page_sha256": "15de6bffe0cf0bb7fb946c66849aa7aef9263067ef0dca268c50c3d0094ea02e"
+    },
+    {
+      "item_id": 5204,
+      "name": "Bloodfeather Belt",
+      "item_status": "unchanged",
+      "quest_ids": [
+        937
+      ],
+      "drops": [
+        {
+          "npc_id": 272034,
+          "npc_name": "Hatescreech",
+          "npc_status": "new",
+          "count": 3,
+          "outof": 143
+        },
+        {
+          "npc_id": 272044,
+          "npc_name": "Windmistress Gaedress",
+          "npc_status": "new",
+          "count": 4,
+          "outof": 120
+        },
+        {
+          "npc_id": 272046,
+          "npc_name": "Witchmother Arysa",
+          "npc_status": "new",
+          "count": 20,
+          "outof": 174
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=5204",
+      "page_sha256": "b6e71e1f37e5a8f2f1fa986933cef41c8a4238b910bda0ba2927573875fa177e"
+    },
+    {
+      "item_id": 6845,
+      "name": "Burning Rock",
+      "item_status": "unchanged",
+      "quest_ids": [
+        1705
+      ],
+      "drops": [
+        {
+          "npc_id": 259897,
+          "npc_name": "Old Fire-Eye",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 3
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=6845",
+      "page_sha256": "2945b0e9b122956b5df1405c89080dbc31e6ecace4c162598448b78f967ac1dd"
+    },
+    {
+      "item_id": 234728,
+      "name": "Hakkari Summoning Token",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 5243,
+          "npc_name": "Cursed Atal'ai",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4792
+        },
+        {
+          "npc_id": 5261,
+          "npc_name": "Enthralled Atal'ai",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4359
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=234728",
+      "page_sha256": "ab483b32b13ef5500a0261e69c27339776790ab6c4d5948e07dc46da66ac78bd"
+    },
+    {
+      "item_id": 235645,
+      "name": "Legashi Firewater Recipe",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 6200,
+          "npc_name": "Legashi Satyr",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 91068
+        },
+        {
+          "npc_id": 6201,
+          "npc_name": "Legashi Rogue",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 98079
+        },
+        {
+          "npc_id": 6202,
+          "npc_name": "Legashi Hellcaller",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 92747
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=235645",
+      "page_sha256": "7cb06b638a8414e32fff296fb90a8e1da98a5d9e686722eb7f165545001b53d3"
+    },
+    {
+      "item_id": 236631,
+      "name": "Bloodmaw's Basher",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 9462,
+          "npc_name": "Chieftain Bloodmaw",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 8451
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=236631",
+      "page_sha256": "a46a98de29871ea533598c46864526714df71cf7818c212917e36d853eecd648"
+    },
+    {
+      "item_id": 238057,
+      "name": "Krellian's Head",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 8408,
+          "npc_name": "Warlord Krellian",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 962
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=238057",
+      "page_sha256": "6d768d0261db1815b36f44e25d36d0a0e13fec191cdbdc839cd2a6153ac6cbaa"
+    },
+    {
+      "item_id": 238463,
+      "name": "Mosshoof Hide",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 8759,
+          "npc_name": "Mosshoof Runner",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 2256
+        },
+        {
+          "npc_id": 8760,
+          "npc_name": "Mosshoof Stag",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 170
+        },
+        {
+          "npc_id": 8761,
+          "npc_name": "Mosshoof Courser",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 22839
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=238463",
+      "page_sha256": "72072d2952cf7041190d461c8f467e095aadd53a16323f69cdf4c66462a7f968"
+    },
+    {
+      "item_id": 238507,
+      "name": "Mammoth Shark Steak",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 12125,
+          "npc_name": "Mammoth Shark",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 11
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=238507",
+      "page_sha256": "85e0d9de7f2d78d76c87ddc557d443c6cbd23edcd4d09bdf466b2a48494b7b8e"
+    },
+    {
+      "item_id": 238798,
+      "name": "Toxic Essence",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 7132,
+          "npc_name": "Toxic Horror",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 167502
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=238798",
+      "page_sha256": "ca67e1cb9e10033a26acde380e065285b1c3e0fb958aaccee52d45af3e68686d"
+    },
+    {
+      "item_id": 247826,
+      "name": "Croaky's Head",
+      "item_status": "new",
+      "quest_ids": [
+        91740
+      ],
+      "drops": [
+        {
+          "npc_id": 248278,
+          "npc_name": "Croaky",
+          "npc_status": "new",
+          "count": 122,
+          "outof": 143
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=247826",
+      "page_sha256": "3ecd0b45054d96622d7178137a1cf9d1c3d42d6511cfe05a05f990e3c6276212"
+    },
+    {
+      "item_id": 247834,
+      "name": "Nibbled-On Book",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 6,
+          "npc_name": "Kobold Vermin",
+          "npc_status": "unchanged",
+          "count": 370,
+          "outof": 74187
+        },
+        {
+          "npc_id": 80,
+          "npc_name": "Kobold Laborer",
+          "npc_status": "unchanged",
+          "count": 3,
+          "outof": 76964
+        },
+        {
+          "npc_id": 257,
+          "npc_name": "Kobold Worker",
+          "npc_status": "unchanged",
+          "count": 38,
+          "outof": 84041
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=247834",
+      "page_sha256": "23556452dd8a13b4e2941cf9bcb7a02e0336cf243aa7e0dd1c11969da3a84e09"
+    },
+    {
+      "item_id": 247839,
+      "name": "Stolen Book",
+      "item_status": "new",
+      "quest_ids": [
+        91743
+      ],
+      "drops": [
+        {
+          "npc_id": 6,
+          "npc_name": "Kobold Vermin",
+          "npc_status": "unchanged",
+          "count": 621,
+          "outof": 74187
+        },
+        {
+          "npc_id": 80,
+          "npc_name": "Kobold Laborer",
+          "npc_status": "unchanged",
+          "count": 411,
+          "outof": 76964
+        },
+        {
+          "npc_id": 257,
+          "npc_name": "Kobold Worker",
+          "npc_status": "unchanged",
+          "count": 1914,
+          "outof": 84041
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=247839",
+      "page_sha256": "c082ecc8c368068d9332d2549551953e2663903127dfbff18d1a4a65b1d30638"
+    },
+    {
+      "item_id": 247862,
+      "name": "Elmpaw's Head",
+      "item_status": "new",
+      "quest_ids": [
+        91746
+      ],
+      "drops": [
+        {
+          "npc_id": 248299,
+          "npc_name": "Elmpaw",
+          "npc_status": "new",
+          "count": 36,
+          "outof": 40
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=247862",
+      "page_sha256": "0342aee10e1c4f5777e72b09a6b5c9cc3c2bb5e17b992c088e248ebf8a0664b1"
+    },
+    {
+      "item_id": 247877,
+      "name": "Rough Wolf Pelt",
+      "item_status": "new",
+      "quest_ids": [
+        91751
+      ],
+      "drops": [
+        {
+          "npc_id": 118,
+          "npc_name": "Prowler",
+          "npc_status": "unchanged",
+          "count": 55,
+          "outof": 99088
+        },
+        {
+          "npc_id": 1922,
+          "npc_name": "Gray Forest Wolf",
+          "npc_status": "unchanged",
+          "count": 197,
+          "outof": 47045
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=247877",
+      "page_sha256": "0943aaf7f205e3e6fe8f30341c6b7b7b6e3ef4e7e8b74f12f574efd4d6fcf23e"
+    },
+    {
+      "item_id": 247886,
+      "name": "Sack of \"Picture\" Books",
+      "item_status": "new",
+      "quest_ids": [
+        91752
+      ],
+      "drops": [
+        {
+          "npc_id": 248362,
+          "npc_name": "Shinyfinder Narf",
+          "npc_status": "new",
+          "count": 210,
+          "outof": 328
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=247886",
+      "page_sha256": "6b9f0bdec40b8f4c723d96b03ea75441d0681b81ca457ea17218706aa87383bb"
+    },
+    {
+      "item_id": 248001,
+      "name": "Lost Book",
+      "item_status": "new",
+      "quest_ids": [
+        91775
+      ],
+      "drops": [
+        {
+          "npc_id": 40,
+          "npc_name": "Kobold Miner",
+          "npc_status": "unchanged",
+          "count": 514,
+          "outof": 120534
+        },
+        {
+          "npc_id": 475,
+          "npc_name": "Kobold Tunneler",
+          "npc_status": "unchanged",
+          "count": 946,
+          "outof": 197251
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=248001",
+      "page_sha256": "dd87dc5e0aa41286c83db19e34de15cb7dd66e03c0e9d413aa529d637772bcb9"
+    },
+    {
+      "item_id": 248002,
+      "name": "Picture Book: Fun with Elementals",
+      "item_status": "new",
+      "quest_ids": [
+        91775
+      ],
+      "drops": [
+        {
+          "npc_id": 248464,
+          "npc_name": "Nimsy",
+          "npc_status": "new",
+          "count": 87,
+          "outof": 144
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=248002",
+      "page_sha256": "711b5cb51b56691aed9930f311587adc8ca3c9fd0c64c4db0b81ec1c098918ec"
+    },
+    {
+      "item_id": 248003,
+      "name": "Geomancy for Curious Young Wizards",
+      "item_status": "new",
+      "quest_ids": [
+        91777
+      ],
+      "drops": [
+        {
+          "npc_id": 248474,
+          "npc_name": "Geosculptor Yip",
+          "npc_status": "new",
+          "count": 65,
+          "outof": 132
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=248003",
+      "page_sha256": "e8166d3862a8498036485ae5e2a93dff97446c084f1d86ad0f4ea847a4f33152"
+    },
+    {
+      "item_id": 248004,
+      "name": "Arcane Explainer: Magical Stuff in Simple Words",
+      "item_status": "new",
+      "quest_ids": [
+        91777
+      ],
+      "drops": [
+        {
+          "npc_id": 471,
+          "npc_name": "Mother Fang",
+          "npc_status": "updated",
+          "count": 217,
+          "outof": 2123
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=248004",
+      "page_sha256": "8695f631f4632fe927b810e00e56268f95df2e9fa665b47b2e7fac32ea8ee3bd"
+    },
+    {
+      "item_id": 251918,
+      "name": "Scrawny Ursera Claw",
+      "item_status": "new",
+      "quest_ids": [
+        92473
+      ],
+      "drops": [
+        {
+          "npc_id": 250926,
+          "npc_name": "Scrawny Ursera",
+          "npc_status": "new",
+          "count": 4456,
+          "outof": 10286
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=251918",
+      "page_sha256": "587d9d5bf23dfdb953e2ab4e2f7a4a57012ad754caa700ee1def3ace6cd74e0c"
+    },
+    {
+      "item_id": 251924,
+      "name": "Signet of Akir",
+      "item_status": "new",
+      "quest_ids": [
+        92466
+      ],
+      "drops": [
+        {
+          "npc_id": 251145,
+          "npc_name": "Al'Aketh Brute",
+          "npc_status": "new",
+          "count": 7,
+          "outof": 4162
+        },
+        {
+          "npc_id": 251160,
+          "npc_name": "Al'Aketh Convert",
+          "npc_status": "new",
+          "count": 81,
+          "outof": 6325
+        },
+        {
+          "npc_id": 251448,
+          "npc_name": "Al'Aketh Neophyte",
+          "npc_status": "new",
+          "count": 3,
+          "outof": 2961
+        },
+        {
+          "npc_id": 252666,
+          "npc_name": "Commander Belguilos",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 322
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=251924",
+      "page_sha256": "cc6b9f3a315be1374f639d845ec2027e0c878f557ee82bc7a96803f19ae38827"
+    },
+    {
+      "item_id": 252661,
+      "name": "Commander Cyclas's Head",
+      "item_status": "new",
+      "quest_ids": [
+        92550
+      ],
+      "drops": [
+        {
+          "npc_id": 251966,
+          "npc_name": "Commander Cyclas",
+          "npc_status": "new",
+          "count": 597,
+          "outof": 616
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=252661",
+      "page_sha256": "d07f8cb382e39209905626f68a2d5c6f277b25891920d4379659a805dd292962"
+    },
+    {
+      "item_id": 252665,
+      "name": "Head of Urs'anah",
+      "item_status": "new",
+      "quest_ids": [
+        92470
+      ],
+      "drops": [
+        {
+          "npc_id": 251115,
+          "npc_name": "Urs'anah",
+          "npc_status": "new",
+          "count": 675,
+          "outof": 855
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=252665",
+      "page_sha256": "85bdc6e6af5af09fd8c8251e7fec6c85e8758515ac9fa3f5745c2f140c7c8fb1"
+    },
+    {
+      "item_id": 252670,
+      "name": "Prideclaw Pelt",
+      "item_status": "new",
+      "quest_ids": [
+        92515
+      ],
+      "drops": [
+        {
+          "npc_id": 251245,
+          "npc_name": "Prideclaw",
+          "npc_status": "new",
+          "count": 6592,
+          "outof": 14432
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=252670",
+      "page_sha256": "faa955ae6015856ec05c7f3decfdc2f6a38a1ea3ee6071ba0d135c8a475380f8"
+    },
+    {
+      "item_id": 252760,
+      "name": "Stolen Shen'dar Supplies",
+      "item_status": "new",
+      "quest_ids": [
+        92551
+      ],
+      "drops": [
+        {
+          "npc_id": 252068,
+          "npc_name": "Al'Aketh Stormcaller",
+          "npc_status": "new",
+          "count": 4507,
+          "outof": 9326
+        },
+        {
+          "npc_id": 254596,
+          "npc_name": "Al'Aketh Healer",
+          "npc_status": "new",
+          "count": 3,
+          "outof": 2437
+        },
+        {
+          "npc_id": 259385,
+          "npc_name": "Tel'daeor the Stormspeaker",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 26
+        },
+        {
+          "npc_id": 259398,
+          "npc_name": "Galemender Delanea",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 9
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=252760",
+      "page_sha256": "ed7d5b64ee36c075a6a6204d638bb18b9fa2af08c0ef9963a104de60ed424c66"
+    },
+    {
+      "item_id": 253596,
+      "name": "Blood-Stained Bandit Mask",
+      "item_status": "new",
+      "quest_ids": [
+        92685
+      ],
+      "drops": [
+        {
+          "npc_id": 252820,
+          "npc_name": "Bandit Highwayman",
+          "npc_status": "new",
+          "count": 3411,
+          "outof": 8999
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=253596",
+      "page_sha256": "d5de0a954a5d1ac9b0793f6677eab366eac9cd165c5d0290ab145af59d140aac"
+    },
+    {
+      "item_id": 253597,
+      "name": "Lowlands Galestrider Tenderloin",
+      "item_status": "new",
+      "quest_ids": [
+        92684
+      ],
+      "drops": [
+        {
+          "npc_id": 251707,
+          "npc_name": "Ornery Galestrider",
+          "npc_status": "new",
+          "count": 3457,
+          "outof": 12760
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=253597",
+      "page_sha256": "a355d1094252e74f94a55f5dcae466bd94b616c1ce12050483e8b99d483057eb"
+    },
+    {
+      "item_id": 253710,
+      "name": "Bruuz's Dorsal Fin",
+      "item_status": "new",
+      "quest_ids": [
+        92706
+      ],
+      "drops": [
+        {
+          "npc_id": 209797,
+          "npc_name": "Bruuz",
+          "npc_status": "unchanged",
+          "count": 145,
+          "outof": 145
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=253710",
+      "page_sha256": "092314e046ebeb9078a1a780a1f7f69f779b8a71231f56474bb93e1d988adfaf"
+    },
+    {
+      "item_id": 254378,
+      "name": "Shriekling Talons",
+      "item_status": "new",
+      "quest_ids": [
+        92741
+      ],
+      "drops": [
+        {
+          "npc_id": 256092,
+          "npc_name": "Shadowgale Shriekling",
+          "npc_status": "new",
+          "count": 1963,
+          "outof": 11680
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=254378",
+      "page_sha256": "490ba393fb08a27701fddafcaa6b63d445b4590122967195f0f38c0f6b5b9e26"
+    },
+    {
+      "item_id": 254548,
+      "name": "Longshore Murloc Gill",
+      "item_status": "new",
+      "quest_ids": [
+        92744
+      ],
+      "drops": [
+        {
+          "npc_id": 126,
+          "npc_name": "Murloc Coastrunner",
+          "npc_status": "unchanged",
+          "count": 637,
+          "outof": 43844
+        },
+        {
+          "npc_id": 127,
+          "npc_name": "Murloc Tidehunter",
+          "npc_status": "unchanged",
+          "count": 23,
+          "outof": 29193
+        },
+        {
+          "npc_id": 171,
+          "npc_name": "Murloc Warrior",
+          "npc_status": "unchanged",
+          "count": 142,
+          "outof": 29894
+        },
+        {
+          "npc_id": 456,
+          "npc_name": "Murloc Minor Oracle",
+          "npc_status": "unchanged",
+          "count": 244,
+          "outof": 14011
+        },
+        {
+          "npc_id": 458,
+          "npc_name": "Murloc Hunter",
+          "npc_status": "unchanged",
+          "count": 103,
+          "outof": 14013
+        },
+        {
+          "npc_id": 513,
+          "npc_name": "Murloc Netter",
+          "npc_status": "unchanged",
+          "count": 181,
+          "outof": 12081
+        },
+        {
+          "npc_id": 515,
+          "npc_name": "Murloc Raider",
+          "npc_status": "unchanged",
+          "count": 410,
+          "outof": 24747
+        },
+        {
+          "npc_id": 517,
+          "npc_name": "Murloc Oracle",
+          "npc_status": "unchanged",
+          "count": 40,
+          "outof": 28595
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=254548",
+      "page_sha256": "29d29fa2a329428eb6d621d74f1f3289878ecb2ee13a0677b6115bab7f1f788c"
+    },
+    {
+      "item_id": 254663,
+      "name": "Gently Cursed Bone",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 11561,
+          "npc_name": "Undead Ravager",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 43879
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=254663",
+      "page_sha256": "86681fdef07b78f807b4019c2d8d3b6201f43aabb02fc506baa7c4c0c06bc839"
+    },
+    {
+      "item_id": 255155,
+      "name": "Precessive Autocognition Assembly",
+      "item_status": "new",
+      "quest_ids": [
+        92910
+      ],
+      "drops": [
+        {
+          "npc_id": 36,
+          "npc_name": "Harvest Golem",
+          "npc_status": "unchanged",
+          "count": 17,
+          "outof": 36277
+        },
+        {
+          "npc_id": 114,
+          "npc_name": "Harvest Watcher",
+          "npc_status": "unchanged",
+          "count": 32,
+          "outof": 162698
+        },
+        {
+          "npc_id": 480,
+          "npc_name": "Rusty Harvest Golem",
+          "npc_status": "unchanged",
+          "count": 6,
+          "outof": 38581
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=255155",
+      "page_sha256": "937e9fdb62668e30e80457b51b281ad8be77ee4701e86ad1a8a53a60673ed208"
+    },
+    {
+      "item_id": 255658,
+      "name": "Al'Aketh Windstone Charm",
+      "item_status": "new",
+      "quest_ids": [
+        92834,
+        93740
+      ],
+      "drops": [
+        {
+          "npc_id": 252664,
+          "npc_name": "Al'Aketh Stormchaser",
+          "npc_status": "new",
+          "count": 73,
+          "outof": 11398
+        },
+        {
+          "npc_id": 252665,
+          "npc_name": "Al'Aketh Footsoldier",
+          "npc_status": "new",
+          "count": 21,
+          "outof": 3149
+        },
+        {
+          "npc_id": 252762,
+          "npc_name": "Al'Aketh Guardian",
+          "npc_status": "new",
+          "count": 24,
+          "outof": 2857
+        },
+        {
+          "npc_id": 252763,
+          "npc_name": "Al'Aketh Spiritcaller",
+          "npc_status": "new",
+          "count": 22,
+          "outof": 3082
+        },
+        {
+          "npc_id": 252764,
+          "npc_name": "Al'Aketh Skypriest",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 1405
+        },
+        {
+          "npc_id": 252765,
+          "npc_name": "Al'Aketh Blademaster",
+          "npc_status": "new",
+          "count": 17,
+          "outof": 2624
+        },
+        {
+          "npc_id": 252767,
+          "npc_name": "Al'Aketh Honor Guard",
+          "npc_status": "new",
+          "count": 2,
+          "outof": 1317
+        },
+        {
+          "npc_id": 253195,
+          "npc_name": "Al'Aketh Preacher",
+          "npc_status": "new",
+          "count": 925,
+          "outof": 2640
+        },
+        {
+          "npc_id": 253511,
+          "npc_name": "Al'Aketh Pillager",
+          "npc_status": "new",
+          "count": 875,
+          "outof": 2768
+        },
+        {
+          "npc_id": 256966,
+          "npc_name": "Skypriest Aanders",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 500
+        },
+        {
+          "npc_id": 270201,
+          "npc_name": "Al'Aketh Brawler",
+          "npc_status": "new",
+          "count": 1650,
+          "outof": 5584
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=255658",
+      "page_sha256": "c7fe655d0a07cfe9111967d592fd2476a70a77c2c7dfa5adf319b9753313617a"
+    },
+    {
+      "item_id": 255875,
+      "name": "Necromantic Garb",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 11559,
+          "npc_name": "Outcast Necromancer",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 3765
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=255875",
+      "page_sha256": "3ebe15cba905a20cfbb1898e8ce39b10f3a8f37f0f100211dc6ef32c0939cbbb"
+    },
+    {
+      "item_id": 257107,
+      "name": "Shriekling Matriarch's Head",
+      "item_status": "new",
+      "quest_ids": [
+        92850
+      ],
+      "drops": [
+        {
+          "npc_id": 253283,
+          "npc_name": "Shriekling Matriarch",
+          "npc_status": "new",
+          "count": 270,
+          "outof": 482
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=257107",
+      "page_sha256": "a07508bebb1bbcec997c70eaa2f946942df10aa713d85bc51dd60f7e55d99c50"
+    },
+    {
+      "item_id": 257215,
+      "name": "Rusty Gadget",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 251676,
+          "npc_name": "Wind Hollow",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 6107
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=257215",
+      "page_sha256": "0558a1263cdeed73bd68ad6aa887ae239ecb1b7a7bd04c86e3b46b9dcc776492"
+    },
+    {
+      "item_id": 257941,
+      "name": "Windsong Crawler Meat",
+      "item_status": "new",
+      "quest_ids": [
+        93317
+      ],
+      "drops": [
+        {
+          "npc_id": 254588,
+          "npc_name": "Windsong Crawler",
+          "npc_status": "new",
+          "count": 3090,
+          "outof": 6228
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=257941",
+      "page_sha256": "ecae1ee41e5abd4eea5c12e11a016c55c6f7f82d40d6c16208e22dd267cd3c8e"
+    },
+    {
+      "item_id": 257942,
+      "name": "Vulgara's Head",
+      "item_status": "new",
+      "quest_ids": [
+        93318
+      ],
+      "drops": [
+        {
+          "npc_id": 254589,
+          "npc_name": "Vulgara the Insatiable",
+          "npc_status": "new",
+          "count": 612,
+          "outof": 757
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=257942",
+      "page_sha256": "ef16689b6092b368f9f7fcce91df1e4324fc9ef65d093fb1b6b159b4cb09842a"
+    },
+    {
+      "item_id": 257945,
+      "name": "Pilfered Windstone",
+      "item_status": "new",
+      "quest_ids": [
+        93319
+      ],
+      "drops": [
+        {
+          "npc_id": 251918,
+          "npc_name": "Highlands Bandit",
+          "npc_status": "new",
+          "count": 6022,
+          "outof": 12541
+        },
+        {
+          "npc_id": 255534,
+          "npc_name": "\"Badwind\" Bennic",
+          "npc_status": "new",
+          "count": 154,
+          "outof": 389
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=257945",
+      "page_sha256": "6e74851bb1f1768194ec142002dabfbe7cc82f7e33d38e744431a61bc283570d"
+    },
+    {
+      "item_id": 258323,
+      "name": "Missing Mail",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 7457,
+          "npc_name": "Rogue Ice Thistle",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 16975
+        },
+        {
+          "npc_id": 7458,
+          "npc_name": "Ice Thistle Yeti",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 64202
+        },
+        {
+          "npc_id": 7459,
+          "npc_name": "Ice Thistle Matriarch",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 16495
+        },
+        {
+          "npc_id": 7460,
+          "npc_name": "Ice Thistle Patriarch",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 16632
+        },
+        {
+          "npc_id": 10197,
+          "npc_name": "Mezzir the Howler",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 536
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=258323",
+      "page_sha256": "b89cdf41ff71815eb45fa6b08577f903a5593567178576cf785361d7347982c3"
+    },
+    {
+      "item_id": 258771,
+      "name": "Al'Alketh Cultist's Ear",
+      "item_status": "new",
+      "quest_ids": [
+        93165,
+        93459
+      ],
+      "drops": [
+        {
+          "npc_id": 252664,
+          "npc_name": "Al'Aketh Stormchaser",
+          "npc_status": "new",
+          "count": 2725,
+          "outof": 11398
+        },
+        {
+          "npc_id": 252665,
+          "npc_name": "Al'Aketh Footsoldier",
+          "npc_status": "new",
+          "count": 696,
+          "outof": 3149
+        },
+        {
+          "npc_id": 252762,
+          "npc_name": "Al'Aketh Guardian",
+          "npc_status": "new",
+          "count": 654,
+          "outof": 2857
+        },
+        {
+          "npc_id": 252763,
+          "npc_name": "Al'Aketh Spiritcaller",
+          "npc_status": "new",
+          "count": 681,
+          "outof": 3082
+        },
+        {
+          "npc_id": 252764,
+          "npc_name": "Al'Aketh Skypriest",
+          "npc_status": "new",
+          "count": 348,
+          "outof": 1405
+        },
+        {
+          "npc_id": 252765,
+          "npc_name": "Al'Aketh Blademaster",
+          "npc_status": "new",
+          "count": 582,
+          "outof": 2624
+        },
+        {
+          "npc_id": 252767,
+          "npc_name": "Al'Aketh Honor Guard",
+          "npc_status": "new",
+          "count": 335,
+          "outof": 1317
+        },
+        {
+          "npc_id": 253195,
+          "npc_name": "Al'Aketh Preacher",
+          "npc_status": "new",
+          "count": 360,
+          "outof": 2640
+        },
+        {
+          "npc_id": 253511,
+          "npc_name": "Al'Aketh Pillager",
+          "npc_status": "new",
+          "count": 321,
+          "outof": 2768
+        },
+        {
+          "npc_id": 253622,
+          "npc_name": "Commander Haalien",
+          "npc_status": "new",
+          "count": 115,
+          "outof": 609
+        },
+        {
+          "npc_id": 257196,
+          "npc_name": "Zaal Stormshield",
+          "npc_status": "new",
+          "count": 3,
+          "outof": 50
+        },
+        {
+          "npc_id": 270201,
+          "npc_name": "Al'Aketh Brawler",
+          "npc_status": "new",
+          "count": 787,
+          "outof": 5584
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=258771",
+      "page_sha256": "87b0853e580c33d817948b9482131449e5897188ec3b0cb4e7b73427b4d3a855"
+    },
+    {
+      "item_id": 262357,
+      "name": "Wind Hollow Essence",
+      "item_status": "new",
+      "quest_ids": [
+        93736
+      ],
+      "drops": [
+        {
+          "npc_id": 251676,
+          "npc_name": "Wind Hollow",
+          "npc_status": "new",
+          "count": 1616,
+          "outof": 6107
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=262357",
+      "page_sha256": "ef12a14dc74797c4ca11c427573779d04ee44445086aa31f2a6b4feb79154ab6"
+    },
+    {
+      "item_id": 263993,
+      "name": "Skybreaker Bulwark",
+      "item_status": "new",
+      "quest_ids": [
+        94003
+      ],
+      "drops": [
+        {
+          "npc_id": 257196,
+          "npc_name": "Zaal Stormshield",
+          "npc_status": "new",
+          "count": 38,
+          "outof": 50
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=263993",
+      "page_sha256": "e9fba2d96d9f334b5caa36c8d26162bfccec954b51eaf9cc9636c45537923042"
+    },
+    {
+      "item_id": 264356,
+      "name": "Iceclaw Bear Pendant",
+      "item_status": "new",
+      "quest_ids": [
+        94373
+      ],
+      "drops": [
+        {
+          "npc_id": 706,
+          "npc_name": "Frostmane Troll Whelp",
+          "npc_status": "unchanged",
+          "count": 162,
+          "outof": 114586
+        },
+        {
+          "npc_id": 946,
+          "npc_name": "Frostmane Novice",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 10033
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=264356",
+      "page_sha256": "76bb790ae7f938c1b3e4031a4399ad6f176956687ef2f00f0daf7b073ab77e02"
+    },
+    {
+      "item_id": 264360,
+      "name": "Diemetradon Meat",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 9162,
+          "npc_name": "Young Diemetradon",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 39233
+        },
+        {
+          "npc_id": 9163,
+          "npc_name": "Diemetradon",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 78539
+        },
+        {
+          "npc_id": 9164,
+          "npc_name": "Elder Diemetradon",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 67263
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=264360",
+      "page_sha256": "1ff96eff68ecb0f18d30e245009ce58b8b2accab9af29807b5d6a034140a26bb"
+    },
+    {
+      "item_id": 264361,
+      "name": "Pterrordax Meat",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 9165,
+          "npc_name": "Fledgling Pterrordax",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 31401
+        },
+        {
+          "npc_id": 9166,
+          "npc_name": "Pterrordax",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 60568
+        },
+        {
+          "npc_id": 9167,
+          "npc_name": "Frenzied Pterrordax",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 100993
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=264361",
+      "page_sha256": "c962a21b9c9b872c5aa982f04ca8881c1273eb4763cdca5780018b0b399b5e0f"
+    },
+    {
+      "item_id": 264693,
+      "name": "Scarlet Crusade Attack Plans",
+      "item_status": "new",
+      "quest_ids": [
+        94440
+      ],
+      "drops": [
+        {
+          "npc_id": 1537,
+          "npc_name": "Scarlet Zealot",
+          "npc_status": "unchanged",
+          "count": 97,
+          "outof": 55633
+        },
+        {
+          "npc_id": 1538,
+          "npc_name": "Scarlet Friar",
+          "npc_status": "unchanged",
+          "count": 39,
+          "outof": 21861
+        },
+        {
+          "npc_id": 259433,
+          "npc_name": "Tarnished Zealot",
+          "npc_status": "new",
+          "count": 1,
+          "outof": 1670
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=264693",
+      "page_sha256": "90e520e5263d588fa398e4ba7d3d9a844de91254546ab00266d8f283411f330c"
+    },
+    {
+      "item_id": 265140,
+      "name": "Pristine Shriekling Feather",
+      "item_status": "new",
+      "quest_ids": [
+        94486
+      ],
+      "drops": [
+        {
+          "npc_id": 256092,
+          "npc_name": "Shadowgale Shriekling",
+          "npc_status": "new",
+          "count": 2865,
+          "outof": 11680
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=265140",
+      "page_sha256": "96037984e37fa1d1371f0376a55f500f72fe77801efff07377046f52c9bb56c5"
+    },
+    {
+      "item_id": 265141,
+      "name": "Bloody Heirloom",
+      "item_status": "new",
+      "quest_ids": [
+        94487
+      ],
+      "drops": [
+        {
+          "npc_id": 252664,
+          "npc_name": "Al'Aketh Stormchaser",
+          "npc_status": "new",
+          "count": 2975,
+          "outof": 11398
+        },
+        {
+          "npc_id": 252665,
+          "npc_name": "Al'Aketh Footsoldier",
+          "npc_status": "new",
+          "count": 830,
+          "outof": 3149
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=265141",
+      "page_sha256": "16584bdeac46f3731c4144ebaa37998c198675779e772b677d046588a34b1785"
+    },
+    {
+      "item_id": 265475,
+      "name": "Commander Haalien's Severed Head",
+      "item_status": "new",
+      "quest_ids": [
+        94488
+      ],
+      "drops": [
+        {
+          "npc_id": 253622,
+          "npc_name": "Commander Haalien",
+          "npc_status": "new",
+          "count": 332,
+          "outof": 609
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=265475",
+      "page_sha256": "793d9bca97f4b25e146c55712596adaea3e3341ff7e5664ec24897d432958940"
+    },
+    {
+      "item_id": 265476,
+      "name": "Ripped Missive",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 253622,
+          "npc_name": "Commander Haalien",
+          "npc_status": "new",
+          "count": 327,
+          "outof": 609
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=265476",
+      "page_sha256": "f06d0930ff270f8038ede6ad678d4146abce4038a490027888a69938e9eddb67"
+    },
+    {
+      "item_id": 267412,
+      "name": "Fenris Isle Key",
+      "item_status": "new",
+      "quest_ids": [
+        91862
+      ],
+      "drops": [
+        {
+          "npc_id": 1942,
+          "npc_name": "Rot Hide Savage",
+          "npc_status": "unchanged",
+          "count": 22,
+          "outof": 11292
+        },
+        {
+          "npc_id": 1943,
+          "npc_name": "Raging Rot Hide",
+          "npc_status": "unchanged",
+          "count": 16,
+          "outof": 7986
+        },
+        {
+          "npc_id": 1944,
+          "npc_name": "Rot Hide Bruiser",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 187
+        },
+        {
+          "npc_id": 1948,
+          "npc_name": "Snarlmane",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 152
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=267412",
+      "page_sha256": "ed2ce391b22edeaeeb711930b595688cbdf32ec55f61d47d4feca058f5b55cec"
+    },
+    {
+      "item_id": 267414,
+      "name": "Pristine Leopard Pelt",
+      "item_status": "new",
+      "quest_ids": [
+        95212
+      ],
+      "drops": [
+        {
+          "npc_id": 260157,
+          "npc_name": "Elder Snow Leopard",
+          "npc_status": "new",
+          "count": 823,
+          "outof": 1971
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=267414",
+      "page_sha256": "4480ca73ce74f0afe4587ea514075102d86f5139e12b0fab8f2fadbbd147b44f"
+    },
+    {
+      "item_id": 267415,
+      "name": "Stolen Blasting Powder",
+      "item_status": "new",
+      "quest_ids": [
+        95214
+      ],
+      "drops": [
+        {
+          "npc_id": 1116,
+          "npc_name": "Rockjaw Ambusher",
+          "npc_status": "unchanged",
+          "count": 511,
+          "outof": 8491
+        },
+        {
+          "npc_id": 1118,
+          "npc_name": "Rockjaw Backbreaker",
+          "npc_status": "unchanged",
+          "count": 77,
+          "outof": 1701
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=267415",
+      "page_sha256": "90f3b0ec1c0accc4985c1645744a3233c5e78a63c115615a88b5f466d76d4aa3"
+    },
+    {
+      "item_id": 267416,
+      "name": "Toughened Boar Hide",
+      "item_status": "new",
+      "quest_ids": [
+        95217
+      ],
+      "drops": [
+        {
+          "npc_id": 1689,
+          "npc_name": "Scarred Crag Boar",
+          "npc_status": "unchanged",
+          "count": 161,
+          "outof": 14469
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=267416",
+      "page_sha256": "2df3f677f406044bb71e2ecdec71cf7cf0f039ec18b52e537e4f0beeebf5b883"
+    },
+    {
+      "item_id": 268548,
+      "name": "Empty Powder Keg",
+      "item_status": "new",
+      "quest_ids": [
+        95213
+      ],
+      "drops": [
+        {
+          "npc_id": 1116,
+          "npc_name": "Rockjaw Ambusher",
+          "npc_status": "unchanged",
+          "count": 90,
+          "outof": 8491
+        },
+        {
+          "npc_id": 1118,
+          "npc_name": "Rockjaw Backbreaker",
+          "npc_status": "unchanged",
+          "count": 24,
+          "outof": 1701
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=268548",
+      "page_sha256": "30bd10397055a298efc8c65615b5183179661903e7dbb6ffd63b9d88a0168c14"
+    },
+    {
+      "item_id": 268812,
+      "name": "Whispering Horror Residue",
+      "item_status": "new",
+      "quest_ids": [
+        95328
+      ],
+      "drops": [
+        {
+          "npc_id": 260396,
+          "npc_name": "Whispering Horror",
+          "npc_status": "new",
+          "count": 59,
+          "outof": 59
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=268812",
+      "page_sha256": "e5250614df1dd55fdd056674c4b496868d245dfdd83a39cfc4c69b7a044710a0"
+    },
+    {
+      "item_id": 269715,
+      "name": "Savannah Lion Hide",
+      "item_status": "new",
+      "quest_ids": [
+        95494
+      ],
+      "drops": [
+        {
+          "npc_id": 3241,
+          "npc_name": "Savannah Patriarch",
+          "npc_status": "unchanged",
+          "count": 391,
+          "outof": 5314
+        },
+        {
+          "npc_id": 3416,
+          "npc_name": "Savannah Matriarch",
+          "npc_status": "unchanged",
+          "count": 10,
+          "outof": 5445
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=269715",
+      "page_sha256": "758a6b4897f9933ceb1538a203d4ec342284ca873b2bacb70abbfa8f583630f5"
+    },
+    {
+      "item_id": 270151,
+      "name": "Benedict's Orders",
+      "item_status": "new",
+      "quest_ids": [
+        95621
+      ],
+      "drops": [
+        {
+          "npc_id": 262119,
+          "npc_name": "Corporal Adamore",
+          "npc_status": "new",
+          "count": 32,
+          "outof": 45
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=270151",
+      "page_sha256": "fe02a607f76e6d5db59bd34cb5965b00af47055618820f2fe9b3a530f2f0fa1d"
+    },
+    {
+      "item_id": 270302,
+      "name": "Chakuyak's Pelt",
+      "item_status": "new",
+      "quest_ids": [
+        96130
+      ],
+      "drops": [
+        {
+          "npc_id": 268558,
+          "npc_name": "Chakuyak",
+          "npc_status": "new",
+          "count": 171,
+          "outof": 206
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=270302",
+      "page_sha256": "0fdab51db18473b3046734f1a47e96d60f826ac41cc054620ea64dcb6ecbdd89"
+    },
+    {
+      "item_id": 270435,
+      "name": "Rudolph Gelhardt's Head",
+      "item_status": "new",
+      "quest_ids": [
+        91317
+      ],
+      "drops": [
+        {
+          "npc_id": 259431,
+          "npc_name": "Rudolph Gelhardt",
+          "npc_status": "new",
+          "count": 120,
+          "outof": 120
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=270435",
+      "page_sha256": "cc974138fa77547535dde082630dc68fdb98180440f2576c17c889fccd07acfb"
+    },
+    {
+      "item_id": 271343,
+      "name": "Note Scrap",
+      "item_status": "new",
+      "quest_ids": [
+        95884
+      ],
+      "drops": [
+        {
+          "npc_id": 1973,
+          "npc_name": "Ravenclaw Guardian",
+          "npc_status": "unchanged",
+          "count": 30,
+          "outof": 8521
+        },
+        {
+          "npc_id": 1974,
+          "npc_name": "Ravenclaw Drudger",
+          "npc_status": "unchanged",
+          "count": 33,
+          "outof": 9567
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=271343",
+      "page_sha256": "b28738e88e8533591e91afb2cf45bfa7b950cb7e8cda0dcf0f05a38f4659594b"
+    },
+    {
+      "item_id": 271350,
+      "name": "Tortured Soul",
+      "item_status": "new",
+      "quest_ids": [
+        95883
+      ],
+      "drops": [
+        {
+          "npc_id": 1973,
+          "npc_name": "Ravenclaw Guardian",
+          "npc_status": "unchanged",
+          "count": 9,
+          "outof": 8521
+        },
+        {
+          "npc_id": 1974,
+          "npc_name": "Ravenclaw Drudger",
+          "npc_status": "unchanged",
+          "count": 9,
+          "outof": 9567
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=271350",
+      "page_sha256": "de4fb910868875fdba62908f5a1ed6ec9f18a22acf51d8d8268dd53063751b92"
+    },
+    {
+      "item_id": 271872,
+      "name": "Broken Staff of Incinerator Gar'im",
+      "item_status": "new",
+      "quest_ids": [
+        95999
+      ],
+      "drops": [
+        {
+          "npc_id": 214519,
+          "npc_name": "Incinerator Gar'im",
+          "npc_status": "unchanged",
+          "count": 6,
+          "outof": 6
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=271872",
+      "page_sha256": "3dcd43cd33711ec03de65e40dc814b883a98592f5658f28dfce0b4b752ca1831"
+    },
+    {
+      "item_id": 272017,
+      "name": "Nefarion's Remit",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 10363,
+          "npc_name": "General Drakkisath",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 5179
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=272017",
+      "page_sha256": "249cd6a011400af050f0172fe2f93e36d62cf918f2df5bf7b0c1c099bb4c47e2"
+    },
+    {
+      "item_id": 272018,
+      "name": "Overseer's License",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 9568,
+          "npc_name": "Overlord Wyrmthalak",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 2286
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=272018",
+      "page_sha256": "b504bd0f1bef322913758609e698d4e9e2ebf88445d98752284d5db4dab0ba52"
+    },
+    {
+      "item_id": 272019,
+      "name": "Bronzebeard Wedding Contract",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 9019,
+          "npc_name": "Emperor Dagran Thaurissan",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 2994
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=272019",
+      "page_sha256": "432d15aa61da3c9a5d505e67e6275c3adc6f7c6a0118709d770ca3b25e111ff6"
+    },
+    {
+      "item_id": 272020,
+      "name": "Felvine Seed",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 11492,
+          "npc_name": "Alzzin the Wildshaper",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 33061
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=272020",
+      "page_sha256": "4470e8d7dadf9db8bcaeadc2468a407337976a719e6e5c53c10141bd91f2b971"
+    },
+    {
+      "item_id": 272021,
+      "name": "Ancient Memento",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 11486,
+          "npc_name": "Prince Tortheldrin",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4957
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=272021",
+      "page_sha256": "d9002bc24cca2c622ddebaf6e74c520953584d06b028605dfa74c90f12f74a8b"
+    },
+    {
+      "item_id": 272022,
+      "name": "Earthstone Diamond Pinky Ring",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 11501,
+          "npc_name": "King Gordok",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 22695
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=272022",
+      "page_sha256": "f7817f24698a456846e283354363f7646f2cc7371395892f51010c0fbd749b1b"
+    },
+    {
+      "item_id": 272023,
+      "name": "Headmaster's Records",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 1853,
+          "npc_name": "Darkmaster Gandling",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 6339
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=272023",
+      "page_sha256": "259db5c32970eb76788a03cd94a3f9e2a398baa0d8ce6320bd50ae4b75758550"
+    },
+    {
+      "item_id": 272024,
+      "name": "Grain Shipment Records",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 10440,
+          "npc_name": "Baron Rivendare",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 8951
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=272024",
+      "page_sha256": "760fc074e5bcfeb555eed03727c4ab7795b8a7bf8830af93c949544f00357be0"
+    },
+    {
+      "item_id": 272025,
+      "name": "Dathrohan's Correspondance",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 10812,
+          "npc_name": "Grand Crusader Dathrohan",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4153
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=272025",
+      "page_sha256": "b49186bca06bc5c8cebaaaaf2e10eff87e3ab37831a9699400eb801bf7c72c10"
+    },
+    {
+      "item_id": 272026,
+      "name": "Ysera's Tear",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 5709,
+          "npc_name": "Shade of Eranikus",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 7198
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=272026",
+      "page_sha256": "d7f844835aadae758ca22976e7436e5f67df5eb88d1f2dee019dd4a64685b506"
+    },
+    {
+      "item_id": 274044,
+      "name": "Twisted Fire Totem",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 2893,
+          "npc_name": "Stonevault Bonesnapper",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 62793
+        },
+        {
+          "npc_id": 2894,
+          "npc_name": "Stonevault Shaman",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 18797
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=274044",
+      "page_sha256": "5af3871f56fe8616b14cb1cea7cacb336c6182fbc8bbcde53e27dd8192239d17"
+    },
+    {
+      "item_id": 274045,
+      "name": "Twisted Earth Totem",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 755,
+          "npc_name": "Lost One Mudlurker",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 3506
+        },
+        {
+          "npc_id": 757,
+          "npc_name": "Lost One Fisherman",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 5509
+        },
+        {
+          "npc_id": 759,
+          "npc_name": "Lost One Hunter",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 19357
+        },
+        {
+          "npc_id": 760,
+          "npc_name": "Lost One Muckdweller",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 11458
+        },
+        {
+          "npc_id": 761,
+          "npc_name": "Lost One Seer",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 3329
+        },
+        {
+          "npc_id": 762,
+          "npc_name": "Lost One Riftseeker",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 6266
+        },
+        {
+          "npc_id": 763,
+          "npc_name": "Lost One Chieftain",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 335
+        },
+        {
+          "npc_id": 1106,
+          "npc_name": "Lost One Cook",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 591
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=274045",
+      "page_sha256": "ba7acb4f5e9d59cc522a2996454068f28bfcbf0af4d67886bc21e4e514030a29"
+    },
+    {
+      "item_id": 274046,
+      "name": "Twisted Water Totem",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 4358,
+          "npc_name": "Mirefin Puddlejumper",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 30327
+        },
+        {
+          "npc_id": 4359,
+          "npc_name": "Mirefin Murloc",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 30699
+        },
+        {
+          "npc_id": 4360,
+          "npc_name": "Mirefin Warrior",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 32460
+        },
+        {
+          "npc_id": 4361,
+          "npc_name": "Mirefin Muckdweller",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 54031
+        },
+        {
+          "npc_id": 4362,
+          "npc_name": "Mirefin Coastrunner",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 60808
+        },
+        {
+          "npc_id": 4363,
+          "npc_name": "Mirefin Oracle",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 34671
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=274046",
+      "page_sha256": "807c7206d9bfbc7b4598a2c61d810b2a343f6f375a323111b8aa9c92ac900b7a"
+    },
+    {
+      "item_id": 274047,
+      "name": "Twisted Air Totem",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 4655,
+          "npc_name": "Maraudine Wrangler",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 8696
+        },
+        {
+          "npc_id": 4656,
+          "npc_name": "Maraudine Mauler",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 5036
+        },
+        {
+          "npc_id": 4657,
+          "npc_name": "Maraudine Windchaser",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 5103
+        },
+        {
+          "npc_id": 4658,
+          "npc_name": "Maraudine Stormer",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 1052
+        },
+        {
+          "npc_id": 4659,
+          "npc_name": "Maraudine Marauder",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 2366
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=274047",
+      "page_sha256": "760141fe777d697d5433a377db1fa46e41dcee2703a438e0899c7ad53e08adae"
+    },
+    {
+      "item_id": 274268,
+      "name": "Dark Iron Map",
+      "item_status": "new",
+      "quest_ids": [
+        96391
+      ],
+      "drops": [
+        {
+          "npc_id": 6123,
+          "npc_name": "Dark Iron Spy",
+          "npc_status": "updated",
+          "count": 310,
+          "outof": 6930
+        },
+        {
+          "npc_id": 6124,
+          "npc_name": "Captain Beld",
+          "npc_status": "unchanged",
+          "count": 29,
+          "outof": 516
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=274268",
+      "page_sha256": "878a006d91cc411c9c2c0c6d88b295146ec5780ec82a4f3938983d11ea5cd96e"
+    },
+    {
+      "item_id": 274463,
+      "name": "Tattered Note",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 4421,
+          "npc_name": "Charlga Razorflank",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 6358
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=274463",
+      "page_sha256": "4070ee4be4e19f68bbcb48267d2f82c34b866b0d12005e1e71617a2623438f93"
+    },
+    {
+      "item_id": 274966,
+      "name": "Silvermoon Shimmerwine",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 6198,
+          "npc_name": "Blood Elf Surveyor",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 31834
+        },
+        {
+          "npc_id": 6199,
+          "npc_name": "Blood Elf Reclaimer",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 31488
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=274966",
+      "page_sha256": "2baaac3d39264ff3feb5e227d1ab1b4fa09af8dea8ea7e4b437757d25a9ef272"
+    },
+    {
+      "item_id": 275719,
+      "name": "Weathered Spine",
+      "item_status": "new",
+      "quest_ids": [
+        96874
+      ],
+      "drops": [
+        {
+          "npc_id": 3130,
+          "npc_name": "Thunder Lizard",
+          "npc_status": "unchanged",
+          "count": 97,
+          "outof": 31175
+        },
+        {
+          "npc_id": 3131,
+          "npc_name": "Lightning Hide",
+          "npc_status": "unchanged",
+          "count": 109,
+          "outof": 18476
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=275719",
+      "page_sha256": "cf8863e03481e58e25d22d96cc0512e917d446a934beb698e354af7aadf6d203"
+    },
+    {
+      "item_id": 275720,
+      "name": "Rough Lizard Hide",
+      "item_status": "new",
+      "quest_ids": [
+        96875
+      ],
+      "drops": [
+        {
+          "npc_id": 3130,
+          "npc_name": "Thunder Lizard",
+          "npc_status": "unchanged",
+          "count": 241,
+          "outof": 31175
+        },
+        {
+          "npc_id": 3131,
+          "npc_name": "Lightning Hide",
+          "npc_status": "unchanged",
+          "count": 159,
+          "outof": 18476
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=275720",
+      "page_sha256": "4a2ef9ff32157dd8279115fd76e34f36cd1a3428002de37e8499172597b85c43"
+    },
+    {
+      "item_id": 275722,
+      "name": "Ukor's Lost Pack",
+      "item_status": "new",
+      "quest_ids": [
+        96876
+      ],
+      "drops": [
+        {
+          "npc_id": 266851,
+          "npc_name": "Ukorsbane",
+          "npc_status": "new",
+          "count": 56,
+          "outof": 56
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=275722",
+      "page_sha256": "0d7831524e6fe3ed653ef844db60eff3115caaf58baac972565aa7d27235e350"
+    },
+    {
+      "item_id": 275723,
+      "name": "Halikor's Hoof",
+      "item_status": "new",
+      "quest_ids": [
+        96877
+      ],
+      "drops": [
+        {
+          "npc_id": 266852,
+          "npc_name": "Halikor",
+          "npc_status": "new",
+          "count": 94,
+          "outof": 94
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=275723",
+      "page_sha256": "33ac6322c4729f14370d8612ea25612f571b344a1098acb6958442f4c76669da"
+    },
+    {
+      "item_id": 275851,
+      "name": "Necrotic Crystal Fragment",
+      "item_status": "new",
+      "quest_ids": [
+        96898
+      ],
+      "drops": [
+        {
+          "npc_id": 267006,
+          "npc_name": "Dark Neophyte",
+          "npc_status": "new",
+          "count": 906,
+          "outof": 2506
+        },
+        {
+          "npc_id": 275437,
+          "npc_name": "Dark Enforcer",
+          "npc_status": "new",
+          "count": 1009,
+          "outof": 2703
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=275851",
+      "page_sha256": "b005997f0a3bcd0b211dab02125333d472fa80a6e3357b2cb74764a5229ea0d3"
+    },
+    {
+      "item_id": 276070,
+      "name": "Chol'aruk's Head",
+      "item_status": "new",
+      "quest_ids": [
+        97003,
+        97005
+      ],
+      "drops": [
+        {
+          "npc_id": 267307,
+          "npc_name": "Chol'aruk",
+          "npc_status": "new",
+          "count": 140,
+          "outof": 149
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=276070",
+      "page_sha256": "ae3849d0d99562886234723d4d775747934a5a4635a756d3ae5173fa22bf2506"
+    },
+    {
+      "item_id": 276784,
+      "name": "Charger's Lost Soul",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 14516,
+          "npc_name": "Death Knight Darkreaver",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 841
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=276784",
+      "page_sha256": "68fd3b847c3960dc0759403e75dd5f6df7bb48d03d5c836b56a92c78125b9104"
+    },
+    {
+      "item_id": 277112,
+      "name": "Zum'rah's Head",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 7271,
+          "npc_name": "Witch Doctor Zum'rah",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 23168
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277112",
+      "page_sha256": "259074f1c04add920f0fb235af325225c8d3c56b0626c2bc3235325cdbd151da"
+    },
+    {
+      "item_id": 277128,
+      "name": "Bloodtalon Martriarch Eggs",
+      "item_status": "new",
+      "quest_ids": [
+        97223
+      ],
+      "drops": [
+        {
+          "npc_id": 268530,
+          "npc_name": "Bloodtalon Matriarch",
+          "npc_status": "new",
+          "count": 214,
+          "outof": 266
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277128",
+      "page_sha256": "df0bea4de8e1ea32b68156614b3a1243d2ad2de1b98896f08cfea3c8ba9d21e8"
+    },
+    {
+      "item_id": 277129,
+      "name": "Fragment of the Firelands",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 9938,
+          "npc_name": "Magmus",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 2377
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277129",
+      "page_sha256": "5fe91d098279a1e4d5af0289b1fdb5c55088e88009fef113fbc6c30d2cf8afe0"
+    },
+    {
+      "item_id": 277190,
+      "name": "Fang of Githyiss",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 1994,
+          "npc_name": "Githyiss the Vile",
+          "npc_status": "unchanged",
+          "count": 168,
+          "outof": 4669
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277190",
+      "page_sha256": "a0a0767ecebc77b54f15c6cd4c4d35defdb739d3e41aa60cffc27bf20d70dc7a"
+    },
+    {
+      "item_id": 277267,
+      "name": "Faladiel's Heart",
+      "item_status": "new",
+      "quest_ids": [
+        97244
+      ],
+      "drops": [
+        {
+          "npc_id": 268602,
+          "npc_name": "Skypriest Faladiel",
+          "npc_status": "new",
+          "count": 20,
+          "outof": 20
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277267",
+      "page_sha256": "e710a6cb8c35ad986647bdf40fce843a6c795d9eda507a70ffc258c693dfcb1f"
+    },
+    {
+      "item_id": 277269,
+      "name": "Kuramaa's Mask",
+      "item_status": "new",
+      "quest_ids": [
+        97245
+      ],
+      "drops": [
+        {
+          "npc_id": 268605,
+          "npc_name": "Kuramaa",
+          "npc_status": "new",
+          "count": 49,
+          "outof": 49
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277269",
+      "page_sha256": "d527d38d5e5691599a5c6c0ae88be749921026496e82000b1f1902318abae9d4"
+    },
+    {
+      "item_id": 277277,
+      "name": "Olgra's Adornments",
+      "item_status": "new",
+      "quest_ids": [
+        95774
+      ],
+      "drops": [
+        {
+          "npc_id": 268624,
+          "npc_name": "Razormane Raider",
+          "npc_status": "new",
+          "count": 79,
+          "outof": 386
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277277",
+      "page_sha256": "fa4e31b4439e280516ca98179feaa83bf0c946bea3106e48524c7492248ecd4b"
+    },
+    {
+      "item_id": 277661,
+      "name": "Dull Storm Orb",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 3118,
+          "npc_name": "Dustwind Storm Witch",
+          "npc_status": "unchanged",
+          "count": 223,
+          "outof": 34181
+        },
+        {
+          "npc_id": 276194,
+          "npc_name": "Dustwind Eggtender",
+          "npc_status": "new",
+          "count": 2,
+          "outof": 25
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277661",
+      "page_sha256": "5adb1ec4562d28bd7ea0ee2180a8a314e6b83ecf00246ada0fcfd8a3c30b1b4a"
+    },
+    {
+      "item_id": 277665,
+      "name": "Charged Thunder Lizard Organ",
+      "item_status": "new",
+      "quest_ids": [
+        97282
+      ],
+      "drops": [
+        {
+          "npc_id": 3130,
+          "npc_name": "Thunder Lizard",
+          "npc_status": "unchanged",
+          "count": 405,
+          "outof": 31175
+        },
+        {
+          "npc_id": 3131,
+          "npc_name": "Lightning Hide",
+          "npc_status": "unchanged",
+          "count": 477,
+          "outof": 18476
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277665",
+      "page_sha256": "530277a2d7f1cfd5a5696f666d1e3f10907bead05328df7215849b271aa0875a"
+    },
+    {
+      "item_id": 277917,
+      "name": "Stonetalon Supply Bundle",
+      "item_status": "new",
+      "quest_ids": [
+        86574
+      ],
+      "drops": [
+        {
+          "npc_id": 4011,
+          "npc_name": "Young Pridewing",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4627
+        },
+        {
+          "npc_id": 4012,
+          "npc_name": "Pridewing Wyvern",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 40111
+        },
+        {
+          "npc_id": 4013,
+          "npc_name": "Pridewing Skyhunter",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 11830
+        },
+        {
+          "npc_id": 4014,
+          "npc_name": "Pridewing Consort",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 16885
+        },
+        {
+          "npc_id": 4015,
+          "npc_name": "Pridewing Patriarch",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 2163
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277917",
+      "page_sha256": "f46748320bf466c9e8b91f10485319adcc851c12305349b84df61a9dc118e081"
+    },
+    {
+      "item_id": 277936,
+      "name": "Glittering Sunstone",
+      "item_status": "new",
+      "quest_ids": [
+        86576
+      ],
+      "drops": [
+        {
+          "npc_id": 4022,
+          "npc_name": "Bloodfury Harpy",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 34726
+        },
+        {
+          "npc_id": 4023,
+          "npc_name": "Bloodfury Roguefeather",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 27982
+        },
+        {
+          "npc_id": 4024,
+          "npc_name": "Bloodfury Slayer",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 27832
+        },
+        {
+          "npc_id": 4025,
+          "npc_name": "Bloodfury Ambusher",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 29920
+        },
+        {
+          "npc_id": 4026,
+          "npc_name": "Bloodfury Windcaller",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 28663
+        },
+        {
+          "npc_id": 4027,
+          "npc_name": "Bloodfury Storm Witch",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 25685
+        },
+        {
+          "npc_id": 5930,
+          "npc_name": "Sister Riven",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 537
+        },
+        {
+          "npc_id": 12579,
+          "npc_name": "Bloodfury Ripper",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4219
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277936",
+      "page_sha256": "c7fa3b6c8b053e3efb0309c4691462bd98609c6804747da10a50608abfa3ff39"
+    },
+    {
+      "item_id": 277957,
+      "name": "Primitive Key",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 588,
+          "npc_name": "Bloodscalp Scout",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 46103
+        },
+        {
+          "npc_id": 595,
+          "npc_name": "Bloodscalp Hunter",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 46376
+        },
+        {
+          "npc_id": 597,
+          "npc_name": "Bloodscalp Berserker",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 37640
+        },
+        {
+          "npc_id": 660,
+          "npc_name": "Bloodscalp Witch Doctor",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 32656
+        },
+        {
+          "npc_id": 671,
+          "npc_name": "Bloodscalp Headhunter",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 65491
+        },
+        {
+          "npc_id": 699,
+          "npc_name": "Bloodscalp Beastmaster",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 11455
+        },
+        {
+          "npc_id": 701,
+          "npc_name": "Bloodscalp Mystic",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 50288
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277957",
+      "page_sha256": "04e4b0c725b932156dbd4e9290c29d16d61001faa66873da7ea098234eb34e6e"
+    },
+    {
+      "item_id": 277958,
+      "name": "Putrescent Bear Organs",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 8956,
+          "npc_name": "Angerclaw Bear",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 46228
+        },
+        {
+          "npc_id": 8957,
+          "npc_name": "Angerclaw Grizzly",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 43563
+        },
+        {
+          "npc_id": 8958,
+          "npc_name": "Angerclaw Mauler",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 44377
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277958",
+      "page_sha256": "3dcd12b30aa44d2909a7fe3334c1dcf514bc13b7fa0bb438d54debb647afa18a"
+    },
+    {
+      "item_id": 277959,
+      "name": "Putrescent Wolf Organs",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 8959,
+          "npc_name": "Felpaw Wolf",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 64193
+        },
+        {
+          "npc_id": 8960,
+          "npc_name": "Felpaw Scavenger",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 43153
+        },
+        {
+          "npc_id": 8961,
+          "npc_name": "Felpaw Ravager",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 35605
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277959",
+      "page_sha256": "ed7b61acc6445bff487dced90534d00cd633b6991508153d7fee8ae044403be4"
+    },
+    {
+      "item_id": 277986,
+      "name": "Drum of Crude Oil",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 1097,
+          "npc_name": "Venture Co. Mechanic",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 13094
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=277986",
+      "page_sha256": "e0c467a8b1c9ab664594b413b8da6fe53cea5114539a4377eee64e8536d5d6be"
+    },
+    {
+      "item_id": 278160,
+      "name": "Twitching Spider Carcass",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 5858,
+          "npc_name": "Searing Lava Spider",
+          "npc_status": "updated",
+          "count": 1,
+          "outof": 100667
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=278160",
+      "page_sha256": "4930486592fa67df7a6cb8971ee996febc1eb3146256dd4000f5e83cca417aee"
+    },
+    {
+      "item_id": 278186,
+      "name": "Brilliantly Polished Bangle",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 5471,
+          "npc_name": "Dunemaul Ogre",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 8085
+        },
+        {
+          "npc_id": 5472,
+          "npc_name": "Dunemaul Enforcer",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 37462
+        },
+        {
+          "npc_id": 5473,
+          "npc_name": "Dunemaul Ogre Mage",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 8255
+        },
+        {
+          "npc_id": 5474,
+          "npc_name": "Dunemaul Brute",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 37973
+        },
+        {
+          "npc_id": 5475,
+          "npc_name": "Dunemaul Warlock",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 8116
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=278186",
+      "page_sha256": "9d549226f8af190e07d7824295969516b5a6a100518fbbbdb706726dad8af43c"
+    },
+    {
+      "item_id": 278225,
+      "name": "Surgical Spidersilk",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 2563,
+          "npc_name": "Plains Creeper",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 36673
+        },
+        {
+          "npc_id": 2565,
+          "npc_name": "Giant Plains Creeper",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 16599
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=278225",
+      "page_sha256": "9534d6e5ed9e01978934134b2a631150ce6e533eb04c6046431d7a0dbd1be250"
+    },
+    {
+      "item_id": 278242,
+      "name": "Duskbat Wing Membrane",
+      "item_status": "new",
+      "quest_ids": [
+        97558
+      ],
+      "drops": [
+        {
+          "npc_id": 1553,
+          "npc_name": "Greater Duskbat",
+          "npc_status": "unchanged",
+          "count": 2257,
+          "outof": 95071
+        },
+        {
+          "npc_id": 1554,
+          "npc_name": "Vampiric Duskbat",
+          "npc_status": "unchanged",
+          "count": 565,
+          "outof": 37346
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=278242",
+      "page_sha256": "c2ef22a93e9213cb77b62497a70c62f0c01720325020dd9906659cc04f1bd974"
+    },
+    {
+      "item_id": 278243,
+      "name": "Darkhound Hide",
+      "item_status": "new",
+      "quest_ids": [
+        97558
+      ],
+      "drops": [
+        {
+          "npc_id": 1547,
+          "npc_name": "Decrepit Darkhound",
+          "npc_status": "unchanged",
+          "count": 1151,
+          "outof": 64571
+        },
+        {
+          "npc_id": 1548,
+          "npc_name": "Cursed Darkhound",
+          "npc_status": "unchanged",
+          "count": 959,
+          "outof": 80041
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=278243",
+      "page_sha256": "b598de18238c984a47031d65d74b83e8f278367b5dcc8cf29b9ea0b4e1b53a07"
+    },
+    {
+      "item_id": 278244,
+      "name": "Vile Fin Murloc Skin",
+      "item_status": "new",
+      "quest_ids": [
+        97558
+      ],
+      "drops": [
+        {
+          "npc_id": 1544,
+          "npc_name": "Vile Fin Minor Oracle",
+          "npc_status": "unchanged",
+          "count": 665,
+          "outof": 21103
+        },
+        {
+          "npc_id": 1545,
+          "npc_name": "Vile Fin Muckdweller",
+          "npc_status": "unchanged",
+          "count": 262,
+          "outof": 7302
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=278244",
+      "page_sha256": "b546781318c0c478cf3f4f1db39bf8622876446907a32e85e6f68719a8e57eeb"
+    },
+    {
+      "item_id": 278402,
+      "name": "Unstudied Artifact",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 2739,
+          "npc_name": "Shadowforge Tunneler",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 10515
+        },
+        {
+          "npc_id": 2740,
+          "npc_name": "Shadowforge Darkweaver",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 8524
+        },
+        {
+          "npc_id": 2893,
+          "npc_name": "Stonevault Bonesnapper",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 62793
+        },
+        {
+          "npc_id": 2894,
+          "npc_name": "Stonevault Shaman",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 18797
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=278402",
+      "page_sha256": "127b233b24bb2af452c982306efc2d73eb5e2519d01f9361025b9b2f847d8bef"
+    },
+    {
+      "item_id": 278515,
+      "name": "Mus'hale's Stolen Supplies",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 2701,
+          "npc_name": "Dustbelcher Ogre",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4640
+        },
+        {
+          "npc_id": 2715,
+          "npc_name": "Dustbelcher Brute",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 2350
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=278515",
+      "page_sha256": "16c60452e0b847b6637901d95d844d6a69d22e04301a10d7a37bafcc6ca32908"
+    },
+    {
+      "item_id": 279225,
+      "name": "Vilebranch Totem",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 4467,
+          "npc_name": "Vilebranch Soothsayer",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 55094
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=279225",
+      "page_sha256": "7e397cf585b4298d4feda7b952683355a07b6411123db481d0c48929aed4accb"
+    },
+    {
+      "item_id": 279275,
+      "name": "Clouded Water Globe",
+      "item_status": "new",
+      "quest_ids": [
+        98028
+      ],
+      "drops": [
+        {
+          "npc_id": 270294,
+          "npc_name": "Baron Marinous",
+          "npc_status": "new",
+          "count": 6,
+          "outof": 6
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=279275",
+      "page_sha256": "9d160cba0db6d37eaa5cecd2a7e8af033170607a9cb72555a3063f7634603ea3"
+    },
+    {
+      "item_id": 279279,
+      "name": "Peerless Eye",
+      "item_status": "new",
+      "quest_ids": [
+        98042
+      ],
+      "drops": [
+        {
+          "npc_id": 2338,
+          "npc_name": "Twilight Disciple",
+          "npc_status": "unchanged",
+          "count": 8,
+          "outof": 16963
+        },
+        {
+          "npc_id": 2339,
+          "npc_name": "Twilight Thug",
+          "npc_status": "unchanged",
+          "count": 17,
+          "outof": 18075
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=279279",
+      "page_sha256": "e7627a4bb6f40c0da850c1337055f645af2e61e32f2bd49f3e10bcedad8f6a4b"
+    },
+    {
+      "item_id": 279385,
+      "name": "Pristine Crimson Scale",
+      "item_status": "new",
+      "quest_ids": [
+        98072
+      ],
+      "drops": [
+        {
+          "npc_id": 1042,
+          "npc_name": "Red Whelp",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 8398
+        },
+        {
+          "npc_id": 1043,
+          "npc_name": "Lost Whelp",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 7493
+        },
+        {
+          "npc_id": 1044,
+          "npc_name": "Flamesnorting Whelp",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 3004
+        },
+        {
+          "npc_id": 1069,
+          "npc_name": "Crimson Whelp",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 9836
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=279385",
+      "page_sha256": "8c621b0e305b25dcbd5b443317b8b269a47c881682155d910b9853f89e7dfdab"
+    },
+    {
+      "item_id": 279472,
+      "name": "Pristine Pesterhide Pelt",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 4249,
+          "npc_name": "Pesterhide Snarler",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 27790
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=279472",
+      "page_sha256": "d504e41f0ed329cdb5e7d50e71a84e14ad3abce456d70e2ee56b1671a78a7b45"
+    },
+    {
+      "item_id": 279591,
+      "name": "Marek's Croc-Hunting Knife",
+      "item_status": "new",
+      "quest_ids": [
+        86758
+      ],
+      "drops": [
+        {
+          "npc_id": 270693,
+          "npc_name": "Daggerfang",
+          "npc_status": "new",
+          "count": 43,
+          "outof": 81
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=279591",
+      "page_sha256": "0df687021a80150a472262ac42d3f7f479d8cba7ef64455f4781e5b6d84dd285"
+    },
+    {
+      "item_id": 279601,
+      "name": "Intact Raptor Hide",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 4356,
+          "npc_name": "Bloodfen Razormaw",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4647
+        },
+        {
+          "npc_id": 4357,
+          "npc_name": "Bloodfen Lashtail",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 21079
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=279601",
+      "page_sha256": "b167ee9a7f31d0d9d670e338768562ab58ca7f3e30d8e3d01aed705d18422c31"
+    },
+    {
+      "item_id": 279934,
+      "name": "Shed Dark Dragonscale",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 4323,
+          "npc_name": "Searing Hatchling",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 49445
+        },
+        {
+          "npc_id": 4324,
+          "npc_name": "Searing Whelp",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 49436
+        },
+        {
+          "npc_id": 4329,
+          "npc_name": "Firemane Scout",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 5058
+        },
+        {
+          "npc_id": 4331,
+          "npc_name": "Firemane Ash Tail",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 5081
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=279934",
+      "page_sha256": "0114cfd786ef5a1d41add0fa5667aaf3f1ab579988bf413a17d5e6d6538f820a"
+    },
+    {
+      "item_id": 280087,
+      "name": "Soft Nightsaber Pelt",
+      "item_status": "new",
+      "quest_ids": [
+        87288
+      ],
+      "drops": [
+        {
+          "npc_id": 2042,
+          "npc_name": "Nightsaber",
+          "npc_status": "unchanged",
+          "count": 994,
+          "outof": 59715
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280087",
+      "page_sha256": "24379a71f36daaccb3559cec9167f27c5e3a796510ce34112abd001f3f4ac7b7"
+    },
+    {
+      "item_id": 280103,
+      "name": "Razormaw Incisor",
+      "item_status": "new",
+      "quest_ids": [
+        98245
+      ],
+      "drops": [
+        {
+          "npc_id": 1018,
+          "npc_name": "Highland Razormaw",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4275
+        },
+        {
+          "npc_id": 1019,
+          "npc_name": "Elder Razormaw",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 2841
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280103",
+      "page_sha256": "a9c85229cc2d9f2754db5c307b98b3b0f9777fbcf6bfa0d276d20c67c4069b3f"
+    },
+    {
+      "item_id": 280181,
+      "name": "Redstone Basilisk Scale",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 5990,
+          "npc_name": "Redstone Basilisk",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 76127
+        },
+        {
+          "npc_id": 5991,
+          "npc_name": "Redstone Crystalhide",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 50568
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280181",
+      "page_sha256": "999e319f7e9219cd7749567de5a5473bf38b747788ff4a594c84c6a6f715cc7b"
+    },
+    {
+      "item_id": 280203,
+      "name": "Jameson's Training Sword",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 4392,
+          "npc_name": "Corrosive Swamp Ooze",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 2970
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280203",
+      "page_sha256": "4697d05ebbd078fa43b2a55a140d8a2411db756508e6824bcf0f340c67d4dcf5"
+    },
+    {
+      "item_id": 280319,
+      "name": "Unruptured Stalker Gland",
+      "item_status": "new",
+      "quest_ids": [
+        98282
+      ],
+      "drops": [
+        {
+          "npc_id": 1111,
+          "npc_name": "Leech Stalker",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 107389
+        },
+        {
+          "npc_id": 4040,
+          "npc_name": "Cave Stalker",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 69948
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280319",
+      "page_sha256": "2da89dc716279fdb8d3a5335f58f7a9ee2e28be900739210bc76f16ede80fa01"
+    },
+    {
+      "item_id": 280375,
+      "name": "Worgen Bits",
+      "item_status": "new",
+      "quest_ids": [
+        98298
+      ],
+      "drops": [
+        {
+          "npc_id": 1924,
+          "npc_name": "Moonrage Bloodhowler",
+          "npc_status": "unchanged",
+          "count": 277,
+          "outof": 4098
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280375",
+      "page_sha256": "2360e787f8f0f2f2b9a3f1d685185ccb16e196fe46b5c3fca8e9c06b2d2aaeb3"
+    },
+    {
+      "item_id": 280391,
+      "name": "Carved Stone Trinket",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 5974,
+          "npc_name": "Dreadmaul Ogre",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 3921
+        },
+        {
+          "npc_id": 5975,
+          "npc_name": "Dreadmaul Ogre Mage",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 2436
+        },
+        {
+          "npc_id": 5976,
+          "npc_name": "Dreadmaul Brute",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4186
+        },
+        {
+          "npc_id": 5977,
+          "npc_name": "Dreadmaul Mauler",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 5922
+        },
+        {
+          "npc_id": 5978,
+          "npc_name": "Dreadmaul Warlock",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 5790
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280391",
+      "page_sha256": "5e1ed21a6e2b4c93fee358dd063b3eacf6bfad4bfc4ccab7c4e490ed5d233b3d"
+    },
+    {
+      "item_id": 280426,
+      "name": "Sack of Fish",
+      "item_status": "new",
+      "quest_ids": [
+        98326
+      ],
+      "drops": [
+        {
+          "npc_id": 271587,
+          "npc_name": "Frosthowl",
+          "npc_status": "new",
+          "count": 191,
+          "outof": 300
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280426",
+      "page_sha256": "b8dba2dde71a0eaede44ddb955b62df884c01242b31fc30ec8c2558df261e7c2"
+    },
+    {
+      "item_id": 280608,
+      "name": "Eldarath Relic",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 6194,
+          "npc_name": "Spitelash Serpent Guard",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 22300
+        },
+        {
+          "npc_id": 6195,
+          "npc_name": "Spitelash Siren",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 73608
+        },
+        {
+          "npc_id": 6196,
+          "npc_name": "Spitelash Myrmidon",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 46038
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280608",
+      "page_sha256": "6fdafd8a2e737a9c5aaf1e0293a3bf4b0fd351fbe0e198dc6c0b78bf0407a8f1"
+    },
+    {
+      "item_id": 280686,
+      "name": "Rod of Deep Dominion",
+      "item_status": "new",
+      "quest_ids": [
+        87760
+      ],
+      "drops": [
+        {
+          "npc_id": 271903,
+          "npc_name": "Stormscale Beastmistress",
+          "npc_status": "new",
+          "count": 8,
+          "outof": 10
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280686",
+      "page_sha256": "50b292c1e5a5dc50797eb36b8e36fb9322d82a4799805ec1b4cd6a28dc43f699"
+    },
+    {
+      "item_id": 280831,
+      "name": "Hatescreech's Amulet",
+      "item_status": "new",
+      "quest_ids": [
+        98392
+      ],
+      "drops": [
+        {
+          "npc_id": 272034,
+          "npc_name": "Hatescreech",
+          "npc_status": "new",
+          "count": 126,
+          "outof": 143
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280831",
+      "page_sha256": "b21e8657a7764aab9af8380132aeba6ee4c2ceac2e730031db48d6a62b407498"
+    },
+    {
+      "item_id": 280832,
+      "name": "Windmistress Gaedress' Amulet",
+      "item_status": "new",
+      "quest_ids": [
+        98392
+      ],
+      "drops": [
+        {
+          "npc_id": 272044,
+          "npc_name": "Windmistress Gaedress",
+          "npc_status": "new",
+          "count": 106,
+          "outof": 120
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280832",
+      "page_sha256": "02eb494b7823fbaccf8df9a5308bbcadc39bfa3bf961b71f000e3e1e589ff1f8"
+    },
+    {
+      "item_id": 280834,
+      "name": "Witchmother Arysa's Amulet",
+      "item_status": "new",
+      "quest_ids": [
+        98392
+      ],
+      "drops": [
+        {
+          "npc_id": 272046,
+          "npc_name": "Witchmother Arysa",
+          "npc_status": "new",
+          "count": 120,
+          "outof": 174
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280834",
+      "page_sha256": "9d5e610ab4155a7941a3602db74f54757ecf6dd1876d8151fdd7d7deb2420577"
+    },
+    {
+      "item_id": 280911,
+      "name": "Spiked Collar",
+      "item_status": "new",
+      "quest_ids": [
+        98407
+      ],
+      "drops": [
+        {
+          "npc_id": 712,
+          "npc_name": "Redridge Thrasher",
+          "npc_status": "unchanged",
+          "count": 294,
+          "outof": 24568
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=280911",
+      "page_sha256": "3bf23074be79b80a2340b58298a28532e5cd7afb488f46d276426fc05988383f"
+    },
+    {
+      "item_id": 281023,
+      "name": "Mature Fel Moss",
+      "item_status": "new",
+      "quest_ids": [
+        98403
+      ],
+      "drops": [
+        {
+          "npc_id": 272116,
+          "npc_name": "Xethorr the Wicked",
+          "npc_status": "new",
+          "count": 122,
+          "outof": 130
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=281023",
+      "page_sha256": "7e7958ffe95ffd6d7e71349fc28736f846e286ac87e08cbfb747d51875c0be30"
+    },
+    {
+      "item_id": 281031,
+      "name": "Mulgore Expansion Plans",
+      "item_status": "new",
+      "quest_ids": [
+        98424
+      ],
+      "drops": [
+        {
+          "npc_id": 3051,
+          "npc_name": "Supervisor Fizsprocket",
+          "npc_status": "unchanged",
+          "count": 131,
+          "outof": 2589
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=281031",
+      "page_sha256": "f11487920643467860f551e62e61cf703882a0c0495aafda08a1242f79f88fc6"
+    },
+    {
+      "item_id": 281038,
+      "name": "Feather of Jai'vhanel",
+      "item_status": "new",
+      "quest_ids": [
+        98025
+      ],
+      "drops": [
+        {
+          "npc_id": 270196,
+          "npc_name": "Jai'vhanel",
+          "npc_status": "new",
+          "count": 115,
+          "outof": 118
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=281038",
+      "page_sha256": "9bde043d4389aada9acc8af1bc6950df3d5cf1bc7e898b2aaaf6a4e895ebf610"
+    },
+    {
+      "item_id": 281048,
+      "name": "Clearcutter Key",
+      "item_status": "new",
+      "quest_ids": [
+        98427
+      ],
+      "drops": [
+        {
+          "npc_id": 272173,
+          "npc_name": "Venture Co. Clearclutter",
+          "npc_status": "new",
+          "count": 84,
+          "outof": 94
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=281048",
+      "page_sha256": "ec022475a981666daa4d64a508fcf66deca7395ba391129c1076dbbd3f104541"
+    },
+    {
+      "item_id": 281146,
+      "name": "Grant's Mace",
+      "item_status": "new",
+      "quest_ids": [
+        79362
+      ],
+      "drops": [
+        {
+          "npc_id": 202,
+          "npc_name": "Skeletal Horror",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 133237
+        },
+        {
+          "npc_id": 531,
+          "npc_name": "Skeletal Fiend",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 68879
+        },
+        {
+          "npc_id": 787,
+          "npc_name": "Skeletal Healer",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 16765
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=281146",
+      "page_sha256": "68c52377699573731b230b28e92d899e592a532d7fc84f3a264fa8829a7b090c"
+    },
+    {
+      "item_id": 281241,
+      "name": "Chillwind Chimaera Fur",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 7447,
+          "npc_name": "Fledgling Chillwind",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 26684
+        },
+        {
+          "npc_id": 7448,
+          "npc_name": "Chillwind Chimaera",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 51623
+        },
+        {
+          "npc_id": 7449,
+          "npc_name": "Chillwind Ravager",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 156312
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=281241",
+      "page_sha256": "359cd8fdb6f09e3331bc052f338fca9f4367a1d27fa9594e06fce2369397999e"
+    },
+    {
+      "item_id": 281242,
+      "name": "Winterspring Owl Feather",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 7455,
+          "npc_name": "Winterspring Owl",
+          "npc_status": "updated",
+          "count": 1,
+          "outof": 5338
+        },
+        {
+          "npc_id": 7456,
+          "npc_name": "Winterspring Screecher",
+          "npc_status": "updated",
+          "count": 1,
+          "outof": 3505
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=281242",
+      "page_sha256": "7a075133a4b5ac4092cedf8eb11d446b23695fd8c6bb985168f92ad029d43e49"
+    },
+    {
+      "item_id": 285808,
+      "name": "Eye of Blackhand",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 10429,
+          "npc_name": "Warchief Rend Blackhand",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 5866
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=285808",
+      "page_sha256": "029be78467a0320ae26be11d0b2d91590199f2174b73a6e2cac900232a880c38"
+    },
+    {
+      "item_id": 285868,
+      "name": "Eye of Drakkisath",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 10363,
+          "npc_name": "General Drakkisath",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 5179
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=285868",
+      "page_sha256": "0f3aac61a4eeef13764bde3ce87e878866c67b6f9601bdfb2436fd57c6756002"
+    },
+    {
+      "item_id": 285872,
+      "name": "Mantle of the Grand Crusader",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 10812,
+          "npc_name": "Grand Crusader Dathrohan",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4153
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=285872",
+      "page_sha256": "1b04621717f6befcb8181d0f9f13c727f45337eba6da0fae208c7ed89018cb0d"
+    },
+    {
+      "item_id": 285873,
+      "name": "Shattered Pauldron of Rivendare",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 10440,
+          "npc_name": "Baron Rivendare",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 8951
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=285873",
+      "page_sha256": "8635868aa6def282b42d999a5505d1477f3e9e023177431f0bfbd0012848dda6"
+    },
+    {
+      "item_id": 285949,
+      "name": "Blood of Immol'thar",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 11496,
+          "npc_name": "Immol'thar",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 4949
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=285949",
+      "page_sha256": "f18205b60d2a5f5fdfb8d8fac535f7f8843ec815e8004ddaaa4ecd1d685187c6"
+    },
+    {
+      "item_id": 285960,
+      "name": "Everfrost Sample",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 10508,
+          "npc_name": "Ras Frostwhisper",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 25205
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=285960",
+      "page_sha256": "26b3b1a40b962e3c73b5ef959afb7867c1603e65d73148b1b75b45f53ab6ee7c"
+    },
+    {
+      "item_id": 285962,
+      "name": "Gandling's Signet Ring",
+      "item_status": "new",
+      "quest_ids": [],
+      "drops": [
+        {
+          "npc_id": 1853,
+          "npc_name": "Darkmaster Gandling",
+          "npc_status": "unchanged",
+          "count": 1,
+          "outof": 6339
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=285962",
+      "page_sha256": "21cbcc94cb315822936126830637dc35aac628f83c8754cf596b6ddc59ead143"
+    },
+    {
+      "item_id": 286008,
+      "name": "Naga Spinefin",
+      "item_status": "new",
+      "quest_ids": [
+        99051
+      ],
+      "drops": [
+        {
+          "npc_id": 275662,
+          "npc_name": "Spitelash Scout",
+          "npc_status": "new",
+          "count": 989,
+          "outof": 989
+        },
+        {
+          "npc_id": 275663,
+          "npc_name": "Spitelash Attendant",
+          "npc_status": "new",
+          "count": 481,
+          "outof": 481
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=286008",
+      "page_sha256": "d902567c777b34d5b30fac02a2a3ec7c361c2d7ebc1d444c28916c266cdaa346"
+    },
+    {
+      "item_id": 286009,
+      "name": "Aggor's Belt",
+      "item_status": "new",
+      "quest_ids": [
+        99052
+      ],
+      "drops": [
+        {
+          "npc_id": 275666,
+          "npc_name": "Aggor the Young",
+          "npc_status": "new",
+          "count": 168,
+          "outof": 168
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=286009",
+      "page_sha256": "33cf28a39e84c5deda5fbb747f873b1d78e67f4fae95650ab9ec8f9be02e07ce"
+    },
+    {
+      "item_id": 286017,
+      "name": "Dewy Lasher Frond",
+      "item_status": "new",
+      "quest_ids": [
+        99050
+      ],
+      "drops": [
+        {
+          "npc_id": 275703,
+          "npc_name": "Lasher Sproutling",
+          "npc_status": "new",
+          "count": 744,
+          "outof": 1167
+        },
+        {
+          "npc_id": 275708,
+          "npc_name": "Blooming Lasher",
+          "npc_status": "new",
+          "count": 49,
+          "outof": 94
+        },
+        {
+          "npc_id": 276099,
+          "npc_name": "Wrathvine",
+          "npc_status": "new",
+          "count": 10,
+          "outof": 12
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=286017",
+      "page_sha256": "036d3f8dfce04c38cd286c108aa0733ab126d56efc69695e566547b3513ac5f6"
+    },
+    {
+      "item_id": 286075,
+      "name": "Herak's Head",
+      "item_status": "new",
+      "quest_ids": [
+        99080
+      ],
+      "drops": [
+        {
+          "npc_id": 275767,
+          "npc_name": "Herak the Pillager",
+          "npc_status": "new",
+          "count": 160,
+          "outof": 171
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=286075",
+      "page_sha256": "48d43a334103a8cd4a82b3db2a86d86d173c536aaf9ff389c38931aa0170b260"
+    },
+    {
+      "item_id": 286215,
+      "name": "Vial of Animal Blood",
+      "item_status": "new",
+      "quest_ids": [
+        99130
+      ],
+      "drops": [
+        {
+          "npc_id": 113,
+          "npc_name": "Stonetusk Boar",
+          "npc_status": "unchanged",
+          "count": 1278,
+          "outof": 131844
+        },
+        {
+          "npc_id": 822,
+          "npc_name": "Young Forest Bear",
+          "npc_status": "unchanged",
+          "count": 245,
+          "outof": 76095
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=286215",
+      "page_sha256": "3497c0d71e919c0ec35a85de274a004506145c81d2f1b1da184a2077f3a3293b"
+    },
+    {
+      "item_id": 286259,
+      "name": "Faintly Glowing Bone",
+      "item_status": "new",
+      "quest_ids": [
+        99152
+      ],
+      "drops": [
+        {
+          "npc_id": 260428,
+          "npc_name": "Shadowvale Lurcher",
+          "npc_status": "new",
+          "count": 688,
+          "outof": 3018
+        },
+        {
+          "npc_id": 260430,
+          "npc_name": "Shadowvale Mystic",
+          "npc_status": "new",
+          "count": 454,
+          "outof": 1816
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=286259",
+      "page_sha256": "6050aaffe4e4b768e8f25ccbb34c93a0074fc4d1564cb3f65e84a3ce7b41f89e"
+    },
+    {
+      "item_id": 286325,
+      "name": "Avala's Core",
+      "item_status": "new",
+      "quest_ids": [
+        99161
+      ],
+      "drops": [
+        {
+          "npc_id": 276009,
+          "npc_name": "Avala",
+          "npc_status": "new",
+          "count": 275,
+          "outof": 275
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=286325",
+      "page_sha256": "71ca7864d7118b2d1ae4e37d9a957db80c99d78d245710a1ac3921f2e4128ef4"
+    },
+    {
+      "item_id": 286326,
+      "name": "Riptear's Heart",
+      "item_status": "new",
+      "quest_ids": [
+        99156
+      ],
+      "drops": [
+        {
+          "npc_id": 276020,
+          "npc_name": "Riptear",
+          "npc_status": "new",
+          "count": 196,
+          "outof": 216
+        }
+      ],
+      "url": "https://www.wowhead.com/forever/item=286326",
+      "page_sha256": "4d85ed09c7c4c850f5dbaf781b8b5f57469dc85dad396727c890a83fd8f218fe"
+    }
+  ]
+}

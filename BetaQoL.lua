@@ -4,11 +4,15 @@ local settings = {
     autoAccept = true, autoTurnIn = true, fastLoot = true,
     enterConfirm = true, rangeColor = true, whisperDoubleClick = true,
     backspaceDestroy = true,
+    backspaceQuestDetails = true,
     squareMinimap = true,
     questNameplateBag = true,
     chatArrowKeys = true,
+    shiftEscapeReload = true,
     questLogXP = true,
     questDropRate = true,
+    flightMasterInstantMap = true,
+    damageMeterDoubleClick = true,
 }
 local featureChanged = {}
 local settingsLoaded = false
@@ -29,6 +33,11 @@ local function LoadSettings()
     if type(BetaQoLDB) ~= "table" then
         BetaQoLDB = {}
     end
+    -- Preserve the old reload toggle when moving away from the Windows shortcut.
+    if type(BetaQoLDB.shiftEscapeReload) ~= "boolean" and type(BetaQoLDB.ctrlEscapeReload) == "boolean" then
+        BetaQoLDB.shiftEscapeReload = BetaQoLDB.ctrlEscapeReload
+    end
+    BetaQoLDB.ctrlEscapeReload = nil
     for key, default in pairs(settings) do
         if type(BetaQoLDB[key]) ~= "boolean" then
             BetaQoLDB[key] = default
@@ -73,7 +82,7 @@ SlashCmdList.QOL = function()
     end
     local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
     settingsWindow = window
-    window:SetSize(380, 518)
+    window:SetSize(570, 662)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
     window.TitleText:SetText("Beta Quality of Life")
@@ -86,18 +95,22 @@ SlashCmdList.QOL = function()
     tinsert(UISpecialFrames, "BetaQoLSettingsFrame")
 
     local features = {
-        { "autoAccept", "Quest Auto Accept (hold Shift to disable)" },
-        { "autoTurnIn", "Quest Auto Turn-in (hold Shift to disable)" },
-        { "fastLoot", "Fast Autoloot" },
-        { "enterConfirm", "Enter Confirm Dialog-Box" },
-        { "rangeColor", "Spellicon Range Color" },
-        { "whisperDoubleClick", "Whisper Tab Doubleclick Close" },
-        { "backspaceDestroy", "Backspace Destroy Select Item" },
-        { "squareMinimap", "Square Minimap" },
-        { "questNameplateBag", "Quest Target Nameplate Icon" },
-        { "chatArrowKeys", "Arrow Keys Chat Control" },
-        { "questLogXP", "Questlog Quest XP (+ for item rewards)" },
+        { "autoAccept", "Quest Auto Accept (shift disable)" },
+        { "autoTurnIn", "Quest Auto Turn-in (shift disable)" },
         { "questDropRate", "Quest Item Drop Rate" },
+        { "questNameplateBag", "Quest Target Nameplate Icon" },
+        { "questLogXP", "Questlog Quest XP (+ for item rewards)" },
+        { "fastLoot", "Fast Autoloot" },
+        { "squareMinimap", "Square Minimap (forever look)" },
+        { "rangeColor", "Spellicon Range Color" },
+        { "backspaceQuestDetails", "Backspace Leave Quest Details" },
+        { "backspaceDestroy", "Backspace Destroy Select Item" },
+        { "enterConfirm", "Enter Confirm Dialog Box" },
+        { "chatArrowKeys", "Arrow Keys Chat Control" },
+        { "shiftEscapeReload", "Left Shift Escape Reload" },
+        { "flightMasterInstantMap", "Flight Master Auto Map (shift disable)" },
+        { "damageMeterDoubleClick", "Damage Meter Doubleclick Switch (current and overall)" },
+        { "whisperDoubleClick", "Whisper Tab Doubleclick Close" },
     }
     for index, feature in ipairs(features) do
         local key = feature[1]
@@ -114,6 +127,61 @@ SlashCmdList.QOL = function()
     hint:SetText("Changes apply immediately and are saved.")
     RefreshSettings()
     window:Show()
+end
+
+-- Observe physical modifier events: the live client returned false from the left-Shift query.
+do
+    local events = CreateFrame("Frame")
+    local keys
+    local escapeDown = false
+    local leftShiftDown = false
+    local function UpdateReloadKeys()
+        if not settingsLoaded or type(ReloadUI) ~= "function" then return end
+        if not settings.shiftEscapeReload then
+            if keys then keys:Hide() end
+            escapeDown = false
+            return
+        end
+        if not keys then
+            -- Keyboard propagation is protected; initialize it outside combat.
+            if InCombatLockdown() then return end
+            keys = CreateFrame("Frame", nil, UIParent)
+            keys:SetSize(1, 1)
+            keys:SetPoint("CENTER")
+            keys:SetFrameStrata("FULLSCREEN_DIALOG")
+            keys:EnableKeyboard(true)
+            -- Observation only: ordinary Escape and all other keys retain their routing.
+            keys:SetPropagateKeyboardInput(true)
+            keys:SetScript("OnKeyDown", function(_, key)
+                if key == "LSHIFT" then leftShiftDown = true; return end
+                if key ~= "ESCAPE" then return end
+                if not escapeDown and settings.shiftEscapeReload and leftShiftDown
+                    and not IsControlKeyDown() and not IsAltKeyDown() then
+                    -- Native Escape can redirect key-up to another panel. Only
+                    -- latch a reload attempt, never an ordinary Escape press.
+                    escapeDown = true
+                    ReloadUI()
+                end
+            end)
+            keys:SetScript("OnKeyUp", function(_, key)
+                if key == "LSHIFT" then leftShiftDown = false end
+                if key == "ESCAPE" then escapeDown = false end
+            end)
+            keys:SetScript("OnHide", function() escapeDown = false end)
+        end
+        keys:Show()
+    end
+    featureChanged.shiftEscapeReload = UpdateReloadKeys
+    events:RegisterEvent("PLAYER_LOGIN")
+    events:RegisterEvent("PLAYER_REGEN_ENABLED")
+    events:RegisterEvent("MODIFIER_STATE_CHANGED")
+    events:SetScript("OnEvent", function(_, event, key, state)
+        if event == "MODIFIER_STATE_CHANGED" then
+            if key == "LSHIFT" then leftShiftDown = state == 1 end
+        else
+            UpdateReloadKeys()
+        end
+    end)
 end
 
 -- Extend the native prefix before WoW measures and lays out each quest row.
@@ -169,7 +237,7 @@ local function HookQuestXP()
         end
         local hasItems = HasQuestRewardItems(GetNumQuestLogRewards, info.questID)
             or HasQuestRewardItems(GetNumQuestLogChoices, info.questID)
-        return (prefix or "") .. "[" .. BreakUpLargeNumbers(xp) .. (hasItems and "+" or "") .. "] "
+        return (prefix or "") .. "(" .. BreakUpLargeNumbers(xp) .. (hasItems and "+" or "") .. ") "
     end
     questXPHooked = true
     questXPFrame:UnregisterEvent("ADDON_LOADED")
@@ -345,6 +413,7 @@ local gossipContinuing = false
 local interactionTypes = Enum.PlayerInteractionType
 local progressRequested
 local rewardRequested
+local flightMapRequested = false
 
 local function ResetInteraction()
     interactionPaused = false
@@ -352,6 +421,7 @@ local function ResetInteraction()
     gossipContinuing = false
     progressRequested = nil
     rewardRequested = nil
+    flightMapRequested = false
     interactionRevision = interactionRevision + 1
 end
 
@@ -387,6 +457,7 @@ frame:SetScript("OnEvent", function(_, event, arg)
         ResetInteraction()
         return
     elseif event == "GOSSIP_CLOSED" then
+        flightMapRequested = false
         gossipContinuing = arg == true
         if not gossipContinuing then
             CheckInteractionEnded()
@@ -437,6 +508,20 @@ frame:SetScript("OnEvent", function(_, event, arg)
             for _, quest in ipairs(C_GossipInfo.GetAvailableQuests() or {}) do
                 if not quest.isIgnored then
                     C_GossipInfo.SelectAvailableQuest(quest.questID)
+                    return
+                end
+            end
+        end
+        if settings.flightMasterInstantMap and not flightMapRequested and npc
+            and C_GossipInfo.GetOptions and C_GossipInfo.SelectOptionByIndex
+            and Enum.GossipOptionStatus then
+            for _, option in ipairs(C_GossipInfo.GetOptions() or {}) do
+                -- TaxiGossipIcon: identify the service independently of locale.
+                -- Use the server's orderIndex, just like the native gossip button.
+                if option.icon == 132057 and option.status == Enum.GossipOptionStatus.Available
+                    and type(option.orderIndex) == "number" and option.orderIndex >= 0 then
+                    flightMapRequested = true
+                    C_GossipInfo.SelectOptionByIndex(option.orderIndex)
                     return
                 end
             end
@@ -1024,6 +1109,48 @@ whisperFrame:RegisterEvent("PLAYER_LOGIN")
 whisperFrame:SetScript("OnEvent", HookWhisperTabs)
 HookWhisperTabs()
 
+-- Use the same owner method as the native session menu so the selection is saved.
+do
+    local events = CreateFrame("Frame")
+    local attached = setmetatable({}, { __mode = "k" })
+    local hookedOwners = setmetatable({}, { __mode = "k" })
+    local function AttachWindow(window)
+        local dropdown = window.GetSessionDropdown and window:GetSessionDropdown()
+        if not dropdown or attached[dropdown] then return end
+        attached[dropdown] = true
+        local previous = dropdown:GetScript("OnDoubleClick")
+        dropdown:SetScript("OnDoubleClick", function(self, button, ...)
+            local types = Enum.DamageMeterSessionType
+            local owner = window:GetDamageMeterOwner()
+            local current = window:GetSessionType()
+            if settings.damageMeterDoubleClick and button == "LeftButton" and types
+                and owner and owner.SetSessionWindowSessionID
+                and (current == types.Current or current == types.Overall) then
+                local nextType = current == types.Current and types.Overall or types.Current
+                self:CloseMenu()
+                owner:SetSessionWindowSessionID(window, nextType, nil)
+                return
+            end
+            if previous then return previous(self, button, ...) end
+        end)
+    end
+    local function HookDamageMeter()
+        local owner = DamageMeter
+        if not owner or not owner.ForEachSessionWindow or not owner.SetupSessionWindow then return end
+        if not hookedOwners[owner] then
+            hookedOwners[owner] = true
+            hooksecurefunc(owner, "SetupSessionWindow", function()
+                owner:ForEachSessionWindow(AttachWindow)
+            end)
+        end
+        if owner.windowDataList then owner:ForEachSessionWindow(AttachWindow) end
+    end
+    featureChanged.damageMeterDoubleClick = HookDamageMeter
+    events:RegisterEvent("ADDON_LOADED")
+    events:RegisterEvent("PLAYER_LOGIN")
+    events:SetScript("OnEvent", HookDamageMeter)
+end
+
 -- Backspace is intercepted only for a real item picked up from carried bags.
 -- Request the native confirmation; never delete directly from this shortcut.
 local destroyEvents = CreateFrame("Frame")
@@ -1133,6 +1260,55 @@ for _, event in ipairs({ "CURSOR_CHANGED", "PLAYER_REGEN_DISABLED", "PLAYER_REGE
 end
 destroyEvents:SetScript("OnEvent", UpdateDestroyKeys)
 UpdateDestroyKeys()
+
+-- A child of the native Back button only receives input while details are visible.
+do
+    local events = CreateFrame("Frame")
+    local keys, attachedButton
+    local function UpdateQuestBackKeys()
+        if InCombatLockdown and InCombatLockdown() then
+            if keys then keys:Hide() end
+            return
+        end
+        local details = QuestMapFrame and QuestMapFrame.DetailsFrame
+        local button = details and details.BackFrame and details.BackFrame.BackButton
+        if not settings.backspaceQuestDetails or not button then
+            if keys then keys:Hide() end
+            return
+        end
+        if not keys or attachedButton ~= button then
+            if keys then keys:Hide() end
+            attachedButton = button
+            keys = CreateFrame("Frame", nil, button)
+            keys:SetSize(1, 1)
+            keys:SetPoint("CENTER")
+            keys:EnableKeyboard(true)
+            keys:SetScript("OnKeyDown", function(self, key)
+                if InCombatLockdown() then
+                    self:Hide()
+                    return
+                end
+                local handled = settings.backspaceQuestDetails and key == "BACKSPACE"
+                    and button:IsVisible() and button:IsEnabled()
+                    and not GetCurrentKeyBoardFocus() and not CursorHasItem()
+                    and not IsShiftKeyDown() and not IsControlKeyDown() and not IsAltKeyDown()
+                -- Consume before the native click hides the details and this child.
+                self:SetPropagateKeyboardInput(not handled)
+                if handled then button:Click() end
+            end)
+            keys:SetScript("OnKeyUp", function(self)
+                if not InCombatLockdown() then self:SetPropagateKeyboardInput(true) end
+            end)
+        end
+        keys:SetPropagateKeyboardInput(true)
+        keys:Show()
+    end
+    featureChanged.backspaceQuestDetails = UpdateQuestBackKeys
+    for _, event in ipairs({ "ADDON_LOADED", "PLAYER_LOGIN", "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED" }) do
+        events:RegisterEvent(event)
+    end
+    events:SetScript("OnEvent", UpdateQuestBackKeys)
+end
 
 -- Forever's skin resets the circular mask when rotateMinimap changes.
 -- Keep the map geometry and controls intact; hide only the two ring textures.
@@ -1482,7 +1658,7 @@ end)
 
 
 -- Questie-style NPC/item lookup for the player's quests still in the quest log.
--- Values come from the bundled Classic database; provenance is documented in README.
+-- Classic estimates and Forever observations; provenance is documented in README.
 local function QuestItemObjectiveName(text)
     if not IsReadableQuestValue(text) or type(text) ~= "string" then return nil end
     text = text:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""):match("^%s*(.-)%s*$")
@@ -1520,6 +1696,40 @@ local function QuestDropItemName(itemID, database)
     end
 end
 
+local function QuestDropTitleColor(line)
+    local fallback = "|cffffd100"
+    if not IsReadableQuestValue(line.lineIndex) or type(line.lineIndex) ~= "number" then return fallback end
+    local row = _G["GameTooltipTextLeft" .. line.lineIndex]
+    if not row or not row.GetTextColor then return fallback end
+    local r, g, b = row:GetTextColor()
+    for _, value in ipairs({r, g, b}) do
+        if not IsReadableQuestValue(value) or type(value) ~= "number"
+            or value ~= value or value < 0 or value > 1 then return fallback end
+    end
+    if r == nil or g == nil or b == nil then return fallback end
+    return string.format("|cff%02x%02x%02x", math.floor(r * 255 + 0.5),
+        math.floor(g * 255 + 0.5), math.floor(b * 255 + 0.5))
+end
+
+local function QuestDropPercent(rate)
+    local rounded = math.floor(rate + 0.5)
+    if rate >= 19 then
+        local nearestFive = math.floor(rate / 5 + 0.5) * 5
+        if math.abs(rate - nearestFive) <= 1 then rounded = nearestFive end
+    end
+    return rounded == 0 and "<1" or tostring(rounded)
+end
+
+local function QuestDropObjectiveComplete(line)
+    if IsReadableQuestValue(line.completed) and line.completed == true then return true end
+    local fulfilled, required = line.numFulfilled, line.numRequired
+    return IsReadableQuestValue(fulfilled) and IsReadableQuestValue(required)
+        and type(fulfilled) == "number" and type(required) == "number"
+        and required > 0 and fulfilled >= required
+end
+
+-- Repeated post-calls may change styling without rebuilding the native row first.
+local questDropRows = setmetatable({}, {__mode = "k"})
 local function AddQuestDropRates(tooltip, data)
     if not settingsLoaded or not settings.questDropRate or tooltip ~= GameTooltip
         or (tooltip.IsForbidden and tooltip:IsForbidden())
@@ -1533,10 +1743,12 @@ local function AddQuestDropRates(tooltip, data)
     if not drops then return end
     local types = Enum.TooltipDataLineType
     local ownItems, ownPlayer, itemNames = nil, true, {}
+    local questColor = "|cffffd100"
     for _, line in ipairs(data.lines) do
         if not IsReadableQuestValue(line.type) then return end
         if line.type == types.QuestTitle then
             ownItems, ownPlayer = QuestItemObjectives(line.id), true
+            questColor = QuestDropTitleColor(line)
         elseif line.type == types.QuestPlayer then
             -- GUIDs avoid surname/display-name differences in grouped tooltips.
             if IsReadableQuestValue(line.guid) and type(line.guid) == "string" then
@@ -1567,11 +1779,16 @@ local function AddQuestDropRates(tooltip, data)
                     local fontString = _G["GameTooltipTextLeft" .. line.lineIndex]
                     local text = fontString and fontString:GetText()
                     if IsReadableQuestValue(text) and type(text) == "string" then
-                        local percent = matchedRate < 0.001 and "<0.001" or
-                            string.format(matchedRate < 0.1 and "%.3f" or "%.1f", matchedRate):gsub("%.?0+$", "")
-                        local suffix = " |cffffff00(" .. percent .. "%)|r"
-                        if text:sub(-#suffix) ~= suffix then
-                            fontString:SetText(text .. suffix)
+                        local previous = questDropRows[fontString]
+                        local base = previous and text == previous.rendered and previous.base or text
+                        local percent = "(" .. QuestDropPercent(matchedRate) .. "%)"
+                        -- Completed percentages inherit the native objective's gray.
+                        local suffix = QuestDropObjectiveComplete(line) and (" " .. percent)
+                            or (" " .. questColor .. percent .. "|r")
+                        local rendered = base .. suffix
+                        questDropRows[fontString] = {base = base, rendered = rendered}
+                        if text ~= rendered then
+                            fontString:SetText(rendered)
                         end
                     end
                 end

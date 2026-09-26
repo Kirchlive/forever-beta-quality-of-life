@@ -142,9 +142,9 @@ class DestroyBehaviour(unittest.TestCase):
 
     def test_disabling_with_an_item_picked_up_restores_backspace_immediately(self):
         self.lua.execute('''
-        pickup('item',0,'Item-A'); SlashCmdList.QOL(); clickSetting(7,false)
+        pickup('item',0,'Item-A'); SlashCmdList.QOL(); clickSetting(10,false)
         assert(not press('BACKSPACE') and not BetaQoLDB.backspaceDestroy)
-        clickSetting(7,true); assert(press('BACKSPACE') and #confirmations==1)
+        clickSetting(10,true); assert(press('BACKSPACE') and #confirmations==1)
         ''')
 
     def test_combat_releases_keyboard_and_resumes_after_combat(self):

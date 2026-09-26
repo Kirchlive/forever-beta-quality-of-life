@@ -144,10 +144,10 @@ class WhisperTabBehaviour(unittest.TestCase):
     def test_setting_disables_immediately_and_keeps_native_double_click(self):
         self.load_addon()
         self.lua.execute('''
-        SlashCmdList.QOL(); clickSetting(6,false)
+        SlashCmdList.QOL(); clickSetting(16,false)
         whisper.isDocked=false; doubleClick(whisper)
         assert(whisper.inUse and minimized==1 and not BetaQoLDB.whisperDoubleClick)
-        clickSetting(6,true); doubleClick(whisper)
+        clickSetting(16,true); doubleClick(whisper)
         assert(not whisper.inUse and minimized==1)
         ''')
 

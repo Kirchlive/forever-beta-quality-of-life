@@ -3,6 +3,80 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.9.7 — Quest tools and complete catalog import
+
+Released September 26, 2026. All sixteen features default on with independent
+saved switches; the settings names and order match the final user-approved list.
+
+### New shortcuts and navigation
+
+- **Backspace Leave Quest Details** invokes the native Back button, preserving
+  the return map and quest overview. Text focus, modifiers, picked-up items,
+  hidden details and disabled buttons retain their native behavior. It yields
+  in combat and supports quest UI loaded later.
+- **Flight Master Auto Map (shift disable)** selects the available taxi option
+  through the native gossip API, including Devrak's `orderIndex=0`. Enabled
+  quest handling keeps priority. Holding Shift while speaking to the NPC keeps
+  the entire conversation manual, even after release. No destination is selected
+  and no fare is confirmed. The addon adds no transition timer.
+- **Damage Meter Doubleclick Switch (current and overall)** switches the clicked
+  native window through its owner's saved-session method. Single-click menus,
+  individual encounter selections and other windows stay unchanged.
+- **Left Shift Escape Reload** observes physical LSHIFT events and Escape directly.
+  The former Ctrl+Escape shortcut conflicted with Windows. A diagnostic showed
+  click callbacks but a false IsLeftShiftKeyDown result in the live client, so
+  the implementation uses key events and MODIFIER_STATE_CHANGED. It preserves
+  normal key routing and does not alter bindings. Ordinary Escape never arms the
+  repeat guard, preventing a lost key-up from blocking a later reload. Initial
+  protected keyboard setup is deferred if the addon loads during combat.
+
+Quest XP now uses parentheses: `[15] (1,350+) Chen's Empty Keg`.
+The plus still identifies guaranteed or selectable item rewards.
+
+### Quest-item data and presentation
+
+All 2,133 pages from the quest-item/drop-source catalog were parsed, with zero
+missing or invalid pages. The shipped Wowhead Forever supplement contains
+337 NPC/item pairs covering 176 items and 283 NPCs: 46 additional pairs compared
+with the development snapshot, with all 291 prior observations retained.
+The combined lookup has **17,015 pairs, 4,400 NPCs and 1,407 items**.
+
+The importer validates the Forever environment, exact item IDs and normal-mode
+loot counts. Each supplemental pair requires a newly marked NPC or item. Original
+Classic pairs remain intact: no removed or changed baseline pairs. This avoids
+mistaking inherited Classic observations for verified Forever probabilities.
+Source counts, URLs and page hashes ship in the snapshot. The complete catalog
+fetch does not supply usable rates for all quests; unknown pairs stay omitted.
+
+Percentages inherit the native quest-heading yellow; completed objectives inherit
+the item row's gray while the quest remains in the player's log. Every matching
+item uses its own NPC/item rate. Values round to whole percentages; rates >=19%
+snap to the nearest 5% step only within one percentage point (69.4 → 70,
+20.5 → 20, 27.8 → 28). Positive values rounding to zero show `<1%`.
+Raw values remain unchanged. Repeat tooltip updates do not stack suffixes.
+See `Data/NOTICE.md` and `Data/RESEARCH.md` for provenance and scope.
+
+### Verification
+
+All **227 automated tests pass**. The final supplement was independently rebuilt
+from every cached page and matched exactly, including page hashes. The generated
+combined lookup reproduces byte-for-byte from the included source data. A separate
+read-only review found no blocking correctness or regression issues.
+
+The user confirmed XP formatting, flight-map opening, Backspace quest navigation,
+damage-meter double-click switching and the final reload shortcut/normal-Escape
+fix in the live client. Data coverage is validated offline; every new NPC/item
+pair has not been individually exercised in-game. The release ZIP is built from
+this current code, preserving gameplay changes made during the external fetch.
+
+### Deferred experiment — Shoot Spam By Default
+
+The user-confirmed manual-reset Shoot prototype remains excluded from the addon
+and settings. Reliable automatic reset in combat is unresolved. The community
+report [forever-bugs #114](https://github.com/ClassicWoWCommunity/forever-bugs/issues/114)
+matched the observed `/cast !Shoot` toggle problem; at the September 26 check it
+was open without a confirmed workaround. No Shoot functionality is shipped.
+
 ## Version 0.9.6 — Quest Item Drop Rate
 
 Adds a default-on `/qol` option for quest-item drop estimates in the standard

@@ -168,10 +168,10 @@ class QuestNameplateBehaviour(unittest.TestCase):
         self.lua.execute('''
         local p,bar=addPlate('nameplate1',tooltip(objective(1,7,false)))
         runTimers();SlashCmdList.QOL();assert(visible(bar))
-        clickSetting(9,false);assert(not visible(bar) and not BetaQoLDB.questNameplateBag)
+        clickSetting(4,false);assert(not visible(bar) and not BetaQoLDB.questNameplateBag)
         local reads=tooltipReads
         emit('QUEST_LOG_UPDATE');tick(2);assert(tooltipReads==reads)
-        clickSetting(9,true);runTimers();assert(visible(bar) and #textures==1)
+        clickSetting(4,true);runTimers();assert(visible(bar) and #textures==1)
         ''')
 
     def test_saved_off_and_missing_api_are_safe(self):
@@ -182,7 +182,7 @@ class QuestNameplateBehaviour(unittest.TestCase):
         lua.execute('''
         local p,bar=addPlate('nameplate1',tooltip(objective(1,7,false)))
         emit('ADDON_LOADED','BetaQoL');runTimers();assert(not visible(bar))
-        SlashCmdList.QOL();C_TooltipInfo=nil;clickSetting(9,true);runTimers()
+        SlashCmdList.QOL();C_TooltipInfo=nil;clickSetting(4,true);runTimers()
         assert(not visible(bar))
         ''')
 
