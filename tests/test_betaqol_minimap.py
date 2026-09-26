@@ -15,11 +15,14 @@ local create=CreateFrame
 function CreateFrame(kind,name,parent,template)
     local frame=create(kind,name,parent,template)
     function frame:SetFrameLevel(value) self.level=value end
+    function frame:RegisterForClicks(...) self.clicks={...} end
+    function frame:SetHighlightTexture(value) self.highlight=value end
     function frame:SetBackdrop(value) self.backdrop=value end
     function frame:SetBackdropBorderColor(...) self.borderColor={...} end
     function frame:EnableMouse(value) self.mouseEnabled=value end
-    function frame:CreateTexture()
-        local texture={}
+    local createTexture=frame.CreateTexture
+    function frame:CreateTexture(...)
+        local texture=createTexture(self,...)
         function texture:SetAllPoints() end
         function texture:SetTexture(path) self.path=path end
         function texture:SetSnapToPixelGrid() end
@@ -78,6 +81,80 @@ class MinimapBehaviour(unittest.TestCase):
         self.lua.execute(HOST + UI_ENGINE + ENGINE + NATIVE)
         self.lua.execute('BetaQoLDB={squareMinimap=true}')
         self.lua.execute(SOURCE.read_text(encoding='utf-8'))
+
+    def test_settings_button_opens_closes_and_reuses_settings(self):
+        self.lua.execute("""
+        emit('ADDON_LOADED','BetaQoL')
+        local button=assert(BetaQoLMinimapButton, 'Settings minimap button missing')
+        assert(button.Icon.path==132849)
+        assert(BetaQoLSettingsFrame==nil)
+        button:GetScript('OnClick')(button,'LeftButton')
+        local window=BetaQoLSettingsFrame
+        assert(window:IsShown())
+        button:GetScript('OnClick')(button,'LeftButton')
+        assert(not window:IsShown())
+        button:GetScript('OnClick')(button,'RightButton')
+        assert(not window:IsShown())
+        button:GetScript('OnClick')(button,'LeftButton')
+        assert(window==BetaQoLSettingsFrame and window:IsShown() and #checkboxes==19)
+        """)
+
+    def test_settings_button_tracks_shape_without_duplicates(self):
+        self.lua.execute("""
+        emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
+        local button=assert(BetaQoLMinimapButton, 'Settings minimap button missing')
+        assert(button.point[3]=='RIGHT' and button.point[4]==-8)
+        clickSetting(7,false)
+        assert(button:IsShown() and button.point[4]==-14)
+        clickSetting(7,true)
+        emit('PLAYER_ENTERING_WORLD')
+        assert(button==BetaQoLMinimapButton and button.point[4]==-8)
+        -- Native 198x198 map: ZoomIn (88,-68), ZoomOut (72,-84).
+        -- Both must remain outside the launcher's 32x32 click area in either shape.
+        for _,square in ipairs({true,false}) do
+            clickSetting(7,square)
+            local x,y=99+button.point[4],button.point[5]
+            assert(math.abs(x-88)>24.5 or math.abs(y+68)>24.5)
+            assert(math.abs(x-72)>24.5 or math.abs(y+84)>20.5)
+        end
+
+        """)
+
+    def test_settings_button_creation_waits_for_minimap_and_combat_end(self):
+        self.lua.execute("""
+        local map=Minimap; Minimap=nil
+        emit('ADDON_LOADED','BetaQoL')
+        assert(BetaQoLMinimapButton==nil)
+        Minimap=map; combat=true
+        emit('ADDON_LOADED','Blizzard_Minimap')
+        assert(BetaQoLMinimapButton==nil)
+        combat=false; emit('PLAYER_REGEN_ENABLED')
+        assert(BetaQoLMinimapButton, 'Settings minimap button missing after combat')
+        """)
+
+    def test_settings_button_hides_only_its_own_tooltip(self):
+        self.lua.execute("""
+        GameTooltip={}
+        function GameTooltip:SetOwner(owner) self.owner=owner end
+        function GameTooltip:IsOwned(owner) return self.owner==owner end
+        function GameTooltip:SetText(text) self.title=text end
+        function GameTooltip:AddLine(text) self.line=text end
+        function GameTooltip:Show() self.shown=true end
+        function GameTooltip:Hide() self.shown=false end
+        emit('ADDON_LOADED','BetaQoL')
+        local button=assert(BetaQoLMinimapButton, 'Settings minimap button missing')
+        button:GetScript('OnEnter')(button)
+        assert(GameTooltip.shown and GameTooltip.title=='Forever Beta Quality of Life')
+        button:GetScript('OnLeave')(button)
+        assert(not GameTooltip.shown)
+        button:GetScript('OnEnter')(button)
+        GameTooltip.owner={}
+        button:GetScript('OnLeave')(button)
+        assert(GameTooltip.shown)
+        GameTooltip.owner=button
+        button:Hide()
+        assert(not GameTooltip.shown)
+        """)
 
     def test_toggle_restores_mask_and_border_opacity(self):
         self.lua.execute(r'''

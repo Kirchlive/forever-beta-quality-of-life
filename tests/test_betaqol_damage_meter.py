@@ -114,7 +114,7 @@ class DamageMeterSuspension(unittest.TestCase):
         local w=DamageMeter.windowDataList[1].sessionWindow
         assert(DamageMeter.SetupSessionWindow==originalSetup, 'Native setup was hooked')
         assert(w.SessionDropdown:GetScript('OnDoubleClick')==originalClick)
-        assert(#checkboxes==15 and checkboxes[15].Text.text=='Whisper Tab Doubleclick Close')
+        assert(#checkboxes==19 and checkboxes[15].Text.text=='Whisper Tab Doubleclick Close')
         assert(BetaQoLDB.damageMeterDoubleClick==nil, 'Obsolete enabled flag must be removed')
         doubleClick(w)
         assert(w.updates==0 and w.sessionType==1)

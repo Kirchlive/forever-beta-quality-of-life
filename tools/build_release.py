@@ -7,11 +7,16 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 FILES = ('BetaQoL.lua', 'BetaQoL.toc', 'README.md', 'DEVLOG.md',
+         'LICENSE', 'THIRD_PARTY_NOTICES.md', 'CHANGELOG.md',
+         'CONTRIBUTING.md', 'RELEASE.md',
          'Data/QuestItemDrops.lua', 'Data/NOTICE.md', 'Data/COPYING.txt',
          'Data/Source/classicItemDrops.lua', 'Data/Source/itemDropCorrections.lua',
          'Data/Source/wowheadForeverDrops.json', 'Data/RESEARCH.md',
          'tools/import_questie_drops.py', 'tools/import_wowhead_drops.py',
-         'Media/SquareMinimapBorder5.tga', 'Media/SquareMinimapMask3.tga')
+         'Media/SquareMinimapBorder5.tga', 'Media/SquareMinimapMask3.tga',
+         'Media/Icon.tga', 'Media/Icon.png',
+         'Media/Screenshots/settings-panel.png', 'Media/Screenshots/questlog-xp.png',
+         'Media/Screenshots/quest-item-drop-rate.png', 'Media/Screenshots/square-minimap.png')
 
 
 def main():

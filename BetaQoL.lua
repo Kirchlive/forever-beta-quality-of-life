@@ -1,3 +1,5 @@
+-- SPDX-License-Identifier: MIT
+-- Copyright (c) 2026 Kirchlive and contributors
 -- Target: WoW Forever Beta 1.60.1 (Interface 16001).
 local addonName = ... or "BetaQoL"
 local settings = {
@@ -12,6 +14,10 @@ local settings = {
     questLogXP = true,
     questDropRate = true,
     flightMasterInstantMap = true,
+    professionArrowKeys = true,
+    fasterChatScroll = true,
+    lowSpellReminder = true,
+    missingSpellCheck = true,
 }
 local featureChanged = {}
 local settingsLoaded = false
@@ -81,52 +87,452 @@ SlashCmdList.QOL = function()
         end
         return
     end
-    local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
+    -- Shared visual templates only: the real Professions/LFG windows stay untouched.
+    local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "PortraitFrameTemplate")
     settingsWindow = window
-    window:SetSize(570, 626)
+    window:SetSize(458, 582)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
-    window.TitleText:SetText("Beta Quality of Life")
+    window:SetTitle("Forever Beta Quality of Life")
+    window:SetPortraitToAsset("Interface\\AddOns\\BetaQoL\\Media\\Icon")
+    local portrait = window:GetPortrait()
+    portrait:SetSize(50, 50)
+    portrait:ClearAllPoints()
+    -- 50x50, one pixel left and two pixels above the native portrait center.
+    portrait:SetPoint("TOPLEFT", window.PortraitContainer, "TOPLEFT", 0, 3)
+    window:SetClampedToScreen(true)
     window:SetMovable(true)
     window:EnableMouse(true)
     window:RegisterForDrag("LeftButton")
     window:SetScript("OnDragStart", window.StartMoving)
     window:SetScript("OnDragStop", window.StopMovingOrSizing)
-    window:SetScript("OnShow", RefreshSettings)
     tinsert(UISpecialFrames, "BetaQoLSettingsFrame")
+    if type(settings.settingsUI) ~= "table" then settings.settingsUI = {} end
+    local ui = settings.settingsUI
+    if type(ui.bottomExpanded) ~= "boolean" then ui.bottomExpanded = true end
+    if type(ui.showCategories) ~= "boolean" then ui.showCategories = true end
 
     local features = {
         { "autoAccept", "Quest Auto Accept (shift disable)" },
         { "autoTurnIn", "Quest Auto Turn-in (shift disable)" },
         { "questDropRate", "Quest Item Drop Rate" },
-        { "questNameplateBag", "Quest Target Nameplate Icon" },
-        { "questLogXP", "Questlog Quest XP (+ for item rewards)" },
+        { "questNameplateBag", "Quest Icon Target Nameplate" },
+        { "questLogXP", "Questlog XP (+ item rewards)" },
         { "fastLoot", "Fast Autoloot" },
         { "squareMinimap", "Square Minimap (forever look)" },
         { "rangeColor", "Spellicon Range Color" },
-        { "backspaceQuestDetails", "Backspace Leave Quest Details" },
-        { "backspaceDestroy", "Backspace Destroy Select Item" },
+        { "backspaceQuestDetails", "Backspace Leave Quest Details Window" },
+        { "backspaceDestroy", "Backspace Destroy Item Dialog" },
         { "enterConfirm", "Enter Confirm Dialog Box" },
-        { "chatArrowKeys", "Arrow Keys Chat Control" },
+        { "chatArrowKeys", "Chatbox Arrow Keys" },
         { "shiftEscapeReload", "Left Shift Escape Reload" },
         { "flightMasterInstantMap", "Flight Master Auto Map (shift disable)" },
         { "whisperDoubleClick", "Whisper Tab Doubleclick Close" },
+        { "professionArrowKeys", "Panel Arrow Keys (guild and professions)" },
+        { "fasterChatScroll", "Multiline Scroll (chatframe and guild)" },
+        { "lowSpellReminder", "Low Spell Rank Check (at launch)" },
+        { "missingSpellCheck", "Missing Spell Check (at launch)" },
     }
-    for index, feature in ipairs(features) do
-        local key = feature[1]
-        local checkbox = CreateFrame("CheckButton", nil, window, "UICheckButtonTemplate")
-        checkbox:SetPoint("TOPLEFT", 16, -35 - (index - 1) * 36)
-        checkbox.Text:SetText(feature[2])
-        checkbox:SetScript("OnClick", function(self)
-            SetFeatureEnabled(key, self:GetChecked())
-        end)
+    -- Descriptions are intentionally separate from labels and saved setting keys.
+    local descriptions = {
+        autoAccept = { "INV_Misc_Note_01", "Accepts ordinary quests automatically when you speak to an NPC.", "Hold Shift before speaking to keep the conversation manual." },
+        autoTurnIn = { "INV_Misc_Note_05", "Turns in completed NPC quests automatically.", "Hold Shift before speaking to keep the conversation manual. Choosing between multiple item rewards and quests requiring gold remain manual." },
+        questDropRate = { "INV_Misc_Bag_10", "Shows each quest item's drop rate directly after its name in a creature's tooltip.", "Includes completed item objectives while the quest remains in your quest log. Each item has its own rate; completed objectives appear gray. Unknown drops are omitted." },
+        questNameplateBag = { "INV_Misc_Bag_08", "Adds a small bag beside a creature's nameplate when it contributes to one of your unfinished quest objectives.", "Includes item, kill and interaction objectives. The marker disappears when the relevant objectives are complete." },
+        questLogXP = { "INV_Misc_Book_11", "Shows the quest's XP reward between its level and title in your quest log.", "Example: [15] (1,350+) Chen's Empty Keg\n\nA + means the quest also offers guaranteed or selectable item rewards." },
+        fastLoot = { "INV_Misc_Coin_02", "Speeds up automatic looting and hides the loot window during successful auto-looting.", "Uses your normal auto-loot setting and modifier. Items that need manual handling can still be collected through the normal loot window." },
+        squareMinimap = { "INV_Misc_Map_01", "Changes the minimap to a square with rounded corners and a bronze border in the Forever style.", "The day/night icon moves to the top-right and the group-finder eye to the bottom-left. Disabling restores the round minimap and native icon positions." },
+        rangeColor = { "Spell_Fire_FlameBolt", "Colors a spell's action-bar icon red when its target is out of range.", "The normal icon color returns when the target is in range again." },
+        backspaceQuestDetails = { "INV_Misc_Book_09", "Press Backspace in the quest log's details view to return to the quest list.", "Works outside combat. Typing, modifier keys and picked-up items keep their normal behavior." },
+        backspaceDestroy = { "INV_Misc_Bag_07", "Press Backspace while holding an item from your bags to open its normal delete confirmation.", "Works outside combat with whole items or whole stacks. Split stacks are excluded. The item still requires confirmation before deletion." },
+        enterConfirm = { "INV_Misc_Note_06", "Press Enter to confirm supported standard popup dialogs.", "The normal confirmation button is used. Any required typed confirmation must still be completed." },
+        chatArrowKeys = { "INV_Misc_Note_03", "Use Left and Right to move the cursor in the chat edit box without holding Alt.", "Up and Down recall your recent sent messages. The native Alt shortcuts remain available." },
+        shiftEscapeReload = { "Spell_Arcane_PortalOrgrimmar", "Press Left Shift + Escape to reload the user interface.", "Plain Escape keeps its usual behavior. A reload also runs any enabled spell checks again." },
+        flightMasterInstantMap = { "Ability_Mount_Wyvern_01", "Opens the flight map automatically when a flight master offers a ride.", "Hold Shift before speaking to keep the entire conversation manual. This opens the map; you still choose your destination." },
+        whisperDoubleClick = { "INV_Misc_Note_04", "Double-click a separate whisper tab to close that conversation's chat window.", "Uses the normal whisper-tab close action." },
+        professionArrowKeys = { "Trade_BlackSmithing", "Use Up and Down to select recipes in the Professions window or scroll the Guild/Communities chat by three lines.", "Hold a key to repeat after a short initial delay. Text input and modifier keys keep their usual behavior. Works outside combat." },
+        fasterChatScroll = { "INV_Misc_ScrollUnrolled01", "Scroll chat by three lines per mousewheel step.", "Applies to normal chat windows. Guild/Communities chat already uses three lines and keeps its native scrolling." },
+        lowSpellReminder = { "INV_Misc_Book_07", "At login and reload, compares the highest rank of each spell on your action bars with the highest rank you have learned.", "Only spells already on your action bars are checked. Lower ranks do not trigger a reminder if the highest learned rank is also present. Uses a red BetaQoL prefix. Macros are not inspected." },
+        missingSpellCheck = { "INV_Misc_Book_06", "At login and reload, checks for learned spells missing from your action bars, regardless of rank.", "Excludes General and passive spells. Uses a yellow BetaQoL prefix. Only direct spell buttons are checked; spells used solely through macros may still be reported." },
+    }
+    local categories = {
+        { "Quests", { 1, 2, 3, 4, 5 } },
+        { "Chat", { 12, 15, 17 } },
+        { "Controls", { 9, 10, 11, 13, 16 } },
+        { "World & Interface", { 6, 7, 14 } },
+        { "Spells", { 8, 18, 19 } },
+    }
+    local function Label(parent, style, width, text)
+        local label = parent:CreateFontString(nil, "OVERLAY", style)
+        label:SetWidth(width)
+        label:SetJustifyH("LEFT")
+        label:SetJustifyV("TOP")
+        label:SetWordWrap(true)
+        label:SetText(text or "")
+        return label
+    end
+    -- Preserve the portrait/title/border art; recolor only the interior.
+    if window.Bg then window.Bg:SetColorTexture(0.055, 0.055, 0.055, 1) end
+    if window.TopTileStreaks then window.TopTileStreaks:Hide() end
+    local toolbar = window:CreateTexture(nil, "BACKGROUND", nil, 1)
+    toolbar:SetPoint("TOPLEFT", 3, -25)
+    toolbar:SetPoint("BOTTOMRIGHT", window, "TOPRIGHT", -3, -58)
+    toolbar:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
+    toolbar:SetHorizTile(true)
+    toolbar:SetVertTile(true)
+    toolbar:SetDesaturated(true)
+    toolbar:SetVertexColor(0.5, 0.5, 0.5)
+
+    local search = CreateFrame("EditBox", "BetaQoLSettingsSearchBox", window, "SearchBoxTemplate")
+    window.SearchBox = search
+    search:SetSize(200, 22)
+    search:SetPoint("TOPRIGHT", -16, -32)
+    search:SetAutoFocus(false)
+    search:SetMaxLetters(100)
+
+    local listPanel = CreateFrame("Frame", nil, window, "InsetFrameTemplate")
+    listPanel:SetPoint("TOPLEFT", 4, -58)
+    listPanel:SetSize(450, 404)
+    local listBackground = listPanel:CreateTexture(nil, "BACKGROUND", nil, 1)
+    listBackground:SetPoint("TOPLEFT", 3, -3)
+    listBackground:SetPoint("BOTTOMRIGHT", -3, 3)
+    listBackground:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
+    listBackground:SetHorizTile(true)
+    listBackground:SetVertTile(true)
+    listBackground:SetDesaturated(true)
+    listBackground:SetVertexColor(0.3, 0.3, 0.3)
+
+    local scroll = CreateFrame("ScrollFrame", "BetaQoLSettingsListScrollFrame", listPanel, "ScrollFrameTemplate")
+    window.ListScroll = scroll
+    scroll:SetPoint("TOPLEFT", 12, -10)
+    scroll:SetSize(414, 384)
+    scroll.ScrollBar:ClearAllPoints()
+    scroll.ScrollBar:SetPoint("TOPLEFT", scroll, "TOPRIGHT", 6, 0)
+    scroll.ScrollBar:SetPoint("BOTTOMLEFT", scroll, "BOTTOMRIGHT", 6, 0)
+    scroll.ScrollBar:SetHideIfUnscrollable(true)
+    local content = CreateFrame("Frame", nil, scroll)
+    window.ListContent = content
+    content:SetSize(414, 384)
+    scroll:SetScrollChild(content)
+    local empty = Label(content, "GameFontDisable", 390, "No matching features. Try another search.")
+    window.EmptyText = empty
+    empty:SetPoint("TOPLEFT", 8, -12)
+
+    local rows, headers = {}, {}
+    window.FeatureRows, window.CategoryHeaders = rows, headers
+    local tooltipOwner
+    local function HideFeatureTooltip()
+        if tooltipOwner and GameTooltip:IsOwned(tooltipOwner) then GameTooltip:Hide() end
+        tooltipOwner = nil
+    end
+    for _, feature in ipairs(features) do
+        local key, title = feature[1], feature[2]
+        local info = descriptions[key]
+        local row = CreateFrame("Button", nil, content)
+        rows[key] = row
+        row:SetWidth(396)
+        row:SetHighlightAtlas("Professions_Recipe_Hover")
+        local function ShowFeatureTooltip(owner)
+            tooltipOwner = owner
+            GameTooltip:SetOwner(owner, "ANCHOR_RIGHT")
+            GameTooltip:SetText(title:gsub("%s*%b()", ""), 1, 0.82, 0)
+            GameTooltip:AddLine(info[2], 1, 1, 1, true)
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddLine(info[3], 0.8, 0.8, 0.8, true)
+            GameTooltip:Show()
+        end
+        row:SetScript("OnEnter", ShowFeatureTooltip)
+        row:SetScript("OnLeave", HideFeatureTooltip)
+        row:SetScript("OnClick", function() SetFeatureEnabled(key, not settings[key]) end)
+        local checkbox = CreateFrame("CheckButton", nil, row, "UICheckButtonTemplate")
+        checkbox:SetSize(26, 26)
+        checkbox:SetHitRectInsets(0, 0, 2, 2)
+        checkbox:SetPoint("LEFT", 0, 0)
+        checkbox.Text:ClearAllPoints()
+        checkbox.Text:SetPoint("LEFT", checkbox, "RIGHT", 2, 0)
+        checkbox.Text:SetWidth(362)
+        checkbox.Text:SetFontObject("GameFontNormal")
+        checkbox.Text:SetWordWrap(true)
+        checkbox.Text:SetJustifyH("LEFT")
+        checkbox.Text:SetText((title:gsub("(%b())", "|cff999999%1|r")))
+        row:SetHeight(math.max(22, checkbox.Text:GetStringHeight() + 6))
+        checkbox:SetScript("OnEnter", ShowFeatureTooltip)
+        checkbox:SetScript("OnLeave", HideFeatureTooltip)
+        checkbox:SetScript("OnClick", function(self) SetFeatureEnabled(key, self:GetChecked()) end)
         settingsChecks[key] = checkbox
     end
-    local hint = window:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-    hint:SetPoint("BOTTOMLEFT", 20, 16)
-    hint:SetText("Changes apply immediately and are saved.")
+    local collapsed = {}
+    local function LayoutList()
+        HideFeatureTooltip()
+        local query = search:GetText():lower():match("^%s*(.-)%s*$")
+        local y, count = 4, 0
+        for _, category in ipairs(categories) do
+            local name, matches = category[1], {}
+            for _, index in ipairs(category[2]) do
+                local feature = features[index]
+                local key = feature[1]
+                if query == "" or (name .. " " .. feature[2]):lower():find(query, 1, true) then
+                    matches[#matches + 1] = key
+                end
+                rows[key]:Hide()
+            end
+            local header = headers[name]
+            header:SetShown(ui.showCategories and #matches > 0)
+            if #matches > 0 then
+                if ui.showCategories then
+                    header:ClearAllPoints()
+                    header:SetPoint("TOPLEFT", 0, -y)
+                    y = y + 22
+                end
+                local isCollapsed = ui.showCategories and query == "" and collapsed[name] == true
+                if not isCollapsed then
+                    for _, key in ipairs(matches) do
+                        local row = rows[key]
+                        row:ClearAllPoints()
+                        row:SetPoint("TOPLEFT", 18, -y)
+                        row:Show()
+                        y = y + row:GetHeight()
+                    end
+                end
+                if ui.showCategories then y = y + 8 end
+                count = count + #matches
+            end
+        end
+        empty:SetShown(count == 0)
+        content:SetHeight(math.max(scroll:GetHeight(), y))
+        scroll:SetVerticalScroll(math.min(scroll:GetVerticalScroll(), math.max(0, y - scroll:GetHeight())))
+    end
+    for _, category in ipairs(categories) do
+        local name = category[1]
+        local header = CreateFrame("Button", nil, content)
+        headers[name] = header
+        header:SetSize(414, 22)
+        header.Title = Label(header, "GameFontHighlight", 400, name)
+        header.Title:SetPoint("LEFT", 4, 0)
+        header.Title:SetTextColor(0.65, 0.65, 0.65)
+        header:SetScript("OnClick", function()
+            -- Search expands matches without changing the saved collapse choice.
+            if search:GetText():match("%S") then return end
+            collapsed[name] = not collapsed[name]
+            LayoutList()
+        end)
+        header:SetScript("OnEnter", function() header.Title:SetTextColor(1, 1, 1) end)
+        header:SetScript("OnLeave", function() header.Title:SetTextColor(0.65, 0.65, 0.65) end)
+    end
+    scroll:HookScript("OnVerticalScroll", HideFeatureTooltip)
+    search:HookScript("OnTextChanged", function() scroll:SetVerticalScroll(0); LayoutList() end)
+    window:SetScript("OnHide", function() search:ClearFocus(); HideFeatureTooltip() end)
+    local function FitWindow()
+        window:SetScale(math.min(1, (UIParent:GetWidth() - 32) / 458, (UIParent:GetHeight() - 32) / 582))
+    end
+    window:SetScript("OnShow", function() FitWindow(); RefreshSettings() end)
+    window:RegisterEvent("DISPLAY_SIZE_CHANGED")
+    window:RegisterEvent("UI_SCALE_CHANGED")
+    window:SetScript("OnEvent", function() if window:IsShown() then FitWindow() end end)
+
+    -- One continuous footer texture reaches the bottom border, including the version.
+    -- Keep existing layout preferences, but hide the retired layout controls.
+    local footer = CreateFrame("Frame", nil, window)
+    window.FooterPanel = footer
+    footer:SetPoint("BOTTOMLEFT", 4, 4)
+    footer:SetSize(450, 116)
+    local footerBackground = window:CreateTexture(nil, "BACKGROUND", nil, 1)
+    footerBackground:SetAllPoints(footer)
+    footerBackground:SetTexture("Interface\\FrameGeneral\\UI-Background-Rock")
+    footerBackground:SetHorizTile(true)
+    footerBackground:SetVertTile(true)
+    footerBackground:SetDesaturated(true)
+    footerBackground:SetVertexColor(0.18, 0.18, 0.18)
+    local divider = footer:CreateTexture(nil, "OVERLAY")
+    divider:SetPoint("TOPLEFT")
+    divider:SetPoint("TOPRIGHT")
+    divider:SetHeight(8)
+    divider:SetAtlas("shop-list-rule")
+    local hint = Label(footer, "GameFontDisableSmall", 414, "Changes are saved automatically.")
+    hint:SetPoint("TOPLEFT", 12, -22)
+    local help = Label(footer, "GameFontDisableSmall", 414, "Hover a feature for details.")
+    help:SetPoint("TOPLEFT", 12, -42)
+
+    local function FooterButton(x, text, tooltipText)
+        local button = CreateFrame("Button", nil, window, "UIPanelButtonTemplate")
+        button:SetSize(24, 22)
+        button:SetPoint("BOTTOMLEFT", x, 8)
+        button:SetText(text)
+        button:SetScript("OnEnter", function(self)
+            tooltipOwner = self
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(tooltipText(), 1, 0.82, 0)
+            GameTooltip:Show()
+        end)
+        button:SetScript("OnLeave", HideFeatureTooltip)
+        return button
+    end
+    local footerToggle = FooterButton(16, "-", function()
+        return ui.bottomExpanded and "Collapse bottom bar" or "Expand bottom bar"
+    end)
+    local categoryToggle = FooterButton(44, "T", function()
+        return ui.showCategories and "Hide category headings" or "Show category headings"
+    end)
+    window.FooterToggle, window.CategoryToggle = footerToggle, categoryToggle
+    local function UpdateLayout()
+        local bottomHeight = ui.bottomExpanded and 120 or 37
+        footer:SetShown(ui.bottomExpanded)
+        footerBackground:SetShown(ui.bottomExpanded)
+        listPanel:SetHeight(window:GetHeight() - 58 - bottomHeight)
+        scroll:SetHeight(listPanel:GetHeight() - 20)
+        footerToggle:SetText(ui.bottomExpanded and "-" or "+")
+        categoryToggle:SetNormalFontObject(ui.showCategories and "GameFontNormalSmall" or "GameFontDisableSmall")
+        LayoutList()
+    end
+    footerToggle:SetScript("OnClick", function()
+        if not footerToggle:IsEnabled() then return end
+        ui.bottomExpanded = not ui.bottomExpanded
+        UpdateLayout()
+    end)
+    categoryToggle:SetScript("OnClick", function()
+        if not categoryToggle:IsEnabled() then return end
+        ui.showCategories = not ui.showCategories
+        UpdateLayout()
+    end)
+    footerToggle:SetEnabled(false)
+    categoryToggle:SetEnabled(false)
+    footerToggle:Hide()
+    categoryToggle:Hide()
+    local version = window:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
+    version:SetPoint("BOTTOMRIGHT", -16, 17)
+    local getMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+    version:SetText(getMetadata and getMetadata(addonName, "Version") or "")
+    UpdateLayout()
     RefreshSettings()
+    FitWindow()
     window:Show()
+end
+
+-- Set the actual chat-frame wheel step, regardless of its previous handler.
+-- Communities already uses three; no shared ScrollUtil methods are replaced.
+do
+    local events = CreateFrame("Frame")
+    local originals, hooks = {}, {}
+    local function ScrollThreeLines(frame, delta)
+        if frame:GetInsertMode() == SCROLLING_MESSAGE_FRAME_INSERT_MODE_TOP then delta = -delta end
+        frame:ScrollByAmount(delta * 3)
+    end
+    local function UpdateChatScroll()
+        if not settingsLoaded then return end
+        if not settings.fasterChatScroll then
+            for frame, original in pairs(originals) do
+                if frame:GetScript("OnMouseWheel") == ScrollThreeLines then frame:SetScript("OnMouseWheel", original) end
+                originals[frame] = nil
+            end
+            return
+        end
+        for _, name in pairs(CHAT_FRAMES or {}) do
+            local frame = _G[name]
+            if frame and frame.ScrollByAmount and frame.GetInsertMode then
+                local current = frame:GetScript("OnMouseWheel")
+                if current and current ~= ScrollThreeLines and not originals[frame] then
+                    originals[frame] = current
+                    frame:SetScript("OnMouseWheel", ScrollThreeLines)
+                end
+            end
+        end
+    end
+    local function HookChatScroll()
+        for _, name in ipairs({ "FCF_OpenNewWindow", "FCF_OpenTemporaryWindow" }) do
+            if not hooks[name] and type(_G[name]) == "function" then
+                hooksecurefunc(name, UpdateChatScroll)
+                hooks[name] = true
+            end
+        end
+        UpdateChatScroll()
+    end
+    featureChanged.fasterChatScroll = HookChatScroll
+    for _, event in ipairs({ "ADDON_LOADED", "PLAYER_LOGIN", "UPDATE_CHAT_WINDOWS" }) do events:RegisterEvent(event) end
+    events:SetScript("OnEvent", HookChatScroll)
+end
+
+-- Read the player's own book and direct spell actions once after login/reload.
+-- No combat callbacks, actionbar changes, rank database, or frame hooks.
+do
+    local events = CreateFrame("Frame")
+    local pending, queued = false, false
+    local function CheckActionBarSpells()
+        queued = false
+        if not pending then return end
+        if InCombatLockdown and InCombatLockdown() then return end
+        pending = false
+        if not settingsLoaded or not (settings.lowSpellReminder or settings.missingSpellCheck) then return end
+        local book = C_SpellBook
+        if not book or not book.GetNumSpellBookSkillLines or not book.GetSpellBookSkillLineInfo
+            or not book.GetSpellBookItemInfo or not book.IsSpellBookItemLowRank
+            or not C_ActionBar or not C_ActionBar.FindSpellActionButtons
+            or not GetActionInfo or not Enum.SpellBookSpellBank or not Enum.SpellBookItemType then return end
+        if not Enum.ActionBarSet then return end
+        local bank = Enum.SpellBookSpellBank.Player
+        local general = Enum.SpellBookSkillLineIndex and Enum.SpellBookSkillLineIndex.General
+        local families, ordered, byID, lookupIDs = {}, {}, {}, {}
+        for lineIndex = 1, book.GetNumSpellBookSkillLines() do
+            local line = book.GetSpellBookSkillLineInfo(lineIndex)
+            if line and not line.offSpecID then
+                for index = line.itemIndexOffset + 1, line.itemIndexOffset + line.numSpellBookItems do
+                    local info = book.GetSpellBookItemInfo(index, bank)
+                    if info and info.itemType == Enum.SpellBookItemType.Spell
+                        and not info.isPassive and not info.isOffSpec and info.spellID and info.name then
+                        local family = families[info.name]
+                        if not family then
+                            family = {}
+                            families[info.name] = family
+                            ordered[#ordered + 1] = family
+                        end
+                        local low = book.IsSpellBookItemLowRank(index, bank)
+                        if general and lineIndex ~= general then family.outsideGeneral = true end
+                        byID[info.spellID] = { family = family, low = low }
+                        lookupIDs[info.actionID or info.spellID] = true
+                        if not low then family.highest = info end
+                    end
+                end
+            end
+        end
+        -- FindSpellActionButtons supplies candidates, not proof of an exact rank.
+        -- Exclude separate gamepad storage, which may retain starter spell ranks.
+        local checked = {}
+        for id in pairs(lookupIDs) do
+            local slots = C_ActionBar.FindSpellActionButtons(id, Enum.ActionBarSet.Mkb)
+            for _, slot in ipairs(slots or {}) do
+                if not checked[slot] then
+                    checked[slot] = true
+                    local kind, actionID = GetActionInfo(slot)
+                    local rank = kind == "spell" and byID[actionID]
+                    if rank then
+                        rank.family.present = true
+                        if not rank.low then rank.family.highestPresent = true end
+                    end
+                end
+            end
+        end
+        -- A family needs an upgrade only if it is on a bar and every placed
+        -- rank is below its highest learned rank. Intentional lower copies are fine.
+        for _, family in ipairs(ordered) do
+            if settings.lowSpellReminder and family.present and family.highest and not family.highestPresent then
+                local info = family.highest
+                local rank = info.subName and info.subName ~= "" and (" " .. info.subName) or ""
+                print("|cffff0000BetaQoL:|r " .. info.name .. rank
+                    .. " available. Check your spellbook.")
+            end
+            if settings.missingSpellCheck and family.outsideGeneral and family.highest and not family.present then
+                print("|cffffd100BetaQoL:|r " .. family.highest.name .. " not in actionbar.")
+            end
+        end
+    end
+    events:RegisterEvent("PLAYER_ENTERING_WORLD")
+    events:RegisterEvent("PLAYER_REGEN_ENABLED")
+    events:SetScript("OnEvent", function(_, event, initialLogin, reloadingUI)
+        if event == "PLAYER_ENTERING_WORLD" and (initialLogin or reloadingUI) then pending = true end
+        if pending and not queued then
+            queued = true
+            C_Timer.After(1, CheckActionBarSpells)
+        end
+    end)
 end
 
 -- Observe physical modifier events: the live client returned false from the left-Shift query.
@@ -1271,6 +1677,145 @@ do
     events:SetScript("OnEvent", UpdateQuestBackKeys)
 end
 
+-- Shared arrow repeat for native recipe selection and guild chat scrolling.
+do
+    local events = CreateFrame("Frame")
+    local controllers = {}
+    local function GetTargets()
+        local page = ProfessionsFrame and ProfessionsFrame.CraftingPage
+        local chat = CommunitiesFrame and CommunitiesFrame.Chat
+        return page and page.RecipeList, chat and chat.MessageFrame
+    end
+    local function GetActiveTarget()
+        local recipes, guild = GetTargets()
+        local recipesVisible = recipes and recipes:IsVisible()
+        local guildVisible = guild and guild:IsVisible()
+        if recipesVisible and guildVisible then
+            local recipeLevel = ProfessionsFrame.GetFrameLevel and ProfessionsFrame:GetFrameLevel() or 0
+            local guildLevel = CommunitiesFrame.GetFrameLevel and CommunitiesFrame:GetFrameLevel() or 0
+            return guildLevel > recipeLevel and guild or recipes
+        end
+        return recipesVisible and recipes or guildVisible and guild or nil
+    end
+    local function CanNavigate(target)
+        return settings.professionArrowKeys and not InCombatLockdown()
+            and target == GetActiveTarget() and not GetCurrentKeyBoardFocus()
+            and not IsShiftKeyDown() and not IsControlKeyDown() and not IsAltKeyDown()
+    end
+    local function FindAdjacentRecipe(list, direction)
+        local scroll, selection = list.ScrollBox, list.selectionBehavior
+        if not scroll or not selection or not scroll:HasDataProvider() then return end
+        local recipes, selectedIndex = {}, nil
+        -- EntireRange includes collapsed branches; ordinary enumeration does not.
+        for _, node in scroll:EnumerateDataProvider() do
+            local data = node:GetData()
+            if data.recipeInfo and not data.isDivider then
+                recipes[#recipes + 1] = data.recipeInfo
+                if selection:IsElementDataSelected(node) then selectedIndex = #recipes end
+            end
+        end
+        if #recipes == 0 then return end
+        if not selectedIndex then return recipes[1] end
+        local nextIndex = selectedIndex + direction
+        if nextIndex < 1 or nextIndex > #recipes then return nil, true end
+        return recipes[nextIndex], true
+    end
+    local function CreateArrowController(target, kind)
+        -- Recipes keep native stepper timings; guild navigation repeats twice as fast.
+        local initialDelay = kind == "guild" and 0.25 or 0.5
+        local repeatInterval = kind == "guild" and 0.05 or 0.1
+        local keys = CreateFrame("Frame", nil, target)
+        local heldKey, remaining
+        keys:SetSize(1, 1)
+        keys:SetPoint("CENTER")
+        keys:EnableKeyboard(true)
+        local function StopRepeat()
+            heldKey, remaining = nil, nil
+            keys:SetScript("OnUpdate", nil)
+            if not InCombatLockdown() then keys:SetPropagateKeyboardInput(true) end
+        end
+        local function GetStep(key)
+            if kind == "guild" then
+                if not target.ScrollByAmount then return end
+                return key == "UP" and 3 or -3, true
+            end
+            return FindAdjacentRecipe(target, key == "UP" and -1 or 1)
+        end
+        local function ApplyStep(step)
+            if kind == "guild" then target:ScrollByAmount(step)
+            else target:SelectRecipe(step, true) end
+        end
+        local function RepeatStep(self, elapsed)
+            if not heldKey or not CanNavigate(target)
+                or (IsKeyDown and IsKeyDown(heldKey) == false) then
+                StopRepeat()
+                return
+            end
+            remaining = remaining - elapsed
+            if remaining > 0 then return end
+            -- At most one step per frame; never catch up with a burst after a stall.
+            remaining = repeatInterval
+            local step, atBoundary = GetStep(heldKey)
+            if step then ApplyStep(step)
+            elseif not atBoundary then StopRepeat() end
+        end
+        keys:SetScript("OnKeyDown", function(self, key)
+            if (key ~= "UP" and key ~= "DOWN") or not CanNavigate(target) then
+                StopRepeat()
+                return
+            end
+            -- Ignore OS key-repeat events; our timer owns repeat speed and delay.
+            if heldKey == key then self:SetPropagateKeyboardInput(false); return end
+            local step, atBoundary = GetStep(key)
+            if not step and not atBoundary then StopRepeat(); return end
+            heldKey, remaining = key, initialDelay
+            self:SetPropagateKeyboardInput(false)
+            self:SetScript("OnUpdate", RepeatStep)
+            if step then ApplyStep(step) end
+        end)
+        keys:SetScript("OnKeyUp", function(_, key)
+            if heldKey == key then StopRepeat() end
+        end)
+        keys:SetScript("OnHide", StopRepeat)
+        keys:SetPropagateKeyboardInput(true)
+        return { target = target, keys = keys, stop = StopRepeat }
+    end
+    local function UpdateInterfaceKeys()
+        if not settingsLoaded or not settings.professionArrowKeys
+            or (InCombatLockdown and InCombatLockdown()) then
+            for _, controller in pairs(controllers) do
+                controller.stop()
+                controller.keys:Hide()
+            end
+            return
+        end
+        local recipes, guild = GetTargets()
+        for _, kind in ipairs({ "recipes", "guild" }) do
+            local target
+            if kind == "recipes" then target = recipes else target = guild end
+            local controller = controllers[kind]
+            if controller and controller.target ~= target then
+                controller.stop()
+                controller.keys:Hide()
+                controllers[kind] = nil
+                controller = nil
+            end
+            if target then
+                if not controller then
+                    controller = CreateArrowController(target, kind)
+                    controllers[kind] = controller
+                end
+                controller.keys:Show()
+            end
+        end
+    end
+    featureChanged.professionArrowKeys = UpdateInterfaceKeys
+    for _, event in ipairs({ "ADDON_LOADED", "PLAYER_LOGIN", "PLAYER_REGEN_DISABLED", "PLAYER_REGEN_ENABLED" }) do
+        events:RegisterEvent(event)
+    end
+    events:SetScript("OnEvent", UpdateInterfaceKeys)
+end
+
 -- Forever's skin resets the circular mask when rotateMinimap changes.
 -- Keep the map geometry and controls intact; hide only the two ring textures.
 local minimapEvents = CreateFrame("Frame")
@@ -1393,6 +1938,55 @@ local function RestoreNativeMinimapRings()
     minimapBorderAlpha = {}
 end
 
+-- A plain addon-owned button opens the same settings window as /qol.
+-- Native minimap frames and their click handlers remain untouched.
+local addonMinimapButton
+local function UpdateAddonMinimapButton()
+    if InCombatLockdown() then return end
+    if not addonMinimapButton then
+        local button = CreateFrame("Button", "BetaQoLMinimapButton", Minimap)
+        addonMinimapButton = button
+        button:SetSize(32, 32)
+        button:SetFrameLevel(Minimap:GetFrameLevel() + 5)
+        button:RegisterForClicks("LeftButtonUp")
+        local background = button:CreateTexture(nil, "BACKGROUND")
+        background:SetSize(25, 25)
+        background:SetPoint("TOPLEFT", 3, -4)
+        background:SetTexture("Interface\\Minimap\\UI-Minimap-Background")
+        local icon = button:CreateTexture(nil, "ARTWORK")
+        button.Icon = icon
+        icon:SetSize(20, 20)
+        icon:SetPoint("TOPLEFT", 7, -6)
+        icon:SetTexture(132849) -- INV_Elemental_Primal_Mana, already supplied by the client.
+        icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+        local border = button:CreateTexture(nil, "OVERLAY")
+        border:SetSize(54, 54)
+        border:SetPoint("TOPLEFT")
+        border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
+        button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight", "ADD")
+        local function HideTooltip(self)
+            if GameTooltip and GameTooltip:IsOwned(self) then GameTooltip:Hide() end
+        end
+        button:SetScript("OnClick", function(self, mouseButton)
+            if mouseButton ~= "LeftButton" then return end
+            HideTooltip(self)
+            SlashCmdList.QOL()
+        end)
+        button:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+            GameTooltip:SetText("Forever Beta Quality of Life", 1, 0.82, 0)
+            GameTooltip:AddLine("Click to open or close settings.", 1, 1, 1)
+            GameTooltip:Show()
+        end)
+        button:SetScript("OnLeave", HideTooltip)
+        button:SetScript("OnHide", HideTooltip)
+    end
+    -- Leave the native bottom-right zoom controls accessible.
+    local inset = settings.squareMinimap and 8 or 14
+    addonMinimapButton:ClearAllPoints()
+    addonMinimapButton:SetPoint("CENTER", Minimap, "RIGHT", -inset, -32)
+end
+
 local function UpdateSquareMinimap()
     if not settingsLoaded or not Minimap or type(Minimap.SetMaskTexture) ~= "function" then
         return
@@ -1431,6 +2025,7 @@ local function UpdateSquareMinimap()
     end
     PositionMinimapIcon(MinimapCluster and MinimapCluster.DielFrame, "TOPRIGHT", -8, -8)
     PositionMinimapIcon(QueueStatusButton, "BOTTOMLEFT", 11, 11)
+    UpdateAddonMinimapButton()
 end
 
 featureChanged.squareMinimap = UpdateSquareMinimap

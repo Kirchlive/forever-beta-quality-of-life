@@ -50,7 +50,7 @@ class QuestXPBehaviour(unittest.TestCase):
     def test_native_title_places_xp_between_level_and_name_without_duplicates(self):
         self.lua.execute('''
         xp[5724]=4400; emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()
-        assert(checkboxes[5].Text.text=='Questlog Quest XP (+ for item rewards)')
+        assert(checkboxes[5].Text.text=='Questlog XP |cff999999(+ item rewards)|r')
         for i=1,3 do assert(title(5724,16,'Returning the Lost Satchel')=='[16] (4,400) Returning the Lost Satchel') end
         elite[5724]=true; partyCount=2
         assert(title(5724,16,'Satchel')=='[2] [16+] (4,400) Satchel')

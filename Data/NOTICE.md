@@ -1,5 +1,9 @@
 # Quest item drop data
 
+The root MIT license covers original addon code, not the Questie-derived
+database or upstream source tables. Their GPL-3.0 terms remain unchanged.
+See [the package notices](../THIRD_PARTY_NOTICES.md) for the complete scope.
+
 The generated lookup combines the Classic baseline below with a separately
 attributed Wowhead Forever supplement. It contains **4,400 NPCs, 1,407 items and
 17,015 NPC/item pairs**. Neither source guarantees current server probabilities.

@@ -68,7 +68,7 @@ class ChatArrowBehaviour(unittest.TestCase):
     def test_defaults_and_immediate_toggle_restore_previous_modes(self):
         self.lua.execute('''
         emit('ADDON_LOADED', 'BetaQoL'); SlashCmdList.QOL()
-        assert(checkboxes[12].Text.text == 'Arrow Keys Chat Control')
+        assert(checkboxes[12].Text.text == 'Chatbox Arrow Keys')
         assert(not normal.mode and not alreadyFree.mode and unrelated.mode)
         clickSetting(12, false)
         assert(normal.mode and not alreadyFree.mode)

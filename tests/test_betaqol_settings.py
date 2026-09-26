@@ -16,18 +16,18 @@ class SettingsBehaviour(unittest.TestCase):
         self.lua.execute('''
         assert(#checkboxes==0)
         SlashCmdList.QOL()
-        assert(#checkboxes==15 and #UISpecialFrames==1)
+        assert(#checkboxes==19 and #UISpecialFrames==1)
         for index,box in ipairs(checkboxes) do assert(box:GetChecked()==true) end
         clickSetting(1,false); emit('QUEST_DETAIL'); assert(not journal[9173])
         assert(BetaQoLDB.fastLoot and BetaQoLDB.enterConfirm and BetaQoLDB.rangeColor)
         SlashCmdList.BETAQOL(); assert(checkboxes[1]:GetChecked())
         emit('QUEST_DETAIL'); assert(journal[9173])
-        SlashCmdList.QOL(); SlashCmdList.QOL(); assert(#checkboxes==15)
+        SlashCmdList.QOL(); SlashCmdList.QOL(); assert(#checkboxes==19)
         ''')
 
     def test_saved_false_values_loaded_after_lua_are_preserved(self):
         self.lua.execute('''
-        BetaQoLDB={autoAccept=false, autoTurnIn=false, fastLoot=false, enterConfirm=false, rangeColor=false, whisperDoubleClick=false, backspaceDestroy=false, backspaceQuestDetails=false, squareMinimap=false, questNameplateBag=false, chatArrowKeys=false, shiftEscapeReload=false, questLogXP=false, questDropRate=false, flightMasterInstantMap=false, damageMeterDoubleClick=false}
+        BetaQoLDB={autoAccept=false, autoTurnIn=false, fastLoot=false, enterConfirm=false, rangeColor=false, whisperDoubleClick=false, backspaceDestroy=false, backspaceQuestDetails=false, squareMinimap=false, questNameplateBag=false, chatArrowKeys=false, shiftEscapeReload=false, questLogXP=false, questDropRate=false, flightMasterInstantMap=false, damageMeterDoubleClick=false, professionArrowKeys=false, fasterChatScroll=false, lowSpellReminder=false, missingSpellCheck=false}
         emit('ADDON_LOADED','AnotherAddon')
         emit('ADDON_LOADED','BetaQoL')
         SlashCmdList.QOL()
@@ -69,10 +69,12 @@ class SettingsBehaviour(unittest.TestCase):
                 # TOC-declared SavedVariables before the addon's load event.
                 for _ in range(2):
                     saved = dict(current.globals().BetaQoLDB.items())
+                    # SavedVariables now also contains the settings-window preferences.
+                    saved['settingsUI'] = dict(saved['settingsUI'].items())
                     fresh = LuaRuntime(unpack_returned_tuples=True)
                     fresh.execute(HOST + UI_ENGINE)
                     fresh.execute(SOURCE.read_text(encoding='utf-8'))
-                    fresh.globals().BetaQoLDB = fresh.table_from(saved)
+                    fresh.globals().BetaQoLDB = fresh.table_from(saved, recursive=True)
                     fresh.execute("emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL()")
                     self.assertEqual(fresh.globals().BetaQoLDB.squareMinimap, minimap)
                     self.assertEqual(fresh.globals().BetaQoLDB.questNameplateBag, quest_icon)

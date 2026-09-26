@@ -2,6 +2,345 @@
 
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
+Entries below are historical records, including superseded experiments. Current
+release status and remaining checks are in [RELEASE.md](RELEASE.md).
+
+## Version 1.0.0-dev.25 - Naming, MIT license and documentation refresh
+
+Documentation follow-up: included four unchanged user-supplied game captures
+under Media/Screenshots. The README leads with the settings panel and places
+quest-item rate, questlog XP and minimap examples beside their features. Each
+has a caption, alt text and a full-size link. The dev.24 menu image is labeled
+as such; final feature names remain those in the live code and feature list.
+All four images are included in the ZIP; runtime code/version is unchanged.
+
+Renamed Panel Arrow Keys (guild and professions) and Multiline Scroll (chatframe
+and guild), preserving keys, category order and behavior. Added the MIT license
+for original project code, documentation and generated minimap artwork, plus
+explicit notices for GPL quest data, the Wowhead snapshot and client artwork.
+The user-supplied portrait's upstream provenance remains a public-release check.
+
+Refreshed the README around the actual 19-feature interface, completed minimap
+launcher, spell checks, scrolling timings and data limitations. Reorganized
+contributor guidance; added a concise changelog and 1.0.0 release checklist.
+Marked the earlier two-pane settings plan as historical and repaired known
+encoding corruption in old development headings. Data contents are unchanged.
+
+Validation: 274 automated tests pass; the release archive includes MIT and GPL
+licenses, third-party notices, current user/developer docs and source data.
+Published as the v1.0.0-dev.25 prerelease after the user requested upload.
+The archive includes all four README captures, MIT/GPL notices and editable data
+sources. Version 0.9.8 remains the latest stable release; final 1.0.0 is pending.
+
+## Version 1.0.0-dev.24 - Minimap launcher and final feature names
+
+Added an addon-owned 32-pixel minimap button using the native Primal Mana icon
+(file ID 132849) and standard minimap button artwork. Left-click opens or closes
+the same lazy settings window as /qol. A tooltip explains the action. The button
+sits on the right edge below center, clear of the native zoom controls, and
+inherits minimap scaling. Creation and positioning wait until combat ends; late
+minimap loading is handled by the existing minimap events. No external library
+or bundled icon download is required. Native click handlers remain untouched.
+
+Renamed Chatbox Arrow Keys, Panel Arrow Keys (Professions and Guild), Low Spell
+Rank Check (at launch), and Missing Spell Check (at launch). Saved setting keys,
+feature order and spell-check behavior at login/reload are unchanged.
+
+Validation: 274 automated tests pass, including four launcher lifecycle, click,
+shape and tooltip ownership checks. In-game placement/artwork review is pending.
+
+## Version 1.0.0-dev.23 - Darker footer
+
+Lowered the footer rock texture tint from 0.24 to 0.18 per color channel for a
+slightly darker bottom bar. Texture, text colors and layout remain unchanged.
+
+## Version 1.0.0-dev.22 - Compact search strip and continuous footer
+
+Reduced the upper strip by 60 UI pixels and moved a 200 x 22 search box to its
+right edge. The window is now 458 x 582; feature-list and footer heights stay
+unchanged. Both disabled footer controls are now hidden. Extended the footer's
+rock texture to the bottom border so the version sits on the same background
+as the hints, without a separate gray strip. Feature order, portrait positioning
+and saved layout preferences remain unchanged.
+
+Validation: 270 automated tests pass; native rendering awaits in-game review.
+
+## Version 1.0.0-dev.21 - Settings polish and quicker guild arrows
+
+Changed the title bar to Forever Beta Quality of Life and increased window height
+by 20%, from 535 to 642 pixels. Replaced the LFG scene and role-section image with
+neutral, dark desaturated rock textures. The top texture now fills the strip
+without embedded artwork borders. Search sits near its bottom, with its visible
+left border aligned to the feature checkboxes. Parenthetical label text is gray;
+search still uses the plain labels. Renamed the requested six labels (Enter
+Confirm Dialog Box already matched) without changing feature keys or ordering.
+The two footer buttons are visible but disabled; existing layout choices persist.
+The 50-pixel portrait and its previously approved offsets remain unchanged.
+
+Guild/Communities arrow scrolling keeps three lines per step but halves initial
+delay to 0.25 seconds and repeat interval to 0.05 seconds. Profession navigation
+retains 0.5/0.1-second timings. Release, text focus, modifiers, combat and hidden
+panels still cancel repetition.
+
+Validation: 270 tests pass, including precise guild-repeat boundaries, unchanged
+profession timing, disabled footer controls, retained layout choices, gray labels
+and plain-text search. Live review remains necessary for texture tone and spacing.
+
+## Version 1.0.0-dev.20 - Portrait size and horizontal alignment
+
+Set the portrait to 50 x 50 UI pixels and moved its center one pixel left.
+Preserved the previously approved two-pixel upward offset. The top-left anchor
+is now (0, 3), accounting for the larger image while keeping its vertical center.
+
+## Version 1.0.0-dev.19 - Portrait vertical alignment
+
+Moved the 48 x 48 window portrait upward by two UI pixels at the user's request.
+Its size and horizontal position are unchanged.
+
+## Version 1.0.0-dev.18 - 48-pixel portrait
+
+Adjusted the window portrait to 48 x 48 UI pixels after the user's 32-pixel
+comparison. Retains the native portrait center and unchanged outer frame.
+
+## Version 1.0.0-dev.17 - 32-pixel portrait test
+
+Set the window portrait to 32 x 32 UI pixels at the user's request. Its center
+remains at the native portrait center; outer frame and artwork are unchanged.
+
+## Version 1.0.0-dev.16 - Further portrait size adjustment
+
+The user's in-game diagnostic confirmed the dev.15 portrait was 58 x 58; the
+client did not reset its dimensions. The user still perceived the icon as too
+large. Reduced it to 54 x 54 (another four pixels in each dimension), centered
+on the native portrait position. This is a visual adjustment, not a verified
+fix for a client size override. The outer frame and source artwork stay intact.
+
+## Version 1.0.0-dev.15 - Inset window icon
+
+Reduced the displayed portrait from the native 62 x 62 to 58 x 58 UI pixels.
+Adjusted its anchor by two pixels per edge to keep the image centered in the
+unchanged circular frame. The source artwork remains unchanged.
+
+## Version 1.0.0-dev.14 - Custom window portrait
+
+Replaced the placeholder book portrait with the user's Media/Icon.png artwork.
+Preserved the source PNG and converted its pixels to an uncompressed 32-bit TGA
+for the in-game texture. Both files are included in the release archive. The
+native circular mask and portrait border remain unchanged.
+
+## Version 1.0.0-dev.13 - Shorter window and illustrated top strip
+
+Reduced the window height by one fifth, from 669 to 535 pixels, retaining its
+458-pixel width. The scroll viewport adapts in both bottom-bar states. Replaced
+the top strip's rock texture with the native LFG role-section image
+(Interface/LFGFrame/UI-LFG-BlueBG), desaturated and darkened while preserving
+visible image structure. Checkbox alignment and saved layout choices remain.
+
+## Version 1.0.0-dev.12 - Keep checkbox alignment when hiding headings
+
+Hiding category headings now removes only headings and vertical gaps. Feature
+rows keep the same 18-pixel horizontal inset in both views, so checkboxes and
+labels no longer move sideways when toggling T.
+
+## Version 1.0.0-dev.11 - LFG bars and compact-list controls
+
+Matched the upper strip to native LFG proportions (102 pixels beneath the title)
+and replaced the flat fill with a dark desaturated native rock texture. Restored
+an expanded 120-pixel bottom section, including a permanent 37-pixel button strip.
+The small bottom-left minus/plus control collapses the extra 83 pixels and returns
+that space to the scrolling list. An adjacent T button toggles category headings.
+
+With headings hidden, all matching features form a continuous uniformly indented
+list without category gaps. Collapsed categories do not hide their features in
+flat mode; their collapse choices return when headings are shown again. Both
+window layout choices are saved in BetaQoLDB.settingsUI independently of the
+19 feature switches. Both controls stay accessible in the collapsed layout.
+Window size, native title bar and outer border remain unchanged.
+
+Validation: 269 automated tests pass, including footer resize/reopen, continuous
+flat rows, collapsed categories in flat mode, search and cross-runtime saved
+layout/feature preferences. Actual texture darkness still needs live visual review.
+
+## Version 1.0.0-dev.10 - Compact LFG-style settings
+
+Reworked the settings scaffold after the user's live visual feedback. The window
+now matches the native LFG width (458) and is about 25% taller (669 versus 535).
+Removed the right-hand detail pane. All five category headings remain left aligned
+in a single list, with features indented underneath. The list uses GameFontNormal
+instead of GameFontNormalSmall and 22-pixel minimum rows with additional height
+only when labels wrap. The portrait, title bar and outer border remain native;
+the toolbar is neutral gray and the groupfinder backdrop is desaturated/darkened.
+
+Descriptions and usage notes are available on hover. Tooltip headings omit
+parenthetical qualifiers, and Enabled/How it works headings are removed. Clicking
+a label or checkbox toggles the feature once. Hover alone does not toggle it.
+Owned tooltips are dismissed on leave, filtering, scrolling and closing. Search,
+category collapse, saved preferences, dragging, Escape and screen fitting remain.
+
+Validation: 266 automated tests pass. A focused read-only review found no blocking
+issues in native APIs, layout bounds, click handling or tooltip cleanup. Built and
+installed locally for the next visual check; no public release in this step.
+
+## Version 1.0.0-dev.9 - Native two-pane settings scaffold
+
+Replaced the tall checkbox window with an 864 x 620 portrait frame inspired by
+Forever's Professions and LFG panels. The left pane groups all 19 features into
+Quests, Chat, Controls, World & Interface, and Spells. Native category headers,
+search, scrollbar and recipe selection art provide the first visual scaffold.
+The right pane shows a provisional icon, full feature name, current enabled state,
+description and usage notes. Row selection is separate from checkbox activation.
+Existing setting keys, feature behavior and saved preferences are retained.
+
+Search matches feature/category names literally and case-insensitively, including
+punctuation. Search expands matching categories temporarily; clearing it restores
+collapse choices. Filter/collapse changes clamp the scroll offset. The frame is
+movable, closes with Escape, clears search focus on closing and scales down only
+when needed to fit the UI parent. All visuals belong to the addon's own window;
+no native gameplay frames or global handlers are replaced.
+
+Validation: 265 automated tests pass, including selection versus toggling, status
+refresh, search/empty results, collapse restoration, scroll clamping and window
+reuse/fit. A focused independent review checked shared templates against the
+pinned Forever UI source; search was moved clear of the portrait rim. Actual
+texture appearance, font wrapping and mouse dispatch still need live-client
+verification. Final icons, minimap button and 1.0.0 release remain later steps.
+
+## Version 1.0.0-dev.8 - Restore three-line guild arrows
+
+The user found five-line jumps difficult to follow during live testing. Restored
+three lines per Up/Down step, including held-key repeats. Repeat timings,
+profession navigation and mousewheel behavior remain unchanged.
+
+## Version 1.0.0-dev.7 — Five-line guild arrow test
+
+Changed Guild/Communities Up/Down navigation from three to five lines per step
+at the user's request. Repeat timing remains 0.5 seconds initially / 0.1 seconds
+thereafter. Recipe navigation and mousewheel scrolling are unchanged.
+
+## Version 1.0.0-dev.6 — Interface arrows for professions and guild chat
+
+Renamed `Professions Book Arrow Keys` to
+`Arrow Keys Interface (Professions and Guild)` and `Arrow Keys Chat Control` to
+`Arrow Keys Chatbox`, retaining both saved keys and user preferences.
+The interface option now also scrolls `CommunitiesFrame.Chat.MessageFrame` by
+three lines per Up/Down step. Both targets share the same controller implementation
+and native-style 0.5-second initial delay / 0.1-second repetition. Profession
+selection behavior stays the same. No native mousewheel scripts are changed by
+this option, and no chat messages are sent.
+
+Only the visible target with the higher parent window frame level handles input
+when both panels are open (professions wins a tie). Text focus and modifier keys
+retain priority. Independent held-key state per target prevents switching panels
+from carrying a repeat across; hide, combat, disabling and target replacement
+cancel it. The user confirmed profession repeats before this extension.
+
+Validation: 261 automated tests pass, including all previous recipe repeat tests
+and new guild tests for three-line steps, delay/release, text focus, modifiers,
+hidden chat, combat, disabling, late loading/replacement and simultaneous windows.
+Guild keyboard dispatch still needs live-client confirmation.
+
+## Version 1.0.0-dev.5 — Hold-to-repeat recipe navigation
+
+Renamed the setting to `Professions Book Arrow Keys`, preserving its saved key.
+Up/Down still selects immediately. Holding waits 0.5 seconds before repeating
+every 0.1 seconds, matching `panDelay` and `panRepeatTime` from the pinned native
+`Blizzard_SharedXML/Shared/Scroll/ScrollBar.xml`. An OnUpdate handler exists only
+while a navigation key is held. OS repeat events do not add duplicate steps or
+restart the delay. Direction changes start a new delay; frame stalls never cause
+a burst of catch-up selections, and list boundaries do not wrap.
+
+Release, physical key-up recovery, text focus, modifiers, hiding/replacing the
+window, disabling the option and entering combat cancel the repeat. Reopening
+the window does not resume an old hold. No crafting actions or bindings change.
+Validation: 255 automated tests pass. The user confirmed the earlier recipe
+navigation, faster chat scrolling and both spell checks in the live client;
+hold-to-repeat behavior still needs live confirmation.
+
+## Version 1.0.0-dev.4 — Separate rank and missing-spell checks
+
+Renamed the existing option to `Low Spell Rank Check (at launch and reload)`
+while retaining its saved key and existing preference. Removed `Higher` from
+the red-prefix message. Added the independent, default-enabled
+`Missing Spell Check (at launch and reload)` with a yellow-prefix message:
+`BetaQoL: Smite not in actionbar.`
+
+Both options share one deferred login/reload scan. Missing checks ignore rank:
+any directly placed rank satisfies a spell family. Only active learned spells
+outside `Enum.SpellBookSkillLineIndex.General` participate. Passive, future and
+off-spec entries remain excluded; missing category metadata suppresses missing
+warnings rather than guessing. Standard mouse/keyboard actions remain the scope;
+macro branches and pet/gamepad bars are not inspected. Neither check changes bars.
+The settings window now has nineteen options with slightly tighter row spacing.
+
+Validation: 249 automated tests pass, including independent toggles, exact
+message colors/text, General exclusion, missing-family deduplication, any-rank
+presence, reload/zone transitions, saved preferences and combat deferral.
+The user subsequently confirmed the new missing check working in the live client.
+
+## Version 1.0.0-dev.3 — Shorter rank reminder
+
+Live testing confirmed correct reminders after deliberately replacing four spells
+with lower ranks. Shortened the message to, for example,
+`BetaQoL: Higher Smite Rank 3 available. Check your spellbook.`
+Only the `BetaQoL:` prefix is red; the remaining text uses the normal chat color.
+Rank detection is unchanged.
+
+## Version 1.0.0-dev.2 — Compare the highest placed rank per spell
+
+The first live reminder test exposed two problems: it warned per lower-rank
+placement even when the highest learned rank was also on a bar, and the default
+All actionbar set included extra stored starter ranks. The user's diagnostic
+showed Smite rank 3 in slot 1 and Lesser Heal rank 3 in slot 62, alongside rank 1
+copies in slots 200 and 197.
+
+The reminder now groups active spellbook entries by their native spell name,
+identifies the highest learned rank using the native low-rank predicate, and
+checks direct actions in the explicit Mkb actionbar set. Candidate lookup is not
+treated as an exact spell match: actual slot IDs must match a spellbook spellID.
+It reports a family once only when some rank is placed but no highest learned
+rank is present. Spells absent from those bars are ignored. No localized rank
+number parsing or static rank table is needed. The message names the available
+higher rank instead of claiming a particular lower rank is on the bar.
+
+Regression tests cover the supplied slot/rank example, several lower copies,
+highest-plus-lower placements, base-ID aliases, broad candidate results and
+gamepad-only spells. Subsequent live confirmation is recorded under dev.3 above.
+
+## Version 1.0.0-dev.1 — Leveling helpers (local test build)
+
+Adds three independent, default-enabled options after the existing fifteen.
+Recipe arrow keys use the native recipe-list selection and scrolling methods,
+enumerating only expanded, filtered entries. A child keyboard listener stays
+inactive while typing, using modifiers, or in combat. Chat scrolling replaces
+each standard chat frame's mousewheel handler with a three-line step and restores
+the original on disable. Review caught that FloatingChatFrame_OnMouseScroll is
+not the active ordinary-chat handler in the pinned client. The actual ScrollUtil
+initializer already installs a three-step callback; tests now cover that path
+as well as older one-step handlers. The separate Communities handler is untouched.
+
+Low Spell Reminder follows the user's requested login-only behavior, also running
+after a UI reload for testing. It uses the player's native spellbook low-rank
+predicate and exact direct-action IDs. Duplicate placements are combined and
+checks defer until out of combat. No action slots, spellbook entries or native
+frames are modified. No cast observer, trainer cache, chat broadcasting or static
+rank database is involved. Macros and pet actions are outside this first scope.
+
+Research inspected actual sources from
+[RankUp 1.3.0](https://www.curseforge.com/wow/addons/rankup/files/8915594),
+[Nova Spell Rank Checker 1.63](https://www.curseforge.com/wow/addons/nova-spell-rank-checker/files/8948193),
+[Ranksmith 0.3.2](https://www.curseforge.com/wow/addons/ranksmith/files/8969642), and
+[RankSentinel 2.6.6](https://github.com/valkyrnstudios/RankSentinel/tree/v2.6.6).
+Their approaches differ: actionbar upgrades, manual rank scans, trainer-service
+reminders and combat-log checks respectively. BetaQoL's implementation is original;
+it does not copy their code. In particular, Nova's source is All Rights Reserved.
+Native API/source comparison uses the existing pinned Forever UI commit.
+
+Validation: 239 automated tests pass. Verification covers native recipe selection, categories/filters, text
+focus, combat, late-loaded windows, saved toggles, native chat scrolling, exact
+rank matching, duplicate placements, unavailable APIs and delayed login checks.
+Live confirmation is still required, especially native rank lookup in Forever.
+Settings design, minimap access, licensing and release images remain separate
+1.0.0 work. Damage-meter switching remains removed. Quest-drop data is unchanged.
 
 ## Version 0.9.8 — Remove unsafe damage-meter shortcut
 
