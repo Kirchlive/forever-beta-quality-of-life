@@ -3,6 +3,114 @@
 Detailed development notes, research, and validation.
 The concise feature overview and installation instructions are in the [README](README.md).
 
+## Version 0.9.8 — Remove unsafe damage-meter shortcut
+
+Released September 26, 2026, after the user approved keeping Damage Meter
+Doubleclick Switch disabled and hidden. The addon no longer attaches any meter
+setup or click hooks. Its settings entry/default and obsolete saved flag are
+removed. The other fifteen features keep their order and saved choices; the
+settings window is shortened to fit. Native Current/Overall menu selection remains
+available. This release removes the faulty integration; it does not claim to fix
+or replace the switching implementation or establish the client crash's cause.
+
+The quest-item database is unchanged from 0.9.7: 17,015 NPC/item pairs, including
+337 supplemental Forever pairs from the completed 2,133-page catalog fetch.
+The latest user screenshot shows the inline yellow percentage next to Bristleback
+Quilboar Tusk while the separate kill objective receives no item percentage.
+
+Validation: 225 automated tests pass. Coverage includes old saved enabled flags,
+absence of meter hooks, normal native menu selection, settings persistence and
+the shifted Whisper Tab checkbox. User testing confirmed normal meter selection
+without the shortcut. Release packaging is verified independently of tests;
+fixtures cannot prove the absence of all client taint errors.
+
+Next session toward 1.0.0: final UI design polish, an addon minimap icon for settings
+access, live-client checks and final release documentation. The damage-meter
+shortcut stays excluded; an optional later feasibility review is separate from
+the 1.0.0 release requirements.
+
+### Development history: 0.9.8-dev.4 — Hide suspended shortcut
+
+At the user's request, Damage Meter Doubleclick Switch is completely absent from
+settings. Its inactive checkbox and default are removed, and the obsolete saved
+flag is cleared on load. The settings window now fits fifteen features; Whisper
+Tab Doubleclick Close follows Flight Master Auto Map. No damage-meter hooks or
+switching scripts run. Normal native menus remain available. This is still a
+local development build, not a repaired switching implementation.
+
+Validation: 225 tests pass, including obsolete enabled settings, native meter
+handlers, normal menu selection, remaining settings and whisper-tab toggling.
+
+### Development history: 0.9.8-dev.3 — Suspend unsafe damage-meter shortcut
+
+The user confirmed normal menu selection with the shortcut disabled produces no
+damage-meter errors. Enabling `taintLog 2` and reloading produced many native
+GamepadActionBars nil-call errors before switching. Clicking the session button
+then caused a client assertion at `lua-5.1/src/ldebug.c:747` on build 1.60.1.70009.
+The saved crash stack is in native `MenuVariants:CreateRadio` while opening the
+menu, with no BetaQoL callback on that stack. This does not prove whether logging,
+addon taint or another client defect caused the assertion. No taint log was found.
+Do not repeat this logging experiment. Crash text, minidump and attempted code
+were backed up locally outside the repository; no private crash data is shipped.
+
+The damage-meter integration is removed from active code. Its checkbox is locked
+off, including when SavedVariables contain `true`; the saved preference itself
+is retained. No native setup hook or double-click handler is attached. Other
+features and normal meter menus remain available. This is a containment measure,
+not a working replacement for the shortcut. No new public release was made.
+
+Validation: 225 tests pass. Replacement tests verify no hooks with saved enabled
+preferences, no reactivation from settings, late/new windows left alone and native
+menu selection/persistence. The unsupported switching tests were replaced rather
+than counted as proof that taint was fixed. User action: disable logging with
+`/console taintLog 0` and reload to clear previous runtime state.
+
+### Earlier 0.9.8 development attempts — Native damage-meter menu selection
+
+**Not fixed / not released:** the user also reproduced the secret-value error
+with 0.9.8-dev.2 after the first double-click (`sourceDisplayType`, 2026-09-26
+06:10:59). All three switching approaches have now failed live validation.
+Do not treat the passing routing tests as evidence of taint safety. Further
+implementation is paused pending the first taint-write trace; no `taint.log`
+was present in the local client's Logs directory when inspected. Temporary
+workaround: disable this shortcut and reload before using the native menu.
+
+The user reported a secret-number comparison in Blizzard's `SetSessionDuration`
+after spell casts, with execution attributed to BetaQoL. Version 0.9.7 called
+`SetSessionWindowSessionID` directly from addon execution, which writes native
+session and saved state before refreshing the meter. This is a plausible source
+of persistent taint in later native timer updates.
+
+The first development fix called native menu generation, radio navigation and
+closing through `securecallfunction`. Live testing disproved that fix: errors
+began after the first double-click and persisted after disabling the feature,
+including failures in both timer and damage-entry updates. A wrapper alone did
+not prevent persistent taint; the earlier simulated security-context test was
+not evidence about WoW's actual taint VM.
+
+The user's `issecurevariable` diagnostic found `sessionType`, `sessionID` and
+`onUpdateReasons` secure, but `localPlayerIndex` tainted by BetaQoL. The latter is
+read and rewritten in native `BuildDataProvider`, consistent with contamination
+persisting through subsequent refreshes. This localizes affected display state;
+it does not yet prove which earlier menu operation introduced the taint.
+
+In 0.9.8-dev.2, the handler only reads the existing menu built by the native first
+mouse-down, finds the opposite session entry by its data, and invokes that entry's
+`Pick(MouseButton, LeftButton)` action through `securecallfunction`, the same
+selection action used by `MenuTemplates`' native `OnButtonClick`. No generation,
+navigation, forced refresh, manual close or direct session writes remain in the
+addon handler. A missing entry is left alone. Blizzard's responder owns the
+selection, persistence and resulting UI updates; combat data and timers are not
+modified by BetaQoL.
+
+Validation: 231 tests pass. The tests reject additional menu generation or
+dropdown updates during our handler, verify original entry identity, mouse-click
+arguments, native responder dispatch, saved selection and missing/reordered
+entries. They cannot establish absence of client taint. Live verification after
+`/reload`, repeated switches and spell casts is still required. Reload is necessary
+to clear state affected by earlier attempts; toggling the feature off alone does
+not undo existing taint.
+
 ## Version 0.9.7 — Quest tools and complete catalog import
 
 Released September 26, 2026. All sixteen features default on with independent

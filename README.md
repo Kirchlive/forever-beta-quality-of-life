@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 0.9.7** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
+**Version 0.9.8** · WoW Forever Beta 1.60.1 · Interface 16001 · No dependencies.
 
 ## Features
 
@@ -91,12 +91,6 @@
   even after releasing Shift. Quest acceptance
   and turn-in retain priority when enabled. Choose your destination on the map as usual.
 
-- **Damage Meter Doubleclick Switch (current and overall):** Double-click
-  the C/O session button with the left mouse button to swap Current and Overall
-  in that damage-meter window. Single-click still opens the normal menu; individual
-  encounter selections stay unchanged. Uses Blizzard's built-in damage meter and
-  saves the selection through its native settings. Enabled by default under `/qol`.
-
 - **Whisper Tab Doubleclick Close:** Close a regular or Battle.net whisper tab
   with a left double-click, using the same close action as its context menu.
 
@@ -111,9 +105,15 @@
 3. For a first installation, restart WoW and enable **Beta Quality of Life**.
    For updates, replace the files and run `/reload`.
 
+**Updating from 0.9.7:** Damage Meter Doubleclick Switch has been removed after
+reproducible Lua errors. Its menu entry and obsolete saved setting are removed;
+use Blizzard's normal Current/Overall menu. Reload after updating to clear any
+previously affected runtime state. If you enabled diagnostic logging during testing,
+run `/console taintLog 0` before reloading. The other fifteen features remain available.
+
 ## Usage
 
-- `/qol`: Open a small settings window with one checkbox per feature. All sixteen features
+- `/qol`: Open a small settings window with one checkbox per feature. Available features
   start enabled. Changes apply immediately; existing saved on/off choices are preserved
   when the client restores SavedVariables. Settings are shared across characters on the account.
 - `/betaqol` or `/fqa`: Toggle Quest Auto Accept and save the choice.
@@ -142,3 +142,12 @@ to defaults even when correctly saved. See [ForeverSVFix](https://github.com/nob
 for the community report and workaround. This addon does not include that workaround.
 
 Development notes, version history and technical details: [DEVLOG.md](DEVLOG.md).
+
+## Next milestone: 1.0.0
+
+- Final UI design polish and layout review.
+- An addon minimap icon for opening the settings.
+- Final live-client checks and release documentation.
+
+The damage-meter shortcut remains excluded. Its feasibility may be revisited
+later; it is not a requirement for 1.0.0 and will not return without live validation.

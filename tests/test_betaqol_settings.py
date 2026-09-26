@@ -16,13 +16,13 @@ class SettingsBehaviour(unittest.TestCase):
         self.lua.execute('''
         assert(#checkboxes==0)
         SlashCmdList.QOL()
-        assert(#checkboxes==16 and #UISpecialFrames==1)
+        assert(#checkboxes==15 and #UISpecialFrames==1)
         for index,box in ipairs(checkboxes) do assert(box:GetChecked()==true) end
         clickSetting(1,false); emit('QUEST_DETAIL'); assert(not journal[9173])
         assert(BetaQoLDB.fastLoot and BetaQoLDB.enterConfirm and BetaQoLDB.rangeColor)
         SlashCmdList.BETAQOL(); assert(checkboxes[1]:GetChecked())
         emit('QUEST_DETAIL'); assert(journal[9173])
-        SlashCmdList.QOL(); SlashCmdList.QOL(); assert(#checkboxes==16)
+        SlashCmdList.QOL(); SlashCmdList.QOL(); assert(#checkboxes==15)
         ''')
 
     def test_saved_false_values_loaded_after_lua_are_preserved(self):
@@ -37,16 +37,16 @@ class SettingsBehaviour(unittest.TestCase):
         ''')
 
     def test_saved_settings_round_trip_across_fresh_lua_runtime(self):
-        self.lua.execute("SlashCmdList.QOL(); clickSetting(1,false); clickSetting(2,false); clickSetting(11,false); clickSetting(16,false); clickSetting(10,false); clickSetting(9,false); clickSetting(7,true); clickSetting(4,false); clickSetting(12,false); clickSetting(13,false); clickSetting(5,false); clickSetting(3,false); clickSetting(14,false); clickSetting(15,false)")
+        self.lua.execute("SlashCmdList.QOL(); clickSetting(1,false); clickSetting(2,false); clickSetting(11,false); clickSetting(15,false); clickSetting(10,false); clickSetting(9,false); clickSetting(7,true); clickSetting(4,false); clickSetting(12,false); clickSetting(13,false); clickSetting(5,false); clickSetting(3,false); clickSetting(14,false)")
         values = {key: self.lua.globals().BetaQoLDB[key]
-                  for key in ('autoAccept', 'autoTurnIn', 'fastLoot', 'enterConfirm', 'rangeColor', 'whisperDoubleClick', 'backspaceDestroy', 'backspaceQuestDetails', 'squareMinimap', 'questNameplateBag', 'chatArrowKeys', 'shiftEscapeReload', 'questLogXP', 'questDropRate', 'flightMasterInstantMap', 'damageMeterDoubleClick')}
+                  for key in ('autoAccept', 'autoTurnIn', 'fastLoot', 'enterConfirm', 'rangeColor', 'whisperDoubleClick', 'backspaceDestroy', 'backspaceQuestDetails', 'squareMinimap', 'questNameplateBag', 'chatArrowKeys', 'shiftEscapeReload', 'questLogXP', 'questDropRate', 'flightMasterInstantMap')}
         fresh = LuaRuntime(unpack_returned_tuples=True)
         fresh.execute(HOST + UI_ENGINE)
         fresh.execute(SOURCE.read_text(encoding='utf-8'))
         fresh.globals().BetaQoLDB = fresh.table_from(values)
         fresh.execute("emit('ADDON_LOADED','BetaQoL'); SlashCmdList.QOL(); "
                       "assert(not checkboxes[1]:GetChecked() and not checkboxes[2]:GetChecked() and checkboxes[6]:GetChecked()); "
-                      "assert(not checkboxes[11]:GetChecked() and checkboxes[8]:GetChecked() and not checkboxes[16]:GetChecked() and not checkboxes[10]:GetChecked() and not checkboxes[9]:GetChecked() and checkboxes[7]:GetChecked() and not checkboxes[4]:GetChecked() and not checkboxes[12]:GetChecked() and not checkboxes[13]:GetChecked() and not checkboxes[5]:GetChecked() and not checkboxes[3]:GetChecked() and not checkboxes[14]:GetChecked() and not checkboxes[15]:GetChecked())")
+                      "assert(not checkboxes[11]:GetChecked() and checkboxes[8]:GetChecked() and not checkboxes[15]:GetChecked() and not checkboxes[10]:GetChecked() and not checkboxes[9]:GetChecked() and checkboxes[7]:GetChecked() and not checkboxes[4]:GetChecked() and not checkboxes[12]:GetChecked() and not checkboxes[13]:GetChecked() and not checkboxes[5]:GetChecked() and not checkboxes[3]:GetChecked() and not checkboxes[14]:GetChecked())")
 
     def test_missing_or_invalid_preferences_get_defaults_without_overwriting_false(self):
         self.lua.execute('''

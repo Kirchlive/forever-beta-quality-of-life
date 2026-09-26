@@ -45,10 +45,14 @@ For Left Shift Escape Reload, verify direct key-down handling in the game client
 left versus right Shift, Ctrl/Alt combinations, held-key repeat, the independent
 saved toggle, ordinary Escape routing and delayed initial setup during combat.
 No permanent or override binding should be created.
-For Damage Meter Doubleclick Switch, check C-to-O and O-to-C, ordinary single-click
-menus, individual encounters, saved toggles, multiple/new windows, late addon load
-and use during combat. Verify only the clicked window changes and the native
-selection remains saved after reload.
+Damage Meter Doubleclick Switch is removed. Verify that an old saved enabled flag
+is cleared, the settings show fifteen features and no meter setup/click hooks are
+installed, including on late-loaded or additional windows. Normal native menu
+selection must continue working. Do not reintroduce a switch based only on passing
+Lua fixtures: they cannot emulate the client's secret-value/taint VM. Any future
+implementation needs separate live validation through repeated switches and combat
+updates. Do not repeat the `taintLog 2` experiment on build 70009: it coincided with
+a native-menu assertion and earlier gamepad errors; its causal role is unproven.
 For Square Minimap, check the square border, toggling back to the round map,
 rotation on/off, zoom, clicks, zone transitions, and persistence after `/reload`.
 Check day/night and group-finder corner positions, native restoration when
@@ -68,6 +72,13 @@ Ornery Plainstrider / Plainstrider Kidney (40%) example. Classic estimates and
 Wowhead observations do not guarantee actual quest-eligible server probabilities.
 See `Data/NOTICE.md` for snapshot coverage and the offline supplement extractor.
 Regenerate the original minimap artwork with `python tools/generate_minimap_art.py`.
+
+## Next development session
+
+Prepare 1.0.0 with the final settings UI design pass and an addon minimap icon.
+Review icon placement and settings access alongside Square Minimap on/off, scaling,
+saved preferences and combat transitions. These are planned work, not features of
+0.9.8. Damage-meter switching remains out of scope unless explicitly revisited.
 
 ## Release after an external data fetch
 

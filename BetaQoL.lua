@@ -12,7 +12,6 @@ local settings = {
     questLogXP = true,
     questDropRate = true,
     flightMasterInstantMap = true,
-    damageMeterDoubleClick = true,
 }
 local featureChanged = {}
 local settingsLoaded = false
@@ -38,6 +37,8 @@ local function LoadSettings()
         BetaQoLDB.shiftEscapeReload = BetaQoLDB.ctrlEscapeReload
     end
     BetaQoLDB.ctrlEscapeReload = nil
+    -- Removed until a taint-safe damage-meter shortcut is available.
+    BetaQoLDB.damageMeterDoubleClick = nil
     for key, default in pairs(settings) do
         if type(BetaQoLDB[key]) ~= "boolean" then
             BetaQoLDB[key] = default
@@ -82,7 +83,7 @@ SlashCmdList.QOL = function()
     end
     local window = CreateFrame("Frame", "BetaQoLSettingsFrame", UIParent, "BasicFrameTemplateWithInset")
     settingsWindow = window
-    window:SetSize(570, 662)
+    window:SetSize(570, 626)
     window:SetPoint("CENTER")
     window:SetFrameStrata("DIALOG")
     window.TitleText:SetText("Beta Quality of Life")
@@ -109,7 +110,6 @@ SlashCmdList.QOL = function()
         { "chatArrowKeys", "Arrow Keys Chat Control" },
         { "shiftEscapeReload", "Left Shift Escape Reload" },
         { "flightMasterInstantMap", "Flight Master Auto Map (shift disable)" },
-        { "damageMeterDoubleClick", "Damage Meter Doubleclick Switch (current and overall)" },
         { "whisperDoubleClick", "Whisper Tab Doubleclick Close" },
     }
     for index, feature in ipairs(features) do
@@ -1109,47 +1109,8 @@ whisperFrame:RegisterEvent("PLAYER_LOGIN")
 whisperFrame:SetScript("OnEvent", HookWhisperTabs)
 HookWhisperTabs()
 
--- Use the same owner method as the native session menu so the selection is saved.
-do
-    local events = CreateFrame("Frame")
-    local attached = setmetatable({}, { __mode = "k" })
-    local hookedOwners = setmetatable({}, { __mode = "k" })
-    local function AttachWindow(window)
-        local dropdown = window.GetSessionDropdown and window:GetSessionDropdown()
-        if not dropdown or attached[dropdown] then return end
-        attached[dropdown] = true
-        local previous = dropdown:GetScript("OnDoubleClick")
-        dropdown:SetScript("OnDoubleClick", function(self, button, ...)
-            local types = Enum.DamageMeterSessionType
-            local owner = window:GetDamageMeterOwner()
-            local current = window:GetSessionType()
-            if settings.damageMeterDoubleClick and button == "LeftButton" and types
-                and owner and owner.SetSessionWindowSessionID
-                and (current == types.Current or current == types.Overall) then
-                local nextType = current == types.Current and types.Overall or types.Current
-                self:CloseMenu()
-                owner:SetSessionWindowSessionID(window, nextType, nil)
-                return
-            end
-            if previous then return previous(self, button, ...) end
-        end)
-    end
-    local function HookDamageMeter()
-        local owner = DamageMeter
-        if not owner or not owner.ForEachSessionWindow or not owner.SetupSessionWindow then return end
-        if not hookedOwners[owner] then
-            hookedOwners[owner] = true
-            hooksecurefunc(owner, "SetupSessionWindow", function()
-                owner:ForEachSessionWindow(AttachWindow)
-            end)
-        end
-        if owner.windowDataList then owner:ForEachSessionWindow(AttachWindow) end
-    end
-    featureChanged.damageMeterDoubleClick = HookDamageMeter
-    events:RegisterEvent("ADDON_LOADED")
-    events:RegisterEvent("PLAYER_LOGIN")
-    events:SetScript("OnEvent", HookDamageMeter)
-end
+-- Damage-meter switching is suspended after reproducible persistent taint.
+-- Do not attach scripts/hooks to native meter windows, even for saved enabled settings.
 
 -- Backspace is intercepted only for a real item picked up from carried bags.
 -- Request the native confirmation; never delete directly from this shortcut.
