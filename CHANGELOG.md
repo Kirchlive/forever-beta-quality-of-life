@@ -1,7 +1,20 @@
 # Changelog
 
-Current prerelease: **1.0.0-dev.25**. The 1.0.0 release is still in preparation.
+Current release: **1.0.0**.
 Intermediate builds and research are recorded in [DEVLOG.md](DEVLOG.md).
+
+## 1.0.0 - 2026-09-26
+
+Published the complete development series as the latest stable release, including
+all features listed below, the Mana minimap launcher, MIT licensing and illustrated
+documentation. Panel Arrow Keys is first under Controls. Existing settings and
+the quest-item snapshot are preserved. The archived dev.25 prerelease remains
+available separately.
+
+## 1.0.0-dev.26 - local, unpublished
+
+Moved Panel Arrow Keys (guild and professions) to the first position in Controls.
+The remaining feature order, labels, saved keys and behavior are unchanged.
 
 ## 1.0.0-dev.25 - 2026-09-26 (prerelease)
 

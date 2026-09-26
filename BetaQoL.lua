@@ -158,7 +158,7 @@ SlashCmdList.QOL = function()
     local categories = {
         { "Quests", { 1, 2, 3, 4, 5 } },
         { "Chat", { 12, 15, 17 } },
-        { "Controls", { 9, 10, 11, 13, 16 } },
+        { "Controls", { 16, 9, 10, 11, 13 } },
         { "World & Interface", { 6, 7, 14 } },
         { "Spells", { 8, 18, 19 } },
     }

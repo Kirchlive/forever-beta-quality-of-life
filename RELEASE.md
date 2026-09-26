@@ -1,79 +1,54 @@
-# Preparing 1.0.0
+# Release 1.0.0
 
-Current prerelease: **1.0.0-dev.25**, targeting WoW Forever Beta 1.60.1,
-build 70009, Interface 16001. This document is a checklist, not a publication
-record. Version 1.0.0 is not yet released.
+Current release: **1.0.0**, targeting WoW Forever Beta 1.60.1, build 70009,
+Interface 16001. GitHub tag: `v1.0.0`; archive: `BetaQoL-1.0.0.zip`.
+The release is marked **Latest**, so [the stable download link](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest)
+opens 1.0.0. The older dev.25 prerelease remains available separately.
 
-## Current state
+## Included and verified
 
-- All 19 features are implemented. Existing saved settings retain their keys.
-- The quest-item fetch and import are complete for the documented catalog.
-- The compact settings UI and minimap launcher are implemented.
-- MIT covers original project work; the separate quest-data GPL notices remain.
-- The automated suite has 274 passing tests. Tests do not prove live rendering
-  or the client's secret-value/taint behavior.
+- 19 independently switchable features, saved keys preserved.
+- Final Controls ordering: Panel Arrow Keys first, followed by the Backspace,
+  Enter and reload shortcuts.
+- Compact searchable settings window and Primal Mana minimap launcher.
+- Completed quest-item catalog snapshot with 17,015 NPC/item pairs.
+- MIT license for original work, separate GPL data and third-party notices.
+- Four unchanged user-supplied README screenshots, bundled in the archive.
+- 274 passing automated tests; ZIP integrity and contents checked against source.
 
-## Remaining live checks
+Tests do not run the game renderer, server or secret-value/taint VM. Earlier live
+feedback is recorded in DEVLOG. The comprehensive regression checklist in
+CONTRIBUTING remains relevant for future changes; this release record does not
+claim every listed case has been repeated in the final build.
 
-- [ ] Confirm the latest feature names, category order and readable gray qualifiers.
-- [ ] Review settings at normal UI scale and a smaller screen: compact search,
-  portrait, scrollbar, long labels, continuous footer, no old footer buttons.
-- [ ] Verify the Mana button opens/closes the same window and leaves native zoom
-  controls usable with square and round minimaps, including combat transitions.
-- [ ] Recheck the critical gameplay cases in CONTRIBUTING, including Shift bypass,
-  ordinary Escape followed by left Shift+Escape, recipe/guild repeat cancellation,
-  direct spell-rank comparisons and completed quest-item rows.
-- [ ] Confirm the supplied portrait (`Media/Icon.png` / `.tga`) source and reuse
-  rights, or replace it with artwork whose provenance can be documented.
-- [x] Add the four supplied menu, questlog XP, quest-item rate and minimap captures.
-- [ ] Refresh the dev.24 menu capture to show the final feature labels and version;
-  optionally add a separate capture of the Mana launcher.
+## Documentation follow-ups
 
-## README screenshots
+The README menu image is a dev.24 capture, explicitly labeled because it predates
+the final labels and Controls order. Refresh it when a new capture is available;
+an additional capture can show the Mana launcher. The three feature captures
+illustrate quest XP, inline quest-item rates and Square Minimap.
 
-Use actual game captures of the final build, not edited images implying untested
-behavior. Keep chat/player information out of the crop where practical.
+The supplied settings portrait's upstream source/reuse license has not yet been
+documented. Its exclusion from the MIT grant remains explicit in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Record its provenance when known.
 
-1. Settings window with the final title, labels and layout.
-2. Minimap launcher and square border, with the menu access visible.
-3. Quest tooltip showing an inline item rate; optionally show completed gray text.
-4. Optional spell-check chat messages illustrating red/yellow prefixes.
+## Future release procedure
 
-The README now uses four unchanged, user-supplied captures under
-`Media/Screenshots/`, with relative links, descriptive alt text and captions.
-The build manifest includes all four so the packaged README also renders them.
-The settings screenshot is explicitly labeled dev.24 because it predates the
-latest names. The minimap screenshot illustrates Square Minimap, not the new
-Mana launcher. Replace the menu capture before the final 1.0.0 presentation.
+1. Review changes and the relevant live checks in CONTRIBUTING. Damage-meter
+   switching and Shoot spam remain excluded unless explicitly revisited.
+2. Set the new version in the TOC and current documentation; retain historical
+   changelog/devlog version headings. Confirm the supported client interface.
+3. Run the full tests and `git diff --check`, then `python tools/build_release.py`.
+4. Check the ZIP's single `BetaQoL/` root, runtime files, Media assets, editable
+   data/importers, documentation, LICENSE and Data/COPYING.txt.
+5. Install the exact archive while preserving SavedVariables. Restart for a first
+   installation or `/reload` for an update. Compare installed/archive bytes.
+6. When publication is requested, commit and tag the reviewed source and upload
+   its matching archive. Use an ordinary release with Latest enabled for a stable
+   release; a prerelease should not replace the latest stable release.
+7. Verify the published tag/commit, download the uploaded ZIP and compare its
+   SHA256 with the local artifact. Check the latest-release endpoint explicitly.
 
-## Build and verify
-
-1. Resolve the remaining checks and review intended changes. Keep disabled
-   damage-meter and Shoot experiments out of runtime code and settings.
-2. Change the TOC version to `1.0.0` and update README, CHANGELOG, this checklist
-   and release notes to the actual release state. Do not rewrite historical devlog
-   version headings. Confirm Interface 16001 matches the tested client.
-3. Run the full test suite and `git diff --check`.
-4. Run `python tools/build_release.py`. Check the ZIP contains a single `BetaQoL/`
-   root with TOC/runtime files, Media assets, data and editable sources/importers,
-   docs, LICENSE, THIRD_PARTY_NOTICES and Data/COPYING.txt.
-5. Install that exact archive in `World of Warcraft/_classic_beta_/Interface/AddOns/`.
-   Preserve SavedVariables. Restart for first installation; use `/reload` for
-   updates. Perform the final smoke test and compare installed/archive bytes.
-6. When publication is requested, commit the reviewed changes, tag that commit
-   as `v1.0.0`, and upload its matching `BetaQoL-1.0.0.zip`. Verify the published
-   download and release notes refer to the same version and data snapshot.
-
-Development snapshots can be published as prereleases. Version 1.0.0-dev.25
-is the current prerelease; this checklist tracks the remaining work for the final
-1.0.0 release. The previous stable release remains v0.9.8.
-
-## Release notes content
-
-Summarize the compact settings menu, minimap access, 19 independent defaults,
-new spell checks, panel navigation and multiline chat scrolling. Link the
-[README](README.md), [changelog](CHANGELOG.md) and
-[license notices](THIRD_PARTY_NOTICES.md). Explain that drop percentages combine
-Classic estimates and observed Forever frequencies, not guaranteed server rates.
-Mention that macros/gamepad/pet actions are outside the spell checks' scope and
-that Damage Meter Doubleclick Switch and Shoot spam are not included.
+Keep screenshots under `Media/Screenshots/`, unchanged unless editing is requested,
+with descriptive alt text and captions. Update their version labels honestly and
+include all README images in the build manifest.

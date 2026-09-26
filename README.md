@@ -1,6 +1,6 @@
 # Forever Beta Quality of Life
 
-**Version 1.0.0-dev.25 (prerelease)** | WoW Forever Beta 1.60.1 | Interface 16001 | No dependencies.
+**Version 1.0.0** | WoW Forever Beta 1.60.1 | Interface 16001 | No dependencies.
 
 Open settings with `/qol` or the Mana button on the minimap.
 [Installation](#installation-and-updates) | [Settings](#settings-window) | [License](#license-and-data-attribution)
@@ -92,6 +92,20 @@ are preserved. The groups below match the settings window.
 
 ### Controls
 
+- **Panel Arrow Keys (guild and professions):** Use Up/Down to select the
+  previous/next recipe in the open professions crafting page, or scroll the visible
+  Guild/Communities chat by three lines. Recipe navigation skips category headings
+  and collapsed or filtered recipes, and scrolls the selection into view.
+  Holding a key in Professions repeats after 0.5 seconds, then once every 0.1
+  seconds, matching the native scrollbar stepper timings. Guild/Communities uses
+  a shorter 0.25-second delay and 0.05-second repeats. Releasing the key, hiding
+  the window or starting text input stops it.
+  Direction changes restart the delay; selection stops at list boundaries.
+  When both panels are visible, the higher frame-level window receives the keys
+  (professions takes priority on a tie); they never both navigate at once.
+  Text input, modified keys
+  and combat retain their normal behavior. Does not craft anything.
+
 - **Backspace Leave Quest Details Window:** Press Backspace in the quest log details to
   activate the native Back button and return to the overview. Enabled by default
   with its own `/qol` switch. Works outside
@@ -111,20 +125,6 @@ are preserved. The groups below match the settings window.
   Observes keyboard input directly without changing bindings. Right Shift alone,
   Ctrl/Alt combinations and ordinary Escape do not trigger a reload. The initial
   keyboard listener setup waits until combat ends if necessary.
-
-- **Panel Arrow Keys (guild and professions):** Use Up/Down to select the
-  previous/next recipe in the open professions crafting page, or scroll the visible
-  Guild/Communities chat by three lines. Recipe navigation skips category headings
-  and collapsed or filtered recipes, and scrolls the selection into view.
-  Holding a key in Professions repeats after 0.5 seconds, then once every 0.1
-  seconds, matching the native scrollbar stepper timings. Guild/Communities uses
-  a shorter 0.25-second delay and 0.05-second repeats. Releasing the key, hiding
-  the window or starting text input stops it.
-  Direction changes restart the delay; selection stops at list boundaries.
-  When both panels are visible, the higher frame-level window receives the keys
-  (professions takes priority on a tie); they never both navigate at once.
-  Text input, modified keys
-  and combat retain their normal behavior. Does not craft anything.
 
 ### World & Interface
 
@@ -197,9 +197,7 @@ Drag the window to move it and press Escape to close it.
 
 ## Installation and updates
 
-1. Download **BetaQoL-1.0.0-dev.25.zip** from the
-   [current prerelease](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/tag/v1.0.0-dev.25).
-   For the previous stable version, use [Latest stable](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
+1. Download **BetaQoL-1.0.0.zip** from [Latest release](https://github.com/Kirchlive/forever-beta-quality-of-life/releases/latest).
 2. Extract the `BetaQoL` folder into
    `World of Warcraft\_classic_beta_\Interface\AddOns\`.
    `BetaQoL.toc` must be directly inside `AddOns\BetaQoL`. Keep the included `Media` and `Data` folders.
@@ -254,12 +252,14 @@ attribution; the MIT grant does not relicense them. See
 
 ## Release status and documentation
 
-This is **1.0.0-dev.25**, a prerelease. The final version 1.0.0 has not been published.
-The feature set, settings window, minimap access and MIT code license are in place.
-Four supplied in-game screenshots illustrate the current layout and features;
-the menu capture predates the final label changes. Remaining work: final live-client
-review, refresh the menu capture for 1.0.0, confirm the supplied portrait's
-source/reuse rights, and prepare the final versioned release.
+**1.0.0** is the current release, including the latest Controls ordering with
+Panel Arrow Keys first. It includes 19 features, the compact settings window,
+minimap access and the MIT code license.
+
+Four supplied in-game screenshots illustrate the layout and features; the menu
+capture is dev.24 and predates the final labels and Controls order. Documentation
+follow-ups include refreshing that capture and recording the supplied portrait's
+source/reuse rights. See the release and license notices below.
 Damage-meter switching and Shoot spam remain excluded.
 
 - [CHANGELOG.md](CHANGELOG.md): concise release overview.

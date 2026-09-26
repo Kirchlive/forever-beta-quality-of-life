@@ -5,6 +5,26 @@ The concise feature overview and installation instructions are in the [README](R
 Entries below are historical records, including superseded experiments. Current
 release status and remaining checks are in [RELEASE.md](RELEASE.md).
 
+## Version 1.0.0 - Latest stable release
+
+Published the current code and documentation as v1.0.0 at the user's request,
+with the final Controls ordering from dev.26. The previous dev.25 prerelease
+was excluded from GitHub's latest-stable link, which still resolved to v0.9.8.
+The new non-prerelease is explicitly marked Latest; README downloads now use
+that stable link. The earlier tag and assets are preserved.
+
+Validation: 274 tests pass; the 26-file release archive includes screenshots,
+source data, MIT and GPL notices. Publication verification compares the uploaded
+ZIP to the local build and checks that releases/latest resolves to v1.0.0.
+The menu screenshot remains an explicitly labeled dev.24 capture; unknown
+portrait provenance remains disclosed in THIRD_PARTY_NOTICES.md.
+
+## Version 1.0.0-dev.26 - Controls ordering
+
+Moved Panel Arrow Keys (guild and professions) to the first row under Controls,
+with matching README ordering. Existing setting keys, feature names and behavior
+are unchanged. Local build only; the published dev.25 archive remains intact.
+
 ## Version 1.0.0-dev.25 - Naming, MIT license and documentation refresh
 
 Documentation follow-up: included four unchanged user-supplied game captures

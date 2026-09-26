@@ -94,7 +94,7 @@ Regenerate the original minimap artwork with `python tools/generate_minimap_art.
 
 ## Current settings and input checks
 
-The 1.0.0-dev.25 prerelease build uses a compact LFG-style settings list. Open `/qol`:
+The 1.0.0 release uses a compact LFG-style settings list. Open `/qol`:
 check portrait/search spacing, the gray toolbar, dark background, full feature names
 and left-aligned category headings with indented rows. Hovering a row or checkbox
 must show its description without changing the setting; clicking either must toggle
@@ -140,8 +140,8 @@ border. Verify its position on the right edge below center with Square Minimap o
 scaling and other native buttons. Left-click must toggle the existing settings
 window without duplicate frames. Its tooltip must disappear on leave, click or
 hide without hiding another tooltip. Creation/repositioning waits for combat end.
-Complete the final live minimap/UI review and refresh the dev.24 menu screenshot
-for 1.0.0. All four supplied documentation captures are already included. MIT covers original project code, documentation and generated artwork;
+Continue live minimap/UI regression checks and refresh the dev.24 menu screenshot
+to match 1.0.0. All four supplied documentation captures are included. MIT covers original project code, documentation and generated artwork;
 Questie-derived data retains GPL-3.0. The supplied portrait's source/reuse rights
 still need documenting. See THIRD_PARTY_NOTICES.md and RELEASE.md. Damage-meter
 switching and Shoot spam remain excluded.
