@@ -247,6 +247,9 @@ describes this issue in Forever beta builds. That workaround is not bundled here
 
 Original addon code, tools, tests, documentation and generated minimap artwork
 are licensed under [MIT](LICENSE), copyright 2026 Kirchlive and contributors.
+
+**Credits:** If you use this code, please credit **Kirchlive (Tetto)** and **GPT-6 Astra**.
+
 The bundled Questie-derived database and original source tables retain their
 **GPL-3.0** license. Wowhead observations and third-party artwork have separate
 attribution; the MIT grant does not relicense them. See
